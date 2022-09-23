@@ -16,6 +16,7 @@ class ProfileView: UIView {
         imageView.backgroundColor = .lightGray
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 40
+        imageView.clipsToBounds = true
         imageView.isUserInteractionEnabled = true
         return imageView
     }()
@@ -36,6 +37,17 @@ class ProfileView: UIView {
         return imageView
     }()
     
+    lazy var editButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .white
+        button.setTitle("Edit", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 10
+        return button
+    }()
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 60),
@@ -52,6 +64,11 @@ class ProfileView: UIView {
             photoImageView.centerYAnchor.constraint(equalTo: addPhotoView.centerYAnchor),
             photoImageView.heightAnchor.constraint(equalToConstant: 50),
             photoImageView.widthAnchor.constraint(equalTo: photoImageView.heightAnchor),
+            
+            editButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -60),
+            editButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
+            editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
+            editButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
@@ -61,6 +78,7 @@ class ProfileView: UIView {
         addSubview(profileImageView)
         profileImageView.addSubview(addPhotoView)
         addPhotoView.addSubview(photoImageView)
+        addSubview(editButton)
     }
     
     override init(frame: CGRect) {

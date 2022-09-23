@@ -10,16 +10,30 @@ import UIKit
 class ViewController: UIViewController {
     
     private lazy var profileView = ProfileView()
-
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        print(profileView.editButton.frame)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.addSubview(profileView)
-        view.backgroundColor = .green
+        print(profileView.editButton.frame)
         let gesture = UITapGestureRecognizer(target: self, action: #selector(addProfilePicture))
         profileView.addPhotoView.isUserInteractionEnabled = true
         profileView.addPhotoView.addGestureRecognizer(gesture)
         setupConstraints()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print(profileView.editButton.frame) // Frames are different because initialization of button and adding subviews (including button) happens after the view appeared
     }
     
     @objc func addProfilePicture() {
@@ -52,6 +66,8 @@ class ViewController: UIViewController {
         ])
     }
 }
+
+//MARK: - Extension for UIImagePickerController
 
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
