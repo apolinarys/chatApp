@@ -8,8 +8,6 @@
 import UIKit
 
 class ProfileView: UIView {
-    
-    let viewController = UIViewController()
 
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
