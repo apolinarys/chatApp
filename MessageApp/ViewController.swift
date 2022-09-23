@@ -9,43 +9,45 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    private let logger = Logger()
+    private lazy var profileView = ProfileView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        logger.logging(funcName: "viewDidLoad")
+        view.addSubview(profileView)
+        view.backgroundColor = .green
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(addProfilePicture))
+        profileView.addPhotoView.isUserInteractionEnabled = true
+        profileView.addPhotoView.addGestureRecognizer(gesture)
+        setupConstraints()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        logger.logging(funcName: "viewWillAppear")
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        logger.logging(funcName: "viewDidAppear")
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        logger.logging(funcName: "viewWillLayoutSubviews")
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        logger.logging(funcName: "viewDidLayoutSubviews")
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        logger.logging(funcName: "viewWillDisappear")
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        logger.logging(funcName: "viewDidDisappear")
-    }
+    @objc func addProfilePicture() {
+        let alert = UIAlertController(title: "Add photo", message: "Please Select an Option", preferredStyle: .actionSheet)
+            
+            alert.addAction(UIAlertAction(title: "Choose from gallery", style: .default , handler:{ (UIAlertAction)in
+                print("User click Approve button")
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Take photo", style: .default , handler:{ (UIAlertAction)in
+                print("User click Edit button")
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler:{ (UIAlertAction)in
+                print("User click Dismiss button")
+            }))
 
+            present(alert, animated: true)
+    }
+    
+    private func setupConstraints() {
+        profileView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            profileView.topAnchor.constraint(equalTo: view.topAnchor),
+            profileView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            profileView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            profileView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
+    }
 }
 
