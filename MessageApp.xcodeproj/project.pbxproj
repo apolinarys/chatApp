@@ -13,6 +13,7 @@
 		FAD2C79428DCA89200B3CE3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAD2C79328DCA89200B3CE3F /* Assets.xcassets */; };
 		FAD2C79728DCA89200B3CE3F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD2C79528DCA89200B3CE3F /* LaunchScreen.storyboard */; };
 		FAD2C7A128DDE46E00B3CE3F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2C7A028DDE46D00B3CE3F /* ProfileView.swift */; };
+		FAD2C7A328E0AB2100B3CE3F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2C7A228E0AB2000B3CE3F /* Logger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		FAD2C79628DCA89200B3CE3F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FAD2C79828DCA89200B3CE3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAD2C7A028DDE46D00B3CE3F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		FAD2C7A228E0AB2000B3CE3F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,12 +61,21 @@
 				FAD2C78A28DCA88B00B3CE3F /* AppDelegate.swift */,
 				FAD2C78E28DCA88B00B3CE3F /* ViewController.swift */,
 				FAD2C7A028DDE46D00B3CE3F /* ProfileView.swift */,
-				FAD2C79028DCA88B00B3CE3F /* Main.storyboard */,
-				FAD2C79328DCA89200B3CE3F /* Assets.xcassets */,
-				FAD2C79528DCA89200B3CE3F /* LaunchScreen.storyboard */,
+				FAD2C7A428E0AB2C00B3CE3F /* Helpers */,
 				FAD2C79828DCA89200B3CE3F /* Info.plist */,
 			);
 			path = MessageApp;
+			sourceTree = "<group>";
+		};
+		FAD2C7A428E0AB2C00B3CE3F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				FAD2C7A228E0AB2000B3CE3F /* Logger.swift */,
+				FAD2C79028DCA88B00B3CE3F /* Main.storyboard */,
+				FAD2C79328DCA89200B3CE3F /* Assets.xcassets */,
+				FAD2C79528DCA89200B3CE3F /* LaunchScreen.storyboard */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,6 +152,7 @@
 				FAD2C7A128DDE46E00B3CE3F /* ProfileView.swift in Sources */,
 				FAD2C78F28DCA88B00B3CE3F /* ViewController.swift in Sources */,
 				FAD2C78B28DCA88B00B3CE3F /* AppDelegate.swift in Sources */,
+				FAD2C7A328E0AB2100B3CE3F /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
