@@ -19,14 +19,15 @@ class ViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        logger.printFrame()
+        logger.printFrame(subject: profileView.editButton)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        view.backgroundColor = .white
         view.addSubview(profileView)
-        logger.printFrame()
+        logger.printFrame(subject: profileView.editButton)
         let gesture = UITapGestureRecognizer(target: self, action: #selector(addProfilePicture))
         profileView.addPhotoView.isUserInteractionEnabled = true
         profileView.addPhotoView.addGestureRecognizer(gesture)
@@ -35,7 +36,7 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        logger.printFrame() // Frames are different because initialization of button and adding subviews (including button) happens after the view appeared
+        logger.printFrame(subject: profileView.editButton) // Frames are different because initialization of button and adding subviews (including button) happens after the view appeared
     }
     
     @objc func addProfilePicture() {

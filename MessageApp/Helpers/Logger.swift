@@ -6,14 +6,15 @@
 //
 
 import Foundation
+import UIKit
 
 struct Logger {
     private let profileView = ProfileView()
     private let choice = true
     
-    func printFrame() {
+    func printFrame(subject: UIButton) {
         if choice {
-            print(profileView.editButton.frame)
+            print(subject.frame)
         }
     }
 }
