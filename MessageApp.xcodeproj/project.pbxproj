@@ -13,6 +13,8 @@
 		FAD2C79728DCA89200B3CE3F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD2C79528DCA89200B3CE3F /* LaunchScreen.storyboard */; };
 		FAD2C7A128DDE46E00B3CE3F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2C7A028DDE46D00B3CE3F /* ProfileView.swift */; };
 		FAD2C7A328E0AB2100B3CE3F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2C7A228E0AB2000B3CE3F /* Logger.swift */; };
+		FAD69DFB28E0B200006208BA /* ConversationListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD69DFA28E0B200006208BA /* ConversationListViewController.swift */; };
+		FAD69DFD28E1BB95006208BA /* ConversationListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD69DFC28E1BB95006208BA /* ConversationListTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		FAD2C79828DCA89200B3CE3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAD2C7A028DDE46D00B3CE3F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		FAD2C7A228E0AB2000B3CE3F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		FAD69DFA28E0B200006208BA /* ConversationListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationListViewController.swift; sourceTree = "<group>"; };
+		FAD69DFC28E1BB95006208BA /* ConversationListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationListTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +62,7 @@
 			children = (
 				FAD2C78A28DCA88B00B3CE3F /* AppDelegate.swift */,
 				FAD2C78E28DCA88B00B3CE3F /* ViewController.swift */,
-				FAD2C7A028DDE46D00B3CE3F /* ProfileView.swift */,
+				FAD69DFE28E1BBA7006208BA /* Views */,
 				FAD2C7A428E0AB2C00B3CE3F /* Helpers */,
 				FAD2C79828DCA89200B3CE3F /* Info.plist */,
 			);
@@ -73,6 +77,24 @@
 				FAD2C79528DCA89200B3CE3F /* LaunchScreen.storyboard */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		FAD69DFE28E1BBA7006208BA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FAD2C7A028DDE46D00B3CE3F /* ProfileView.swift */,
+				FAD69DFF28E1BBB4006208BA /* ConversationList */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FAD69DFF28E1BBB4006208BA /* ConversationList */ = {
+			isa = PBXGroup;
+			children = (
+				FAD69DFA28E0B200006208BA /* ConversationListViewController.swift */,
+				FAD69DFC28E1BB95006208BA /* ConversationListTableViewCell.swift */,
+			);
+			path = ConversationList;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,6 +167,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAD69DFD28E1BB95006208BA /* ConversationListTableViewCell.swift in Sources */,
+				FAD69DFB28E0B200006208BA /* ConversationListViewController.swift in Sources */,
 				FAD2C7A128DDE46E00B3CE3F /* ProfileView.swift in Sources */,
 				FAD2C78F28DCA88B00B3CE3F /* ViewController.swift in Sources */,
 				FAD2C78B28DCA88B00B3CE3F /* AppDelegate.swift in Sources */,
