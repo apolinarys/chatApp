@@ -7,14 +7,6 @@
 
 import UIKit
 
-protocol ConversationCellConfiguration {
-    var name: String {get set}
-    var message: String? {get set}
-    var date: Date? {get set}
-    var online: Bool {get set}
-    var hasUnreadMessages: Bool {get set}
-}
-
 final class ConversationListTableViewCell: UITableViewCell {
     
     static let reuseId = "ConversationListTableViewCell"
@@ -22,7 +14,6 @@ final class ConversationListTableViewCell: UITableViewCell {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Name"
         label.font = .systemFont(ofSize: 20, weight: .medium)
         label.textColor = .black
         return label
@@ -31,7 +22,6 @@ final class ConversationListTableViewCell: UITableViewCell {
     private lazy var messageLabel: UILabel = {
        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Message"
         label.font = .systemFont(ofSize: 15, weight: .regular)
         label.textColor = .gray
         label.numberOfLines = 0
@@ -41,7 +31,6 @@ final class ConversationListTableViewCell: UITableViewCell {
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "date"
         label.font = .systemFont(ofSize: 10, weight: .light)
         return label
     }()
@@ -84,6 +73,32 @@ final class ConversationListTableViewCell: UITableViewCell {
         nameLabel.text = nil
         messageLabel.text = nil
         dateLabel.text = nil
+        self.backgroundColor = .white
+    }
+    
+    func set(data: Cell) {
+        nameLabel.text = data.name
+        messageLabel.text = data.message
+        if data.message == nil {
+            messageLabel.text = "No messages yet"
+        }
+        if let date = data.date {
+            let isDayInToday = Calendar.current.isDateInToday(date)
+            let dateFormatter = DateFormatter()
+            if isDayInToday {
+                dateFormatter.dateFormat = "HH:mm"
+            } else {
+                dateFormatter.dateFormat = "dd.MM"
+                
+            }
+            dateLabel.text = dateFormatter.string(from: date)
+        }
+        if data.hasUnreadMessages {
+            messageLabel.font = .boldSystemFont(ofSize: 15)
+        }
+        if data.online {
+            self.backgroundColor = UIColor(red: 225/255, green: 233/255, blue: 148/255, alpha: 1)
+        }
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
