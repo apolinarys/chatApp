@@ -9,25 +9,25 @@ import UIKit
 
 final class ConversationListViewController: UIViewController {
     
-    private lazy var conversationTableView = UITableView(frame: .zero)
+    private lazy var tableView = UITableView(frame: .zero)
     
     private let conversationCellModel = ConversationCellModel()
     
-    private var onlineCells: [Cell] = []
-    private var offlineCells: [Cell] = []
+    private var onlineCells: [ConversationCell] = []
+    private var offlineCells: [ConversationCell] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        title = "Message App"
+            navigationItem.title = "Message App"
         setupTableView()
         
-        conversationTableView.register(ConversationListTableViewCell.self, forCellReuseIdentifier: ConversationListTableViewCell.reuseId)
-        conversationTableView.delegate = self
-        conversationTableView.dataSource = self
+        tableView.register(ConversationListTableViewCell.self, forCellReuseIdentifier: ConversationListTableViewCell.reuseId)
+        tableView.delegate = self
+        tableView.dataSource = self
         setUpCells()
-        conversationTableView.reloadData()
+        tableView.reloadData()
     }
     
     private func setUpCells() {
@@ -41,14 +41,14 @@ final class ConversationListViewController: UIViewController {
     }
     
     private func setupTableView() {
-        view.addSubview(conversationTableView)
-        conversationTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            conversationTableView.topAnchor.constraint(equalTo: view.topAnchor),
-            conversationTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            conversationTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            conversationTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 }
@@ -75,5 +75,11 @@ extension ConversationListViewController: UITableViewDataSource, UITableViewDele
             cell.set(data: offlineCells[indexPath.row])
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = ConversationViewController()
+        navigationController?.pushViewController(vc, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

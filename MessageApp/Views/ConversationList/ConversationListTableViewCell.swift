@@ -76,7 +76,7 @@ final class ConversationListTableViewCell: UITableViewCell {
         self.backgroundColor = .white
     }
     
-    func set(data: Cell) {
+    func set(data: ConversationCell) {
         nameLabel.text = data.name
         messageLabel.text = data.message
         if data.message == nil {
