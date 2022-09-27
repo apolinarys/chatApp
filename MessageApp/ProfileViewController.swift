@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     
     private lazy var profileView = ProfileView()
     
@@ -72,7 +72,7 @@ final class ViewController: UIViewController {
 
 //MARK: - Extension for UIImagePickerController
 
-extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     private func didChoseGallery() {
         let imagePicker = UIImagePickerController()

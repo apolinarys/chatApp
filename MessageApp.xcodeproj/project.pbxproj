@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FAD2C78B28DCA88B00B3CE3F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2C78A28DCA88B00B3CE3F /* AppDelegate.swift */; };
-		FAD2C78F28DCA88B00B3CE3F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2C78E28DCA88B00B3CE3F /* ViewController.swift */; };
+		FAD2C78F28DCA88B00B3CE3F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2C78E28DCA88B00B3CE3F /* ProfileViewController.swift */; };
 		FAD2C79428DCA89200B3CE3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAD2C79328DCA89200B3CE3F /* Assets.xcassets */; };
 		FAD2C79728DCA89200B3CE3F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD2C79528DCA89200B3CE3F /* LaunchScreen.storyboard */; };
 		FAD2C7A128DDE46E00B3CE3F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2C7A028DDE46D00B3CE3F /* ProfileView.swift */; };
@@ -24,7 +24,7 @@
 /* Begin PBXFileReference section */
 		FAD2C78728DCA88B00B3CE3F /* MessageApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MessageApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAD2C78A28DCA88B00B3CE3F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FAD2C78E28DCA88B00B3CE3F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FAD2C78E28DCA88B00B3CE3F /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FAD2C79328DCA89200B3CE3F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FAD2C79628DCA89200B3CE3F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FAD2C79828DCA89200B3CE3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -69,7 +69,9 @@
 			isa = PBXGroup;
 			children = (
 				FAD2C78A28DCA88B00B3CE3F /* AppDelegate.swift */,
-				FAD2C78E28DCA88B00B3CE3F /* ViewController.swift */,
+				FAD2C78E28DCA88B00B3CE3F /* ProfileViewController.swift */,
+				FAD69DFA28E0B200006208BA /* ConversationListViewController.swift */,
+				FAD69E0328E1F119006208BA /* ConversationViewController.swift */,
 				FAD69DFE28E1BBA7006208BA /* Views */,
 				FAD69E0228E1ED7D006208BA /* Models */,
 				FAD2C7A428E0AB2C00B3CE3F /* Helpers */,
@@ -92,19 +94,10 @@
 			isa = PBXGroup;
 			children = (
 				FAD2C7A028DDE46D00B3CE3F /* ProfileView.swift */,
-				FAD69DFF28E1BBB4006208BA /* ConversationList */,
-				FAD69E0728E1F135006208BA /* Conversation */,
+				FAD69DFC28E1BB95006208BA /* ConversationListTableViewCell.swift */,
+				FAD69E0528E1F131006208BA /* ConversationTableViewCell.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		FAD69DFF28E1BBB4006208BA /* ConversationList */ = {
-			isa = PBXGroup;
-			children = (
-				FAD69DFA28E0B200006208BA /* ConversationListViewController.swift */,
-				FAD69DFC28E1BB95006208BA /* ConversationListTableViewCell.swift */,
-			);
-			path = ConversationList;
 			sourceTree = "<group>";
 		};
 		FAD69E0228E1ED7D006208BA /* Models */ = {
@@ -114,15 +107,6 @@
 				FAD69E0828E2FB03006208BA /* MessageCellModel.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		FAD69E0728E1F135006208BA /* Conversation */ = {
-			isa = PBXGroup;
-			children = (
-				FAD69E0328E1F119006208BA /* ConversationViewController.swift */,
-				FAD69E0528E1F131006208BA /* ConversationTableViewCell.swift */,
-			);
-			path = Conversation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,7 +183,7 @@
 				FAD69DFB28E0B200006208BA /* ConversationListViewController.swift in Sources */,
 				FAD2C7A128DDE46E00B3CE3F /* ProfileView.swift in Sources */,
 				FAD69E0428E1F119006208BA /* ConversationViewController.swift in Sources */,
-				FAD2C78F28DCA88B00B3CE3F /* ViewController.swift in Sources */,
+				FAD2C78F28DCA88B00B3CE3F /* ProfileViewController.swift in Sources */,
 				FAD2C78B28DCA88B00B3CE3F /* AppDelegate.swift in Sources */,
 				FAD69E0128E1CAFE006208BA /* ConversationCellModel.swift in Sources */,
 				FAD69E0928E2FB03006208BA /* MessageCellModel.swift in Sources */,

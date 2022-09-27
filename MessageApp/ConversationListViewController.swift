@@ -11,6 +11,8 @@ final class ConversationListViewController: UIViewController {
     
     private lazy var tableView = UITableView(frame: .zero)
     
+    private let profileView = ProfileView()
+    
     private let conversationCellModel = ConversationCellModel()
     
     private var onlineCells: [ConversationCell] = []
@@ -21,6 +23,9 @@ final class ConversationListViewController: UIViewController {
 
         // Do any additional setup after loading the view.
             navigationItem.title = "Message App"
+        let profileButton = UIBarButtonItem(image: UIImage(systemName: "person.circle"), style: .plain, target: self, action: #selector(showProfile))
+        self.navigationItem.rightBarButtonItem = profileButton
+        
         setupTableView()
         
         tableView.register(ConversationListTableViewCell.self, forCellReuseIdentifier: ConversationListTableViewCell.reuseId)
@@ -28,6 +33,11 @@ final class ConversationListViewController: UIViewController {
         tableView.dataSource = self
         setUpCells()
         tableView.reloadData()
+    }
+    
+    @objc func showProfile() {
+        let profileVC = ProfileViewController()
+        present(profileVC, animated: true)
     }
     
     private func setUpCells() {
@@ -45,6 +55,7 @@ final class ConversationListViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
+            
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
