@@ -9,19 +9,19 @@ import Foundation
 
 protocol MessageCellConfiguration {
     var text: String? {get set}
-    var messageFromMe: Bool {get set}
+    var isIncoming: Bool {get set}
 }
 
 struct MessageCell: MessageCellConfiguration {
     var text: String?
-    var messageFromMe: Bool
+    var isIncoming: Bool
 }
 
 struct MessageCellModel {
     func createCells() -> [MessageCell] {
         let cells = [
-            MessageCell(text: "Text1 from sender", messageFromMe: false),
-            MessageCell(text: "Text1 from receiver", messageFromMe: true)
+            MessageCell(text: "Text1 from sender", isIncoming: false),
+            MessageCell(text: "Text1 from receiver", isIncoming: true)
         ]
         return cells
     }

@@ -9,7 +9,7 @@ import UIKit
 
 final class ConversationListViewController: UIViewController {
     
-    private lazy var tableView = UITableView(frame: .zero)
+    private let tableView = UITableView(frame: .zero)
     
     private let profileView = ProfileView()
     
@@ -23,8 +23,17 @@ final class ConversationListViewController: UIViewController {
 
         // Do any additional setup after loading the view.
             navigationItem.title = "Message App"
-        let profileButton = UIBarButtonItem(image: UIImage(systemName: "person.circle"), style: .plain, target: self, action: #selector(showProfile))
+        let profileButton = UIBarButtonItem(image: UIImage(systemName: "person.circle"),
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(showProfile))
         self.navigationItem.rightBarButtonItem = profileButton
+        
+        let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gear"),
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(showSettings))
+        navigationItem.leftBarButtonItem = settingsButton
         
         setupTableView()
         
@@ -35,17 +44,22 @@ final class ConversationListViewController: UIViewController {
         tableView.reloadData()
     }
     
-    @objc func showProfile() {
+    @objc private func showProfile() {
         let profileVC = ProfileViewController()
         present(profileVC, animated: true)
     }
     
+    @objc private func showSettings() {
+        let settingsVC = ThemesViewController()
+        navigationController?.pushViewController(settingsVC, animated: true)
+    }
+    
     private func setUpCells() {
-        for cell in conversationCellModel.createCells() {
-            if cell.online {
-                onlineCells.append(cell)
+        conversationCellModel.createCells().forEach {
+            if $0.online {
+                onlineCells.append($0)
             } else {
-                offlineCells.append(cell)
+                offlineCells.append($0)
             }
         }
     }
@@ -67,6 +81,7 @@ final class ConversationListViewController: UIViewController {
 //MARK: - UITableViewDataSource, UITableViewDelegate
 
 extension ConversationListViewController: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return onlineCells.count

@@ -72,24 +72,20 @@ final class ProfileView: UIView {
         ])
     }
     
-    
-    
-    private func addSubviews() {
-        addSubview(profileImageView)
-        profileImageView.addSubview(addPhotoView)
-        addPhotoView.addSubview(photoImageView)
-        addSubview(editButton)
-    }
-    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         addSubviews()
         setupConstraints()
     }
     
-   
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func addSubviews() {
+        addSubview(profileImageView)
+        profileImageView.addSubview(addPhotoView)
+        addPhotoView.addSubview(photoImageView)
+        addSubview(editButton)
     }
 }

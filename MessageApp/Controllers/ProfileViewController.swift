@@ -39,20 +39,28 @@ final class ProfileViewController: UIViewController {
         logger.printFrame(subject: profileView.editButton) // Frames are different because initialization of button and adding subviews (including button) happens after the view appeared
     }
     
-    @objc func addProfilePicture() {
-        let alert = UIAlertController(title: "Add photo", message: "Please Select an Option", preferredStyle: .actionSheet)
+    @objc private func addProfilePicture() {
+        let alert = UIAlertController(title: "Add photo",
+                                      message: "Please Select an Option",
+                                      preferredStyle: .actionSheet)
             
-            alert.addAction(UIAlertAction(title: "Choose from gallery", style: .default , handler:{ (UIAlertAction)in
+            alert.addAction(UIAlertAction(title: "Choose from gallery",
+                                          style: .default ,
+                                          handler:{ (UIAlertAction)in
                 print("User click choose from galery button")
                 self.didChoseGallery()
             }))
             
-            alert.addAction(UIAlertAction(title: "Take photo", style: .default , handler:{ (UIAlertAction)in
+            alert.addAction(UIAlertAction(title: "Take photo",
+                                          style: .default ,
+                                          handler:{ (UIAlertAction)in
                 print("User click take photo button")
                 self.didChoseTakePhoto()
             }))
             
-            alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler:{ (UIAlertAction)in
+            alert.addAction(UIAlertAction(title: "Dismiss",
+                                          style: .cancel,
+                                          handler:{ (UIAlertAction)in
                 print("User click Dismiss button")
             }))
 
@@ -90,7 +98,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     
     private func openCamera(imagePicker: UIImagePickerController)
     {
-        if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerController.SourceType.camera))
+        if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera))
         {
             imagePicker.sourceType = UIImagePickerController.SourceType.camera
             imagePicker.allowsEditing = true
@@ -98,8 +106,12 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         }
         else
         {
-            let alert  = UIAlertController(title: "Warning", message: "You don't have camera", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            let alert  = UIAlertController(title: "Warning",
+                                           message: "You don't have camera",
+                                           preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK",
+                                          style: .default,
+                                          handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
     }

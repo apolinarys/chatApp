@@ -40,11 +40,22 @@ final class ConversationTableViewCell: UITableViewCell {
         return imageView
     }()
     
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        addSubviews()
+        setupConstraints()
+    }
+    
     private func addSubviews() {
         contentView.addSubview(messageBubble)
         contentView.addSubview(senderAvatar)
         contentView.addSubview(receiverAvatar)
         messageBubble.addSubview(messageLabel)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupConstraints() {
@@ -71,16 +82,9 @@ final class ConversationTableViewCell: UITableViewCell {
         ])
     }
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        addSubviews()
-        setupConstraints()
-    }
-    
     func set(data: MessageCell) {
         messageLabel.text = data.text
-        if data.messageFromMe {
+        if data.isIncoming {
             senderAvatar.isHidden = true
             receiverAvatar.isHidden = false
             messageBubble.backgroundColor = UIColor(red: 0.863, green: 0.969, blue: 0.773, alpha: 1)
@@ -90,15 +94,4 @@ final class ConversationTableViewCell: UITableViewCell {
             messageBubble.backgroundColor = UIColor(red: 0.875, green: 0.875, blue: 0.875, alpha: 1)
         }
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

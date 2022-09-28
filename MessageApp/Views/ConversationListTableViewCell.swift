@@ -52,12 +52,6 @@ final class ConversationListTableViewCell: UITableViewCell {
         ])
     }
     
-    private func addSubviews() {
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(messageLabel)
-        contentView.addSubview(dateLabel)
-    }
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -67,6 +61,12 @@ final class ConversationListTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func addSubviews() {
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(messageLabel)
+        contentView.addSubview(dateLabel)
     }
     
     override func prepareForReuse() {
@@ -100,11 +100,4 @@ final class ConversationListTableViewCell: UITableViewCell {
             self.backgroundColor = UIColor(red: 225/255, green: 233/255, blue: 148/255, alpha: 1)
         }
     }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

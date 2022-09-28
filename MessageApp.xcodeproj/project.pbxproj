@@ -19,6 +19,8 @@
 		FAD69E0428E1F119006208BA /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD69E0328E1F119006208BA /* ConversationViewController.swift */; };
 		FAD69E0628E1F131006208BA /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD69E0528E1F131006208BA /* ConversationTableViewCell.swift */; };
 		FAD69E0928E2FB03006208BA /* MessageCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD69E0828E2FB03006208BA /* MessageCellModel.swift */; };
+		FAD69E0B28E44B62006208BA /* ThemesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD69E0A28E44B62006208BA /* ThemesViewController.swift */; };
+		FAD69E0E28E44C1D006208BA /* ThemesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD69E0D28E44C1D006208BA /* ThemesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		FAD69E0328E1F119006208BA /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 		FAD69E0528E1F131006208BA /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		FAD69E0828E2FB03006208BA /* MessageCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCellModel.swift; sourceTree = "<group>"; };
+		FAD69E0A28E44B62006208BA /* ThemesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesViewController.swift; sourceTree = "<group>"; };
+		FAD69E0D28E44C1D006208BA /* ThemesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,9 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				FAD2C78A28DCA88B00B3CE3F /* AppDelegate.swift */,
-				FAD2C78E28DCA88B00B3CE3F /* ProfileViewController.swift */,
-				FAD69DFA28E0B200006208BA /* ConversationListViewController.swift */,
-				FAD69E0328E1F119006208BA /* ConversationViewController.swift */,
+				FAD69E0C28E44B6E006208BA /* Controllers */,
 				FAD69DFE28E1BBA7006208BA /* Views */,
 				FAD69E0228E1ED7D006208BA /* Models */,
 				FAD2C7A428E0AB2C00B3CE3F /* Helpers */,
@@ -96,6 +98,7 @@
 				FAD2C7A028DDE46D00B3CE3F /* ProfileView.swift */,
 				FAD69DFC28E1BB95006208BA /* ConversationListTableViewCell.swift */,
 				FAD69E0528E1F131006208BA /* ConversationTableViewCell.swift */,
+				FAD69E0D28E44C1D006208BA /* ThemesView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -107,6 +110,17 @@
 				FAD69E0828E2FB03006208BA /* MessageCellModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		FAD69E0C28E44B6E006208BA /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				FAD2C78E28DCA88B00B3CE3F /* ProfileViewController.swift */,
+				FAD69DFA28E0B200006208BA /* ConversationListViewController.swift */,
+				FAD69E0328E1F119006208BA /* ConversationViewController.swift */,
+				FAD69E0A28E44B62006208BA /* ThemesViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,10 +197,12 @@
 				FAD69DFB28E0B200006208BA /* ConversationListViewController.swift in Sources */,
 				FAD2C7A128DDE46E00B3CE3F /* ProfileView.swift in Sources */,
 				FAD69E0428E1F119006208BA /* ConversationViewController.swift in Sources */,
+				FAD69E0E28E44C1D006208BA /* ThemesView.swift in Sources */,
 				FAD2C78F28DCA88B00B3CE3F /* ProfileViewController.swift in Sources */,
 				FAD2C78B28DCA88B00B3CE3F /* AppDelegate.swift in Sources */,
 				FAD69E0128E1CAFE006208BA /* ConversationCellModel.swift in Sources */,
 				FAD69E0928E2FB03006208BA /* MessageCellModel.swift in Sources */,
+				FAD69E0B28E44B62006208BA /* ThemesViewController.swift in Sources */,
 				FAD2C7A328E0AB2100B3CE3F /* Logger.swift in Sources */,
 				FAD69E0628E1F131006208BA /* ConversationTableViewCell.swift in Sources */,
 			);

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ConversationViewController: UIViewController {
+final class ConversationViewController: UIViewController {
     
     private lazy var tableView = UITableView(frame: .zero)
     
@@ -18,7 +18,6 @@ class ConversationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-        view.backgroundColor = .green
         // Do any additional setup after loading the view.
         
         tableView.register(ConversationTableViewCell.self, forCellReuseIdentifier: ConversationTableViewCell.reuseIdentifier)
@@ -52,6 +51,4 @@ extension ConversationViewController: UITableViewDelegate, UITableViewDataSource
         cell.set(data: cells[indexPath.row])
         return cell
     }
-    
-    
 }
