@@ -9,9 +9,7 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-    private lazy var profileView = ProfileView()
-    
-    private let logger = Logger()
+    private lazy var profileView = ProfileView(frame: .zero, vc: self)
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -19,52 +17,25 @@ final class ProfileViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        logger.printFrame(subject: profileView.editButton)
+        Logger.printFrame(subject: profileView.editButton)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.backgroundColor = .white
-        view.addSubview(profileView)
-        logger.printFrame(subject: profileView.editButton)
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(addProfilePicture))
-        profileView.addPhotoView.isUserInteractionEnabled = true
-        profileView.addPhotoView.addGestureRecognizer(gesture)
+        Logger.printFrame(subject: profileView.editButton)
+        addSubviews()
         setupConstraints()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        logger.printFrame(subject: profileView.editButton) // Frames are different because initialization of button and adding subviews (including button) happens after the view appeared
+        Logger.printFrame(subject: profileView.editButton) // Frames are different because initialization of button and adding subviews (including button) happens after the view appeared
     }
     
-    @objc private func addProfilePicture() {
-        let alert = UIAlertController(title: "Add photo",
-                                      message: "Please Select an Option",
-                                      preferredStyle: .actionSheet)
-            
-            alert.addAction(UIAlertAction(title: "Choose from gallery",
-                                          style: .default ,
-                                          handler:{ (UIAlertAction)in
-                print("User click choose from galery button")
-                self.didChoseGallery()
-            }))
-            
-            alert.addAction(UIAlertAction(title: "Take photo",
-                                          style: .default ,
-                                          handler:{ (UIAlertAction)in
-                print("User click take photo button")
-                self.didChoseTakePhoto()
-            }))
-            
-            alert.addAction(UIAlertAction(title: "Dismiss",
-                                          style: .cancel,
-                                          handler:{ (UIAlertAction)in
-                print("User click Dismiss button")
-            }))
-
-            present(alert, animated: true)
+    private func addSubviews() {
+        view.addSubview(profileView)
     }
     
     private func setupConstraints() {
@@ -81,40 +52,6 @@ final class ProfileViewController: UIViewController {
 //MARK: - Extension for UIImagePickerController
 
 extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    private func didChoseGallery() {
-        let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
-        self.present(imagePicker, animated: true, completion: nil)
-    }
-    
-    private func didChoseTakePhoto() {
-        let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
-        
-        openCamera(imagePicker: imagePicker)
-        self.present(imagePicker, animated: true, completion: nil)
-    }
-    
-    private func openCamera(imagePicker: UIImagePickerController)
-    {
-        if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera))
-        {
-            imagePicker.sourceType = UIImagePickerController.SourceType.camera
-            imagePicker.allowsEditing = true
-            self.present(imagePicker, animated: true, completion: nil)
-        }
-        else
-        {
-            let alert  = UIAlertController(title: "Warning",
-                                           message: "You don't have camera",
-                                           preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK",
-                                          style: .default,
-                                          handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {

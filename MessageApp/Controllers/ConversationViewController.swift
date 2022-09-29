@@ -17,19 +17,20 @@ final class ConversationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableView()
         // Do any additional setup after loading the view.
         
-        tableView.register(ConversationTableViewCell.self, forCellReuseIdentifier: ConversationTableViewCell.reuseIdentifier)
-        tableView.delegate = self
-        tableView.dataSource = self
+        addSubviews()
+        setupConstraints()
+        setupTableView()
         cells = messageCellModel.createCells()
         tableView.reloadData()
-        tableView.separatorStyle = .none
     }
     
-    private func setupTableView() {
+    private func addSubviews() {
         view.addSubview(tableView)
+    }
+
+    private func setupConstraints() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -39,15 +40,24 @@ final class ConversationViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    private func setupTableView() {
+        tableView.register(ConversationTableViewCell.self, forCellReuseIdentifier: String(describing: ConversationTableViewCell.self))
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+    }
 }
 
-extension ConversationViewController: UITableViewDelegate, UITableViewDataSource {
+//MARK: - UITableViewDataSource
+
+extension ConversationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cells.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ConversationTableViewCell.reuseIdentifier) as! ConversationTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ConversationTableViewCell.self)) as? ConversationTableViewCell
+        guard let cell = cell else {return UITableViewCell()}
         cell.set(data: cells[indexPath.row])
         return cell
     }

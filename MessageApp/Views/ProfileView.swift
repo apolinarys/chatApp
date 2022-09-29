@@ -26,6 +26,9 @@ final class ProfileView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor(red: 63/255, green: 120/255, blue: 240/255, alpha: 1)
         view.layer.cornerRadius = 40
+        view.isUserInteractionEnabled = true
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(addProfilePicture))
+        view.addGestureRecognizer(gesture)
         return view
     }()
     
@@ -47,6 +50,19 @@ final class ProfileView: UIView {
         button.layer.cornerRadius = 10
         return button
     }()
+    
+    weak var vc: UIViewController?
+    
+    init(frame: CGRect, vc: UIViewController) {
+        self.vc = vc
+        super.init(frame: .zero)
+        addSubviews()
+        setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
@@ -72,20 +88,15 @@ final class ProfileView: UIView {
         ])
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: .zero)
-        addSubviews()
-        setupConstraints()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     private func addSubviews() {
         addSubview(profileImageView)
         profileImageView.addSubview(addPhotoView)
         addPhotoView.addSubview(photoImageView)
         addSubview(editButton)
+    }
+    
+    @objc private func addProfilePicture() {
+        guard let vc = vc else {return}
+        PresentAlert.presentAlert(vc: vc)
     }
 }

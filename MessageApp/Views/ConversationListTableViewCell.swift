@@ -9,8 +9,6 @@ import UIKit
 
 final class ConversationListTableViewCell: UITableViewCell {
     
-    static let reuseId = "ConversationListTableViewCell"
-    
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false

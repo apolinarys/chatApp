@@ -11,37 +11,41 @@ final class ConversationListViewController: UIViewController {
     
     private let tableView = UITableView(frame: .zero)
     
-    private let profileView = ProfileView()
+    private lazy var profileView = ProfileView(frame: .zero, vc: self)
     
     private let conversationCellModel = ConversationCellModel()
+    
+    private lazy var profileButton = UIBarButtonItem(image: UIImage(systemName: "person.circle"),
+                                        style: .plain,
+                                        target: self,
+                                        action: #selector(showProfile))
+    
+    
+    private lazy var settingsButton = UIBarButtonItem(image: UIImage(systemName: "gear"),
+                                        style: .plain,
+                                        target: self,
+                                        action: #selector(showSettings))
     
     private var onlineCells: [ConversationCell] = []
     private var offlineCells: [ConversationCell] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-            navigationItem.title = "Message App"
-        let profileButton = UIBarButtonItem(image: UIImage(systemName: "person.circle"),
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(showProfile))
-        self.navigationItem.rightBarButtonItem = profileButton
         
-        let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gear"),
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(showSettings))
+        navigationItem.title = "Message App"
+        navigationItem.rightBarButtonItem = profileButton
         navigationItem.leftBarButtonItem = settingsButton
         
+        addSubviews()
+        setupConstraints()
         setupTableView()
-        
-        tableView.register(ConversationListTableViewCell.self, forCellReuseIdentifier: ConversationListTableViewCell.reuseId)
-        tableView.delegate = self
-        tableView.dataSource = self
         setUpCells()
         tableView.reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        navigationController?.navigationBar.tintColor = .gray
     }
     
     @objc private func showProfile() {
@@ -64,8 +68,17 @@ final class ConversationListViewController: UIViewController {
         }
     }
     
-    private func setupTableView() {
+    private func addSubviews() {
         view.addSubview(tableView)
+    }
+    
+    private func setupTableView() {
+        tableView.register(ConversationListTableViewCell.self, forCellReuseIdentifier: String(describing: ConversationListTableViewCell.self))
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
+    private func setupConstraints() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -78,9 +91,9 @@ final class ConversationListViewController: UIViewController {
     }
 }
 
-//MARK: - UITableViewDataSource, UITableViewDelegate
+//MARK: - UITableViewDataSource
 
-extension ConversationListViewController: UITableViewDataSource, UITableViewDelegate {
+extension ConversationListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
@@ -94,7 +107,8 @@ extension ConversationListViewController: UITableViewDataSource, UITableViewDele
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ConversationListTableViewCell.reuseId) as! ConversationListTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ConversationListTableViewCell.self)) as? ConversationListTableViewCell
+        guard let cell = cell else {return UITableViewCell()}
         if indexPath.section == 0 {
             cell.set(data: onlineCells[indexPath.row])
         } else {
@@ -102,6 +116,11 @@ extension ConversationListViewController: UITableViewDataSource, UITableViewDele
         }
         return cell
     }
+}
+
+//MARK: - UITableViewDelegate
+
+extension ConversationListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = ConversationViewController()

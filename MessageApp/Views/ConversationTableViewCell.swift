@@ -9,8 +9,6 @@ import UIKit
 
 final class ConversationTableViewCell: UITableViewCell {
     
-    static let reuseIdentifier = "ConversationTableViewCell"
-    
     private lazy var messageBubble: UIView = {
        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false

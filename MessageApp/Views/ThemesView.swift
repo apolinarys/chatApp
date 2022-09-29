@@ -21,7 +21,7 @@ final class ThemesView: UIStackView {
         button.layer.cornerRadius = 20
         button.clipsToBounds = true
         button.backgroundColor = .white
-        button.addTarget(self, action: #selector(tap), for: .touchUpInside)
+        button.addTarget(self, action: #selector(classicTapped), for: .touchUpInside)
         return button
     }()
     
@@ -29,9 +29,9 @@ final class ThemesView: UIStackView {
        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 15
-        view.backgroundColor = .gray
+        view.backgroundColor = UIColor(red: 223/255, green: 223/255, blue: 223/255, alpha: 1)
         view.isUserInteractionEnabled = true
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(classicTapped)))
         return view
     }()
     
@@ -39,9 +39,9 @@ final class ThemesView: UIStackView {
        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 15
-        view.backgroundColor = .gray
+        view.backgroundColor = UIColor(red: 220/255, green: 248/255, blue: 197/255, alpha: 1)
         view.isUserInteractionEnabled = true
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(classicTapped)))
         return view
     }()
     
@@ -49,8 +49,10 @@ final class ThemesView: UIStackView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Classic"
+        label.textColor = .white
         label.font = .systemFont(ofSize: 15, weight: .heavy)
         label.contentMode = .center
+        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(classicTapped)))
         return label
     }()
     
@@ -66,7 +68,7 @@ final class ThemesView: UIStackView {
         button.layer.cornerRadius = 20
         button.clipsToBounds = true
         button.backgroundColor = .white
-        button.addTarget(self, action: #selector(tap), for: .touchUpInside)
+        button.addTarget(self, action: #selector(dayTapped), for: .touchUpInside)
         return button
     }()
     
@@ -74,9 +76,9 @@ final class ThemesView: UIStackView {
         let view = UIView()
          view.translatesAutoresizingMaskIntoConstraints = false
          view.layer.cornerRadius = 15
-         view.backgroundColor = .gray
+         view.backgroundColor = UIColor(red: 236/255, green: 236/255, blue: 238/255, alpha: 1)
          view.isUserInteractionEnabled = true
-         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
+         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dayTapped)))
          return view
     }()
     
@@ -84,9 +86,9 @@ final class ThemesView: UIStackView {
         let view = UIView()
          view.translatesAutoresizingMaskIntoConstraints = false
          view.layer.cornerRadius = 15
-         view.backgroundColor = .gray
+         view.backgroundColor = UIColor(red: 70/255, green: 135/255, blue: 249/255, alpha: 1)
          view.isUserInteractionEnabled = true
-         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
+         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dayTapped)))
          return view
     }()
     
@@ -94,8 +96,10 @@ final class ThemesView: UIStackView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Day"
+        label.textColor = .white
         label.font = .systemFont(ofSize: 15, weight: .heavy)
         label.contentMode = .center
+        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dayTapped)))
         return label
     }()
     
@@ -110,8 +114,8 @@ final class ThemesView: UIStackView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 20
         button.clipsToBounds = true
-        button.backgroundColor = .white
-        button.addTarget(self, action: #selector(tap), for: .touchUpInside)
+        button.backgroundColor = UIColor(red: 6/255, green: 6/255, blue: 6/255, alpha: 1)
+        button.addTarget(self, action: #selector(nightTapped), for: .touchUpInside)
         return button
     }()
     
@@ -119,9 +123,9 @@ final class ThemesView: UIStackView {
         let view = UIView()
          view.translatesAutoresizingMaskIntoConstraints = false
          view.layer.cornerRadius = 15
-         view.backgroundColor = .gray
+         view.backgroundColor = UIColor(red: 46/255, green: 46/255, blue: 46/255, alpha: 1)
          view.isUserInteractionEnabled = true
-         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
+         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nightTapped)))
          return view
     }()
     
@@ -129,9 +133,9 @@ final class ThemesView: UIStackView {
         let view = UIView()
          view.translatesAutoresizingMaskIntoConstraints = false
          view.layer.cornerRadius = 15
-         view.backgroundColor = .gray
+         view.backgroundColor = UIColor(red: 92/255, green: 92/255, blue: 92/255, alpha: 1)
          view.isUserInteractionEnabled = true
-         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
+         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nightTapped)))
          return view
     }()
     
@@ -139,14 +143,15 @@ final class ThemesView: UIStackView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Night"
+        label.textColor = .white
         label.font = .systemFont(ofSize: 15, weight: .heavy)
         label.contentMode = .center
+        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nightTapped)))
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .green
         self.axis = .vertical
         self.alignment = .fill
         self.distribution = .fillEqually
@@ -158,8 +163,16 @@ final class ThemesView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func tap() {
+    @objc private func classicTapped() {
         print("tap")
+    }
+    
+    @objc private func dayTapped() {
+        
+    }
+    
+    @objc private func nightTapped() {
+        
     }
     
     private func addSubviews() {
