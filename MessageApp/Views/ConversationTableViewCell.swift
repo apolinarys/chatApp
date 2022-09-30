@@ -9,6 +9,8 @@ import UIKit
 
 final class ConversationTableViewCell: UITableViewCell {
     
+    let theme = ThemeManager.currentTheme()
+    
     private lazy var messageBubble: UIView = {
        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -24,20 +26,6 @@ final class ConversationTableViewCell: UITableViewCell {
         return label
     }()
     
-    private lazy var senderAvatar: UIImageView = {
-       let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "person.crop.circle.fill")
-        return imageView
-    }()
-    
-    private lazy var receiverAvatar: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "person.crop.circle")
-        return imageView
-    }()
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -47,8 +35,6 @@ final class ConversationTableViewCell: UITableViewCell {
     
     private func addSubviews() {
         contentView.addSubview(messageBubble)
-        contentView.addSubview(senderAvatar)
-        contentView.addSubview(receiverAvatar)
         messageBubble.addSubview(messageLabel)
     }
     
@@ -60,36 +46,28 @@ final class ConversationTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             messageBubble.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             messageBubble.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            messageBubble.leadingAnchor.constraint(equalTo: senderAvatar.trailingAnchor, constant: 8),
-            messageBubble.trailingAnchor.constraint(equalTo: receiverAvatar.leadingAnchor, constant: -8),
+            messageBubble.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.66),
             
             messageLabel.topAnchor.constraint(equalTo: messageBubble.topAnchor, constant: 8),
             messageLabel.bottomAnchor.constraint(equalTo: messageBubble.bottomAnchor, constant: -8),
             messageLabel.leadingAnchor.constraint(equalTo: messageBubble.leadingAnchor, constant: 8),
             messageLabel.trailingAnchor.constraint(equalTo: messageBubble.trailingAnchor, constant: -8),
-            
-            senderAvatar.heightAnchor.constraint(equalToConstant: 50),
-            senderAvatar.widthAnchor.constraint(equalTo: senderAvatar.heightAnchor),
-            senderAvatar.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            senderAvatar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            
-            receiverAvatar.heightAnchor.constraint(equalToConstant: 50),
-            receiverAvatar.widthAnchor.constraint(equalTo: receiverAvatar.heightAnchor),
-            receiverAvatar.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            receiverAvatar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)
         ])
     }
     
     func set(data: MessageCell) {
-        messageLabel.text = data.text
         if data.isIncoming {
-            senderAvatar.isHidden = true
-            receiverAvatar.isHidden = false
-            messageBubble.backgroundColor = UIColor(red: 0.863, green: 0.969, blue: 0.773, alpha: 1)
+            messageBubble.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8).isActive = true
+            messageBubble.backgroundColor = theme.incomingMessageColor
         } else {
-            receiverAvatar.isHidden = true
-            senderAvatar.isHidden = false
-            messageBubble.backgroundColor = UIColor(red: 0.875, green: 0.875, blue: 0.875, alpha: 1)
+            messageBubble.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8).isActive = true
+            messageBubble.backgroundColor = theme.outgoingMessageColor
         }
+        messageLabel.text = data.text
+    }
+    
+    override func prepareForReuse() {
+        messageBubble.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8).isActive = false
+        messageBubble.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8).isActive = false
     }
 }

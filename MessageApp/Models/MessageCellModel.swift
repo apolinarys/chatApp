@@ -20,8 +20,8 @@ struct MessageCell: MessageCellConfiguration {
 struct MessageCellModel {
     func createCells() -> [MessageCell] {
         let cells = [
-            MessageCell(text: "Text1 from sender", isIncoming: false),
-            MessageCell(text: "Text1 from receiver", isIncoming: true)
+            MessageCell(text: "Text1 from sender", isIncoming: true),
+            MessageCell(text: "Text1 from receiver", isIncoming: false)
         ]
         return cells
     }

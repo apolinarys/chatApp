@@ -12,16 +12,14 @@ final class ConversationListTableViewCell: UITableViewCell {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 20, weight: .medium)
-        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.medium)
         return label
     }()
     
     private lazy var messageLabel: UILabel = {
        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 15, weight: .regular)
-        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
         label.numberOfLines = 0
         return label
     }()
@@ -29,7 +27,7 @@ final class ConversationListTableViewCell: UITableViewCell {
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 10, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.light)
         return label
     }()
     
@@ -52,7 +50,6 @@ final class ConversationListTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         addSubviews()
         setupConstraints()
     }
@@ -71,15 +68,19 @@ final class ConversationListTableViewCell: UITableViewCell {
         nameLabel.text = nil
         messageLabel.text = nil
         dateLabel.text = nil
-        self.backgroundColor = .white
+        messageLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
     }
     
-    func set(data: ConversationCell) {
+    func set(data: ConversationCell, theme: Theme) {
         nameLabel.text = data.name
         messageLabel.text = data.message
         if data.message == nil {
             messageLabel.text = "No messages yet"
         }
+        messageLabel.textColor = theme.textColor
+        dateLabel.textColor = theme.textColor
+        nameLabel.textColor = theme.textColor
+        self.backgroundColor = theme.mainColor
         if let date = data.date {
             let isDayInToday = Calendar.current.isDateInToday(date)
             let dateFormatter = DateFormatter()
@@ -92,10 +93,10 @@ final class ConversationListTableViewCell: UITableViewCell {
             dateLabel.text = dateFormatter.string(from: date)
         }
         if data.hasUnreadMessages {
-            messageLabel.font = .boldSystemFont(ofSize: 15)
+            messageLabel.font = .systemFont(ofSize: 15, weight: UIFont.Weight.heavy)
         }
         if data.online {
-            self.backgroundColor = UIColor(red: 225/255, green: 233/255, blue: 148/255, alpha: 1)
+            self.backgroundColor = theme.outgoingMessageColor
         }
     }
 }

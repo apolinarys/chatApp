@@ -7,7 +7,17 @@
 
 import UIKit
 
+protocol ThemeViewDelegate {
+    func updateTheme()
+}
+
 final class ThemesView: UIStackView {
+    
+    static var delegate: ThemeViewDelegate? = nil
+    
+    private let borderColor = CGColor(red: 45/255, green: 113/255, blue: 239/255, alpha: 1)
+    
+    private let conversationVC = ConversationListViewController()
     
     private lazy var classicView: UIView = {
         let view = UIView()
@@ -20,8 +30,9 @@ final class ThemesView: UIStackView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 20
         button.clipsToBounds = true
-        button.backgroundColor = .white
+        button.backgroundColor = UIColor.white
         button.addTarget(self, action: #selector(classicTapped), for: .touchUpInside)
+        button.layer.borderColor = borderColor
         return button
     }()
     
@@ -49,9 +60,10 @@ final class ThemesView: UIStackView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Classic"
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 15, weight: .heavy)
+        label.textColor = UIColor.white
+        label.font = UIFont.systemFont(ofSize: 15, weight: .heavy)
         label.contentMode = .center
+        label.isUserInteractionEnabled = true
         label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(classicTapped)))
         return label
     }()
@@ -67,8 +79,9 @@ final class ThemesView: UIStackView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 20
         button.clipsToBounds = true
-        button.backgroundColor = .white
+        button.backgroundColor = UIColor.white
         button.addTarget(self, action: #selector(dayTapped), for: .touchUpInside)
+        button.layer.borderColor = borderColor
         return button
     }()
     
@@ -96,9 +109,10 @@ final class ThemesView: UIStackView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Day"
-        label.textColor = .white
+        label.textColor = UIColor.white
         label.font = .systemFont(ofSize: 15, weight: .heavy)
         label.contentMode = .center
+        label.isUserInteractionEnabled = true
         label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dayTapped)))
         return label
     }()
@@ -116,6 +130,7 @@ final class ThemesView: UIStackView {
         button.clipsToBounds = true
         button.backgroundColor = UIColor(red: 6/255, green: 6/255, blue: 6/255, alpha: 1)
         button.addTarget(self, action: #selector(nightTapped), for: .touchUpInside)
+        button.layer.borderColor = borderColor
         return button
     }()
     
@@ -146,6 +161,7 @@ final class ThemesView: UIStackView {
         label.textColor = .white
         label.font = .systemFont(ofSize: 15, weight: .heavy)
         label.contentMode = .center
+        label.isUserInteractionEnabled = true
         label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nightTapped)))
         return label
     }()
@@ -157,6 +173,7 @@ final class ThemesView: UIStackView {
         self.distribution = .fillEqually
         addSubviews()
         setupConstraints()
+        setupBorder()
     }
     
     required init(coder: NSCoder) {
@@ -164,15 +181,45 @@ final class ThemesView: UIStackView {
     }
     
     @objc private func classicTapped() {
-        print("tap")
+        classicButton.layer.borderWidth = 4
+        
+        dayButton.layer.borderWidth = 0
+        nightButton.layer.borderWidth = 0
+        
+        ThemeManager.applyTheme(theme: Theme.Classic)
+        ThemesView.delegate?.updateTheme()
     }
     
     @objc private func dayTapped() {
+        dayButton.layer.borderWidth = 4
         
+        classicButton.layer.borderWidth = 0
+        nightButton.layer.borderWidth = 0
+        
+        ThemeManager.applyTheme(theme: Theme.Day)
+        ThemesView.delegate?.updateTheme()
     }
     
     @objc private func nightTapped() {
+        nightButton.layer.borderWidth = 4
         
+        classicButton.layer.borderWidth = 0
+        dayButton.layer.borderWidth = 0
+        
+        ThemeManager.applyTheme(theme: Theme.Night)
+        ThemesView.delegate?.updateTheme()
+    }
+    
+    private func setupBorder() {
+        let theme = ThemeManager.currentTheme()
+        switch theme {
+        case .Classic:
+            classicButton.layer.borderWidth = 4
+        case .Day:
+            dayButton.layer.borderWidth = 4
+        case .Night:
+            nightButton.layer.borderWidth = 4
+        }
     }
     
     private func addSubviews() {

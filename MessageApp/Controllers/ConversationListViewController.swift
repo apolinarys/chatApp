@@ -9,7 +9,9 @@ import UIKit
 
 final class ConversationListViewController: UIViewController {
     
-    private let tableView = UITableView(frame: .zero)
+    let tableView = UITableView(frame: .zero)
+    
+    var theme = ThemeManager.currentTheme()
     
     private lazy var profileView = ProfileView(frame: .zero, vc: self)
     
@@ -36,6 +38,7 @@ final class ConversationListViewController: UIViewController {
         navigationItem.rightBarButtonItem = profileButton
         navigationItem.leftBarButtonItem = settingsButton
         
+        ThemesView.delegate = self
         addSubviews()
         setupConstraints()
         setupTableView()
@@ -46,6 +49,7 @@ final class ConversationListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
         navigationController?.navigationBar.tintColor = .gray
+        tableView.reloadData()
     }
     
     @objc private func showProfile() {
@@ -110,9 +114,9 @@ extension ConversationListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ConversationListTableViewCell.self)) as? ConversationListTableViewCell
         guard let cell = cell else {return UITableViewCell()}
         if indexPath.section == 0 {
-            cell.set(data: onlineCells[indexPath.row])
+            cell.set(data: onlineCells[indexPath.row], theme: theme)
         } else {
-            cell.set(data: offlineCells[indexPath.row])
+            cell.set(data: offlineCells[indexPath.row], theme: theme)
         }
         return cell
     }
@@ -126,5 +130,12 @@ extension ConversationListViewController: UITableViewDelegate {
         let vc = ConversationViewController()
         navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension ConversationListViewController: ThemeViewDelegate {
+    func updateTheme() {
+        theme = ThemeManager.currentTheme()
+        tableView.reloadData()
     }
 }

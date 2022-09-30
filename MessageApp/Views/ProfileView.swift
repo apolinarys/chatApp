@@ -8,6 +8,8 @@
 import UIKit
 
 final class ProfileView: UIView {
+    
+    private let theme = ThemeManager.currentTheme()
 
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -43,9 +45,9 @@ final class ProfileView: UIView {
     lazy var editButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .white
+        button.backgroundColor = theme.incomingMessageColor
         button.setTitle("Edit", for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(theme.textColor, for: .normal)
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 10
         return button
@@ -56,6 +58,7 @@ final class ProfileView: UIView {
     init(frame: CGRect, vc: UIViewController) {
         self.vc = vc
         super.init(frame: .zero)
+        self.backgroundColor = theme.mainColor
         addSubviews()
         setupConstraints()
     }
