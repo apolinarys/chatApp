@@ -55,8 +55,17 @@ enum Theme: Int {
     }
 }
 
-struct ThemeManager {
+struct ThemeManager: ThemesPickerDelegate {
+    
     static let SelectedThemeKey = "SelectedTheme"
+    
+    func applyTheme(theme: Theme) {
+        UserDefaults.standard.setValue(theme.rawValue, forKey: ThemeManager.SelectedThemeKey)
+    }
+    
+    init() {
+        ThemesView.themeDelegate = self
+    }
     
     static func currentTheme() -> Theme {
         let storedTheme = UserDefaults.standard.integer(forKey: SelectedThemeKey)

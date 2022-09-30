@@ -11,13 +11,19 @@ protocol ThemeViewDelegate {
     func updateTheme()
 }
 
+protocol ThemesPickerDelegate {
+    func applyTheme(theme: Theme)
+}
+
 final class ThemesView: UIStackView {
     
-    static var delegate: ThemeViewDelegate? = nil
+    static var delegate: ThemeViewDelegate?
+    
+    static var themeDelegate: ThemesPickerDelegate? // retain cycle may have appeared if this property wasn't static and we would create a link to this object in ThemeManager
+    
+    let themeManager = ThemeManager()
     
     private let borderColor = CGColor(red: 45/255, green: 113/255, blue: 239/255, alpha: 1)
-    
-    private let conversationVC = ConversationListViewController()
     
     private lazy var classicView: UIView = {
         let view = UIView()
@@ -186,7 +192,9 @@ final class ThemesView: UIStackView {
         dayButton.layer.borderWidth = 0
         nightButton.layer.borderWidth = 0
         
-        ThemeManager.applyTheme(theme: Theme.Classic)
+        
+        ThemesView.themeDelegate?.applyTheme(theme: Theme.Classic)
+//        ThemeManager.applyTheme(theme: Theme.Classic)
         ThemesView.delegate?.updateTheme()
     }
     
@@ -196,7 +204,8 @@ final class ThemesView: UIStackView {
         classicButton.layer.borderWidth = 0
         nightButton.layer.borderWidth = 0
         
-        ThemeManager.applyTheme(theme: Theme.Day)
+        ThemesView.themeDelegate?.applyTheme(theme: Theme.Day)
+//        ThemeManager.applyTheme(theme: Theme.Day)
         ThemesView.delegate?.updateTheme()
     }
     
@@ -206,7 +215,8 @@ final class ThemesView: UIStackView {
         classicButton.layer.borderWidth = 0
         dayButton.layer.borderWidth = 0
         
-        ThemeManager.applyTheme(theme: Theme.Night)
+        ThemesView.themeDelegate?.applyTheme(theme: Theme.Night)
+//        ThemeManager.applyTheme(theme: Theme.Night)
         ThemesView.delegate?.updateTheme()
     }
     
