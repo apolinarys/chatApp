@@ -9,7 +9,13 @@ import UIKit
 
 final class ThemesViewController: UIViewController {
     
-    private lazy var themesView = ThemesView()
+    static var delegate: ThemeViewDelegate?
+    
+    private lazy var themesView = ThemesView(frame: CGRect.zero)
+    
+    static var theme: Theme? = nil
+    
+    private let themeManager = ThemeManager.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,12 +30,21 @@ final class ThemesViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    @objc private func back() {
+        navigationController?.popViewController(animated: true)
+        guard let theme = ThemesViewController.theme else {return}
+        themeManager.applyTheme(theme: theme)
+        ThemesViewController.delegate?.updateTheme()
+    }
+    
     private func setupNavigationController() {
         navigationItem.title = "Settings"
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.tintColor = UIColor.white
+        let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(back))
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancel))
         navigationItem.rightBarButtonItem = cancelButton
+        navigationItem.leftBarButtonItem = backButton
     }
     
     private func addSubviews() {

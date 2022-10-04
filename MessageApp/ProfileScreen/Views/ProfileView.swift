@@ -15,7 +15,7 @@ final class ProfileView: UIView {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "photo")
         imageView.tintColor = .darkGray
-        imageView.backgroundColor = .lightGray
+        imageView.backgroundColor = UIColor.lightGray
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 40
         imageView.clipsToBounds = true
@@ -38,16 +38,16 @@ final class ProfileView: UIView {
        let imageView = UIImageView()
         imageView.image = UIImage(systemName: "camera.fill")
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.tintColor = .white
+        imageView.tintColor = UIColor.white
         return imageView
     }()
     
-    lazy var editButton: UIButton = {
+    private lazy var editButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = theme.incomingMessageColor
-        button.setTitle("Edit", for: .normal)
-        button.setTitleColor(theme.textColor, for: .normal)
+        button.setTitle("Edit", for: UIControl.State.normal)
+        button.setTitleColor(theme.textColor, for: UIControl.State.normal)
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 10
         return button
@@ -57,7 +57,7 @@ final class ProfileView: UIView {
     
     init(frame: CGRect, vc: UIViewController) {
         self.vc = vc
-        super.init(frame: .zero)
+        super.init(frame: CGRect.zero)
         self.backgroundColor = theme.mainColor
         addSubviews()
         setupConstraints()
@@ -100,6 +100,7 @@ final class ProfileView: UIView {
     
     @objc private func addProfilePicture() {
         guard let vc = vc else {return}
-        PresentAlert.presentAlert(vc: vc)
+        let allertControllerPresenter = AllertControllerPresenter()
+        allertControllerPresenter.presentAlert(vc: vc)
     }
 }

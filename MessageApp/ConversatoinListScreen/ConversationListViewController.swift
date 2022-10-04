@@ -9,24 +9,26 @@ import UIKit
 
 final class ConversationListViewController: UIViewController {
     
-    let tableView = UITableView(frame: .zero)
+    let tableView = UITableView(frame: CGRect.zero)
     
     var theme = ThemeManager.currentTheme()
     
-    private lazy var profileView = ProfileView(frame: .zero, vc: self)
+    private lazy var profileView = ProfileView(frame: CGRect.zero, vc: self)
     
     private let conversationCellModel = ConversationCellModel()
     
-    private lazy var profileButton = UIBarButtonItem(image: UIImage(systemName: "person.circle"),
-                                        style: .plain,
-                                        target: self,
-                                        action: #selector(showProfile))
+    private lazy var profileButton = UIBarButtonItem(
+        image: UIImage(systemName: "person.circle"),
+        style: UIBarButtonItem.Style.plain,
+        target: self,
+        action: #selector(showProfile))
     
     
-    private lazy var settingsButton = UIBarButtonItem(image: UIImage(systemName: "gear"),
-                                        style: .plain,
-                                        target: self,
-                                        action: #selector(showSettings))
+    private lazy var settingsButton = UIBarButtonItem(
+        image: UIImage(systemName: "gear"),
+        style: UIBarButtonItem.Style.plain,
+        target: self,
+        action: #selector(showSettings))
     
     private var onlineCells: [ConversationCell] = []
     private var offlineCells: [ConversationCell] = []
@@ -34,21 +36,15 @@ final class ConversationListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = "Message App"
-        navigationItem.rightBarButtonItem = profileButton
-        navigationItem.leftBarButtonItem = settingsButton
-        
-        ThemesView.delegate = self
+        setUpNavigationBar()
+        ThemesViewController.delegate = self
         addSubviews()
-        setupConstraints()
-        setupTableView()
         setUpCells()
-        tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-        navigationController?.navigationBar.tintColor = .gray
+        navigationController?.navigationBar.tintColor = UIColor.gray
         tableView.reloadData()
     }
     
@@ -63,6 +59,8 @@ final class ConversationListViewController: UIViewController {
     }
     
     private func setUpCells() {
+        setupConstraints()
+        setupTableView()
         conversationCellModel.createCells().forEach {
             if $0.online {
                 onlineCells.append($0)
@@ -70,6 +68,7 @@ final class ConversationListViewController: UIViewController {
                 offlineCells.append($0)
             }
         }
+        tableView.reloadData()
     }
     
     private func addSubviews() {
@@ -92,6 +91,12 @@ final class ConversationListViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    private func setUpNavigationBar() {
+        navigationItem.title = "Message App"
+        navigationItem.rightBarButtonItem = profileButton
+        navigationItem.leftBarButtonItem = settingsButton
     }
 }
 

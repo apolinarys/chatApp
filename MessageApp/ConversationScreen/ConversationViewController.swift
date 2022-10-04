@@ -9,7 +9,7 @@ import UIKit
 
 final class ConversationViewController: UIViewController {
     
-    private lazy var tableView = UITableView(frame: .zero)
+    private lazy var tableView = UITableView(frame: CGRect.zero)
     
     private var cells: [MessageCell] = []
     
@@ -17,8 +17,6 @@ final class ConversationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
         addSubviews()
         setupConstraints()
         setupTableView()
@@ -44,7 +42,7 @@ final class ConversationViewController: UIViewController {
     private func setupTableView() {
         tableView.register(ConversationTableViewCell.self, forCellReuseIdentifier: String(describing: ConversationTableViewCell.self))
         tableView.dataSource = self
-        tableView.separatorStyle = .none
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
     }
 }
 
