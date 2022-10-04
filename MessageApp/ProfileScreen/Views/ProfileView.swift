@@ -10,7 +10,12 @@ import UIKit
 final class ProfileView: UIView, UITextFieldDelegate {
     
     private let theme = ThemeManager.currentTheme()
-    private let buttonHeight: CGFloat = 50
+    
+    private lazy var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -94,6 +99,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         button.setTitleColor(theme.textColor, for: .normal)
         button.layer.cornerRadius = 10
         button.isUserInteractionEnabled = false
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -104,6 +110,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         button.setTitleColor(theme.textColor, for: .normal)
         button.layer.cornerRadius = 10
         button.isUserInteractionEnabled = false
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -114,6 +121,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         button.setTitleColor(theme.textColor, for: .normal)
         button.layer.cornerRadius = 10
         button.isUserInteractionEnabled = false
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -126,6 +134,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         addSubviews()
         setupConstraints()
         hideButtons()
+        createDismissGesture()
     }
     
     required init?(coder: NSCoder) {
@@ -134,9 +143,14 @@ final class ProfileView: UIView, UITextFieldDelegate {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 60),
-            profileImageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.6),
-            profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            scrollView.topAnchor.constraint(equalTo: self.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            
+            profileImageView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 60),
+            profileImageView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 0.6),
+            profileImageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             profileImageView.heightAnchor.constraint(equalTo: profileImageView.widthAnchor),
             
             addPhotoView.bottomAnchor.constraint(equalTo: profileImageView.bottomAnchor),
@@ -150,46 +164,62 @@ final class ProfileView: UIView, UITextFieldDelegate {
             photoImageView.widthAnchor.constraint(equalTo: photoImageView.heightAnchor),
             
             nameTextField.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 10),
-            nameTextField.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            nameTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             
             bioTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 10),
-            bioTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
+            bioTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 8),
             bioTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
+            bioTextField.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             
             locationTextField.topAnchor.constraint(equalTo: bioTextField.bottomAnchor, constant: 10),
-            locationTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
+            locationTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 8),
             locationTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
             
-            editButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -60),
+            editButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
             editButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
             editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
-            editButton.heightAnchor.constraint(equalToConstant: buttonHeight),
+            editButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
             
             saveGCDButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
-            saveGCDButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.4),
-            saveGCDButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -60),
+            saveGCDButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.46),
+            saveGCDButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            saveGCDButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
             
             saveOperationsButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
-            saveOperationsButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.4),
-            saveOperationsButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -60),
+            saveOperationsButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.46),
+            saveOperationsButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            saveOperationsButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
             
             cancelButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
             cancelButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
             cancelButton.bottomAnchor.constraint(equalTo: saveGCDButton.topAnchor, constant: -8),
+            cancelButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08)
         ])
     }
     
     private func addSubviews() {
-        addSubview(profileImageView)
+        addSubview(scrollView)
+        scrollView.addSubview(profileImageView)
         profileImageView.addSubview(addPhotoView)
         addPhotoView.addSubview(photoImageView)
         addSubview(editButton)
-        addSubview(nameTextField)
-        addSubview(bioTextField)
-        addSubview(locationTextField)
+        scrollView.addSubview(nameTextField)
+        scrollView.addSubview(bioTextField)
+        scrollView.addSubview(locationTextField)
         addSubview(saveGCDButton)
         addSubview(saveOperationsButton)
         addSubview(cancelButton)
+    }
+    
+    private func createDismissGesture() {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.addGestureRecognizer(gesture)
+    }
+    
+    @objc private func dismissKeyboard() {
+        nameTextField.resignFirstResponder()
+        locationTextField.resignFirstResponder()
+        bioTextField.resignFirstResponder()
     }
     
     @objc private func addProfilePicture() {
@@ -207,6 +237,27 @@ final class ProfileView: UIView, UITextFieldDelegate {
         saveGCDButton.isHidden = false
         saveOperationsButton.isHidden = false
         editButton.isHidden = true
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        var textField = nameTextField
+        if bioTextField.isFirstResponder {
+            textField = bioTextField
+        } else if locationTextField.isFirstResponder {
+            textField = locationTextField
+        }
+        let userInfo = notification.userInfo!
+        let keyboardFrame: CGRect = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+        let inset = textField.frame.maxY - keyboardFrame.size.height
+        scrollView.contentOffset = CGPoint(x: 0, y: inset)
+        
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentOffset = CGPoint(x: 0, y: 0)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
