@@ -7,29 +7,29 @@
 
 import UIKit
 
-struct PresentAlert {
+struct AllertControllerPresenter {
     
-    static func presentAlert(vc: UIViewController) {
+    func presentAlert(vc: UIViewController) {
         let alert = UIAlertController(title: "Add photo",
                                       message: "Please Select an Option",
                                       preferredStyle: .actionSheet)
             
             alert.addAction(UIAlertAction(title: "Choose from gallery",
-                                          style: .default ,
+                                          style: UIAlertAction.Style.default ,
                                           handler: { (UIAlertAction)in
-                print("User click choose from galery button")
+                print("User click choose from gallery button")
                 didChoseGallery(vc: vc)
             }))
             
             alert.addAction(UIAlertAction(title: "Take photo",
-                                          style: .default ,
+                                          style: UIAlertAction.Style.default ,
                                           handler:{ (UIAlertAction)in
                 print("User click take photo button")
                 didChoseTakePhoto(vc: vc)
             }))
             
             alert.addAction(UIAlertAction(title: "Dismiss",
-                                          style: .cancel,
+                                          style: UIAlertAction.Style.cancel,
                                           handler:{ (UIAlertAction)in
                 print("User click Dismiss button")
             }))
@@ -37,13 +37,13 @@ struct PresentAlert {
         vc.present(alert, animated: true)
     }
     
-    static func didChoseGallery(vc: UIViewController) {
+    private func didChoseGallery(vc: UIViewController) {
         let imagePicker = UIImagePickerController()
             imagePicker.delegate = vc as? UIImagePickerControllerDelegate & UINavigationControllerDelegate
         vc.present(imagePicker, animated: true, completion: nil)
     }
     
-    static func didChoseTakePhoto(vc: UIViewController) {
+    private func didChoseTakePhoto(vc: UIViewController) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = vc as? UIImagePickerControllerDelegate & UINavigationControllerDelegate
         
@@ -51,7 +51,7 @@ struct PresentAlert {
         vc.present(imagePicker, animated: true, completion: nil)
     }
     
-    static func openCamera(imagePicker: UIImagePickerController, vc: UIViewController)
+    private func openCamera(imagePicker: UIImagePickerController, vc: UIViewController)
     {
         if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera))
         {
@@ -63,9 +63,9 @@ struct PresentAlert {
         {
             let alert  = UIAlertController(title: "Warning",
                                            message: "You don't have camera",
-                                           preferredStyle: .alert)
+                                           preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK",
-                                          style: .default,
+                                          style: UIAlertAction.Style.default,
                                           handler: nil))
             vc.present(alert, animated: true, completion: nil)
         }

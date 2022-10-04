@@ -9,29 +9,13 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-    private lazy var profileView = ProfileView(frame: .zero, vc: self)
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        Logger.printFrame(subject: profileView.editButton)
-    }
+    private lazy var profileView = ProfileView(frame: CGRect.zero, vc: self)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        view.backgroundColor = .white
-        Logger.printFrame(subject: profileView.editButton)
+        view.backgroundColor = UIColor.white
         addSubviews()
         setupConstraints()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        Logger.printFrame(subject: profileView.editButton) // Frames are different because initialization of button and adding subviews (including button) happens after the view appeared
     }
     
     private func addSubviews() {
