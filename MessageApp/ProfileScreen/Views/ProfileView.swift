@@ -42,7 +42,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         view.backgroundColor = UIColor(red: 63/255, green: 120/255, blue: 240/255, alpha: 1)
         view.layer.cornerRadius = 40
         view.isUserInteractionEnabled = true
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(addProfilePicture))
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(addProfilePicturePressed))
         view.addGestureRecognizer(gesture)
         return view
     }()
@@ -151,7 +151,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         self.backgroundColor = theme.mainColor
         addSubviews()
         setupConstraints()
-        hideButtons()
+        hideSavingButtons()
         createDismissGesture()
         loadData()
     }
@@ -246,7 +246,8 @@ final class ProfileView: UIView, UITextFieldDelegate {
         bioTextField.resignFirstResponder()
     }
     
-    @objc private func addProfilePicture() {
+    @objc private func addProfilePicturePressed() {
+        showSavingButtons()
         guard let vc = vc else {return}
         let allertControllerPresenter = AllertControllerPresenter()
         allertControllerPresenter.presentAlert(vc: vc)
@@ -278,15 +279,8 @@ final class ProfileView: UIView, UITextFieldDelegate {
     }
     
     @objc private func editPressed() {
-        nameTextField.isUserInteractionEnabled = true
+        showSavingButtons()
         nameTextField.becomeFirstResponder()
-        bioTextField.isUserInteractionEnabled = true
-        locationTextField.isUserInteractionEnabled = true
-        cancelButton.isHidden = false
-        saveGCDButton.isHidden = false
-        saveOperationsButton.isHidden = false
-        editButton.isHidden = true
-        
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -311,10 +305,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
     }
     
     @objc func cancelPressed() {
-        cancelButton.isHidden = true
-        saveGCDButton.isHidden = true
-        saveOperationsButton.isHidden = true
-        editButton.isHidden = false
+        hideSavingButtons()
         
         nameTextField.text = profileData?.name
         bioTextField.text = profileData?.bio
@@ -324,25 +315,22 @@ final class ProfileView: UIView, UITextFieldDelegate {
     @objc private func saveGCDPressed() {
         saveGCDButton.isUserInteractionEnabled = false
         saveOperationsButton.isUserInteractionEnabled = false
-        self.saveData(textFIeld: self.nameTextField,
+        self.saveDataUsingGCD(textFIeld: self.nameTextField,
                       text: self.profileData?.name,
                       file: self.nameFile)
-        self.saveData(textFIeld: self.bioTextField,
+        self.saveDataUsingGCD(textFIeld: self.bioTextField,
                       text: self.profileData?.bio,
                       file: self.bioFile)
-        self.saveData(textFIeld: self.locationTextField,
+        self.saveDataUsingGCD(textFIeld: self.locationTextField,
                       text: self.profileData?.location,
                       file: self.locationFile)
         profileData = ProfileData(name: nameTextField.text,
                                   bio: bioTextField.text,
                                   location: locationTextField.text)
-        saveGCDButton.isHidden = true
-        cancelButton.isHidden = true
-        saveOperationsButton.isHidden = true
-        editButton.isHidden = false
+        showSuccessAlert()
     }
     
-    private func saveData(textFIeld: UITextField, text: String?, file: String) {
+    private func saveDataUsingGCD(textFIeld: UITextField, text: String?, file: String) {
         let queue = DispatchQueue(label: "ru.apolinarys.serial2", qos: DispatchQoS.background)
         if textFIeld.text != text {
             if let inputText = textFIeld.text {
@@ -356,9 +344,8 @@ final class ProfileView: UIView, UITextFieldDelegate {
                             try inputText.write(to: fileURL,
                                                 atomically: false,
                                                 encoding: String.Encoding.utf8)
-                            print("Writing data done")
                         } catch {
-                            print("Error writing data")
+                            self.showErrorAlert(sender: self.saveGCDButton)
                         }
                     }
                     self.hideActivityIndicator()
@@ -375,7 +362,91 @@ final class ProfileView: UIView, UITextFieldDelegate {
     }
     
     @objc private func saveOperationsPressed() {
+        saveGCDButton.isUserInteractionEnabled = false
+        saveOperationsButton.isUserInteractionEnabled = false
+        self.saveDataUsingOperations(textFIeld: self.nameTextField,
+                      text: self.profileData?.name,
+                      file: self.nameFile)
+        self.saveDataUsingOperations(textFIeld: self.bioTextField,
+                      text: self.profileData?.bio,
+                      file: self.bioFile)
+        self.saveDataUsingOperations(textFIeld: self.locationTextField,
+                      text: self.profileData?.location,
+                      file: self.locationFile)
+        profileData = ProfileData(name: nameTextField.text,
+                                  bio: bioTextField.text,
+                                  location: locationTextField.text)
+        showSuccessAlert()
+    }
+    
+    private func showSuccessAlert() {
+        let alert = UIAlertController(title: "Data was successfully saved",
+                                      message: "",
+                                      preferredStyle: UIAlertController.Style.alert)
         
+        let action = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default) { action in
+            
+            self.hideSavingButtons()
+        }
+        alert.addAction(action)
+        
+        vc?.present(alert, animated: true, completion: nil)
+    }
+    
+    private func showErrorAlert(sender: UIButton) {
+        let alert = UIAlertController(title: "Error saving data",
+                                      message: "Cannot save data",
+                                      preferredStyle: UIAlertController.Style.alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default) { action in
+            
+            self.hideSavingButtons()
+        }
+        
+        let repeatAction = UIAlertAction(title: "Repeat", style: UIAlertAction.Style.default) { action in
+            switch sender {
+            case self.saveGCDButton:
+                self.saveGCDPressed()
+            case self.saveOperationsButton:
+                self.saveOperationsPressed()
+            default:
+                return
+            }
+        }
+        alert.addAction(repeatAction)
+        alert.addAction(okAction)
+        
+        vc?.present(alert, animated: true, completion: nil)
+    }
+    
+    private func saveDataUsingOperations(textFIeld: UITextField, text: String?, file: String) {
+        let savingQueue = OperationQueue()
+        if textFIeld.text != text {
+            if let inputText = textFIeld.text {
+                savingQueue.addOperation {
+                    OperationQueue.main.addOperation {
+                        self.activityIndicatorView.isHidden = false
+                        self.activityIndicatorView.startAnimating()
+                    }
+                    if let dir = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory,
+                                                          in: FileManager.SearchPathDomainMask.userDomainMask).first {
+                        let fileURL = dir.appendingPathComponent(file)
+                        
+                        do {
+                            try inputText.write(to: fileURL,
+                                                atomically: false,
+                                                encoding: String.Encoding.utf8)
+                        } catch {
+                            self.showErrorAlert(sender: self.saveOperationsButton)
+                        }
+                    }
+                    OperationQueue.main.addOperation {
+                        self.activityIndicatorView.stopAnimating()
+                        self.activityIndicatorView.isHidden = true
+                    }
+                }
+            }
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -400,10 +471,24 @@ final class ProfileView: UIView, UITextFieldDelegate {
         }
     }
     
-    private func hideButtons() {
+    private func showSavingButtons() {
+        editButton.isHidden = true
+        cancelButton.isHidden = false
+        saveGCDButton.isHidden = false
+        saveOperationsButton.isHidden = false
+        nameTextField.isUserInteractionEnabled = true
+        bioTextField.isUserInteractionEnabled = true
+        locationTextField.isUserInteractionEnabled = true
+    }
+    
+    private func hideSavingButtons() {
         cancelButton.isHidden = true
         saveGCDButton.isHidden = true
         saveOperationsButton.isHidden = true
+        editButton.isHidden = false
+        nameTextField.isUserInteractionEnabled = false
+        bioTextField.isUserInteractionEnabled = false
+        locationTextField.isUserInteractionEnabled = false
     }
 
 }
