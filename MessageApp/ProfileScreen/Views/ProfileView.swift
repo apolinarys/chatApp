@@ -258,7 +258,9 @@ final class ProfileView: UIView, UITextFieldDelegate {
             self.showActivityIndicator()
             self.profileData = self.dataManager.loadData()
             DispatchQueue.main.async {
-                self.loadTextFields(profileData: self.profileData)
+                self.nameTextField.text = self.profileData?.name
+                self.locationTextField.text = self.profileData?.location
+                self.bioTextField.text = self.profileData?.bio
             }
             self.hideActivityIndicator()
         }
@@ -315,138 +317,41 @@ final class ProfileView: UIView, UITextFieldDelegate {
     @objc private func saveGCDPressed() {
         saveGCDButton.isUserInteractionEnabled = false
         saveOperationsButton.isUserInteractionEnabled = false
-        self.saveDataUsingGCD(textFIeld: self.nameTextField,
+        let gsdManager = GCDManager(hideSavingButtons: hideSavingButtons, vc: vc, activityIndicator: activityIndicatorView)
+        gsdManager.saveData(textField: self.nameTextField,
                       text: self.profileData?.name,
                       file: self.nameFile)
-        self.saveDataUsingGCD(textFIeld: self.bioTextField,
+        gsdManager.saveData(textField: self.bioTextField,
                       text: self.profileData?.bio,
                       file: self.bioFile)
-        self.saveDataUsingGCD(textFIeld: self.locationTextField,
+        gsdManager.saveData(textField: self.locationTextField,
                       text: self.profileData?.location,
                       file: self.locationFile)
         profileData = ProfileData(name: nameTextField.text,
                                   bio: bioTextField.text,
                                   location: locationTextField.text)
-        showSuccessAlert()
-    }
-    
-    private func saveDataUsingGCD(textFIeld: UITextField, text: String?, file: String) {
-        let queue = DispatchQueue(label: "ru.apolinarys.serial2", qos: DispatchQoS.background)
-        if textFIeld.text != text {
-            if let inputText = textFIeld.text {
-                queue.async {
-                    self.showActivityIndicator()
-                    if let dir = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory,
-                                                          in: FileManager.SearchPathDomainMask.userDomainMask).first {
-                        let fileURL = dir.appendingPathComponent(file)
-                        
-                        do {
-                            try inputText.write(to: fileURL,
-                                                atomically: false,
-                                                encoding: String.Encoding.utf8)
-                        } catch {
-                            self.showErrorAlert(sender: self.saveGCDButton)
-                        }
-                    }
-                    self.hideActivityIndicator()
-                }
-            }
-        }
-    }
-    
-    func loadTextFields(profileData: ProfileData?) {
-        self.profileData = profileData
-        nameTextField.text = profileData?.name
-        locationTextField.text = profileData?.location
-        bioTextField.text = profileData?.bio
+        let alertPresenter = AlertPresenter(hideSavingButtons: hideSavingButtons)
+        alertPresenter.showSuccessAlert(vc: vc)
     }
     
     @objc private func saveOperationsPressed() {
         saveGCDButton.isUserInteractionEnabled = false
         saveOperationsButton.isUserInteractionEnabled = false
-        self.saveDataUsingOperations(textFIeld: self.nameTextField,
+        let operationsManager = OperationsManager(hideSavingButtons: hideSavingButtons, vc: vc, activityIndicator: activityIndicatorView)
+        operationsManager.saveData(textField: self.nameTextField,
                       text: self.profileData?.name,
                       file: self.nameFile)
-        self.saveDataUsingOperations(textFIeld: self.bioTextField,
+        operationsManager.saveData(textField: self.bioTextField,
                       text: self.profileData?.bio,
                       file: self.bioFile)
-        self.saveDataUsingOperations(textFIeld: self.locationTextField,
+        operationsManager.saveData(textField: self.locationTextField,
                       text: self.profileData?.location,
                       file: self.locationFile)
         profileData = ProfileData(name: nameTextField.text,
                                   bio: bioTextField.text,
                                   location: locationTextField.text)
-        showSuccessAlert()
-    }
-    
-    private func showSuccessAlert() {
-        let alert = UIAlertController(title: "Data was successfully saved",
-                                      message: "",
-                                      preferredStyle: UIAlertController.Style.alert)
-        
-        let action = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default) { action in
-            
-            self.hideSavingButtons()
-        }
-        alert.addAction(action)
-        
-        vc?.present(alert, animated: true, completion: nil)
-    }
-    
-    private func showErrorAlert(sender: UIButton) {
-        let alert = UIAlertController(title: "Error saving data",
-                                      message: "Cannot save data",
-                                      preferredStyle: UIAlertController.Style.alert)
-        
-        let okAction = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default) { action in
-            
-            self.hideSavingButtons()
-        }
-        
-        let repeatAction = UIAlertAction(title: "Repeat", style: UIAlertAction.Style.default) { action in
-            switch sender {
-            case self.saveGCDButton:
-                self.saveGCDPressed()
-            case self.saveOperationsButton:
-                self.saveOperationsPressed()
-            default:
-                return
-            }
-        }
-        alert.addAction(repeatAction)
-        alert.addAction(okAction)
-        
-        vc?.present(alert, animated: true, completion: nil)
-    }
-    
-    private func saveDataUsingOperations(textFIeld: UITextField, text: String?, file: String) {
-        let savingQueue = OperationQueue()
-        if textFIeld.text != text {
-            if let inputText = textFIeld.text {
-                savingQueue.addOperation {
-                    OperationQueue.main.addOperation {
-                        self.activityIndicatorView.isHidden = false
-                        self.activityIndicatorView.startAnimating()
-                    }
-                    if let dir = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory,
-                                                          in: FileManager.SearchPathDomainMask.userDomainMask).first {
-                        let fileURL = dir.appendingPathComponent(file)
-                        
-                        do {
-                            try inputText.write(to: fileURL,
-                                                atomically: false,
-                                                encoding: String.Encoding.utf8)
-                        } catch {
-                            self.showErrorAlert(sender: self.saveOperationsButton)
-                        }
-                    }
-                    OperationQueue.main.addOperation {
-                        self.activityIndicatorView.stopAnimating()
-                        self.activityIndicatorView.isHidden = true
-                    }
-                }
-            }
-        }
+        let alertPresenter = AlertPresenter(hideSavingButtons: hideSavingButtons)
+        alertPresenter.showSuccessAlert(vc: vc)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
