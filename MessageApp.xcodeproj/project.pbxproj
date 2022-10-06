@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FAA1A84328EC306C00ED9954 /* ThemeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1A84228EC306C00ED9954 /* ThemeButton.swift */; };
+		FAA1A86328EDA9A700ED9954 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1A86228EDA9A600ED9954 /* DataManager.swift */; };
 		FAD2C78B28DCA88B00B3CE3F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2C78A28DCA88B00B3CE3F /* AppDelegate.swift */; };
 		FAD2C78F28DCA88B00B3CE3F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2C78E28DCA88B00B3CE3F /* ProfileViewController.swift */; };
 		FAD2C79428DCA89200B3CE3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAD2C79328DCA89200B3CE3F /* Assets.xcassets */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		FAA1A84228EC306C00ED9954 /* ThemeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeButton.swift; sourceTree = "<group>"; };
+		FAA1A86228EDA9A600ED9954 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		FAD2C78728DCA88B00B3CE3F /* MessageApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MessageApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAD2C78A28DCA88B00B3CE3F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAD2C78E28DCA88B00B3CE3F /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				FAD2C78E28DCA88B00B3CE3F /* ProfileViewController.swift */,
+				FAA1A86428EED93600ED9954 /* Models */,
 				FAA1A84528EC5C9A00ED9954 /* Views */,
 			);
 			path = ProfileScreen;
@@ -138,6 +141,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		FAA1A86428EED93600ED9954 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FAA1A86228EDA9A600ED9954 /* DataManager.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		FAD2C77E28DCA88A00B3CE3F = {
 			isa = PBXGroup;
 			children = (
@@ -157,8 +168,8 @@
 		FAD2C78928DCA88B00B3CE3F /* MessageApp */ = {
 			isa = PBXGroup;
 			children = (
-				FAA1A84428EC5C7E00ED9954 /* ProfileScreen */,
 				FAD2C78A28DCA88B00B3CE3F /* AppDelegate.swift */,
+				FAA1A84428EC5C7E00ED9954 /* ProfileScreen */,
 				FAA1A84628EC5CA600ED9954 /* ConversatoinListScreen */,
 				FAA1A84828EC5CCD00ED9954 /* ConversationScreen */,
 				FAA1A84A28EC5CED00ED9954 /* ThemeScreen */,
@@ -267,6 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAD69DFD28E1BB95006208BA /* ConversationListTableViewCell.swift in Sources */,
+				FAA1A86328EDA9A700ED9954 /* DataManager.swift in Sources */,
 				FAD69DFB28E0B200006208BA /* ConversationListViewController.swift in Sources */,
 				FAD2C7A128DDE46E00B3CE3F /* ProfileView.swift in Sources */,
 				FAD69E0428E1F119006208BA /* ConversationViewController.swift in Sources */,

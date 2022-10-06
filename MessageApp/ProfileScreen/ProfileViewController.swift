@@ -10,12 +10,14 @@ import UIKit
 final class ProfileViewController: UIViewController {
     
     private lazy var profileView = ProfileView(frame: CGRect.zero, vc: self)
+    private let theme = ThemeManager.currentTheme()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         addSubviews()
         setupConstraints()
+        view.backgroundColor = theme.mainColor
     }
     
     private func addSubviews() {

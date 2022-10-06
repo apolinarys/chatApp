@@ -26,11 +26,11 @@ final class ThemesViewController: UIViewController {
         setupConstraints()
     }
     
-    @objc private func cancel() {
+    @objc private func cancelPressed() {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc private func back() {
+    @objc private func backPressed() {
         navigationController?.popViewController(animated: true)
         guard let theme = ThemesViewController.theme else {return}
         themeManager.applyTheme(theme: theme)
@@ -41,8 +41,8 @@ final class ThemesViewController: UIViewController {
         navigationItem.title = "Settings"
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.tintColor = UIColor.white
-        let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(back))
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancel))
+        let backButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(backPressed))
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPressed))
         navigationItem.rightBarButtonItem = cancelButton
         navigationItem.leftBarButtonItem = backButton
     }

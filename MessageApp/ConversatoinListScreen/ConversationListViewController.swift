@@ -9,11 +9,8 @@ import UIKit
 
 final class ConversationListViewController: UIViewController {
     
-    let tableView = UITableView(frame: CGRect.zero)
-    
+    let tableView = UITableView(frame: CGRect.zero)    
     var theme = ThemeManager.currentTheme()
-    
-    private lazy var profileView = ProfileView(frame: CGRect.zero, vc: self)
     
     private let conversationCellModel = ConversationCellModel()
     

@@ -9,7 +9,14 @@ import UIKit
 
 final class ProfileView: UIView, UITextFieldDelegate {
     
+    private let nameFile = "nameFile.txt"
+    private let bioFile = "bioFile.txt"
+    private let locationFile = "locationFile.txt"
+    private let queue = DispatchQueue(label: "ru.apolinarys.serial", qos: DispatchQoS.background)
+    private let dataManager = DataManager()
+    
     private let theme = ThemeManager.currentTheme()
+    var profileData: ProfileData?
     
     private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -55,7 +62,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         button.setTitle("Edit", for: UIControl.State.normal)
         button.setTitleColor(theme.textColor, for: UIControl.State.normal)
         button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(edit), for: UIControl.Event.touchUpInside)
+        button.addTarget(self, action: #selector(editPressed), for: UIControl.Event.touchUpInside)
         return button
     }()
     
@@ -68,6 +75,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         field.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.heavy)
         field.isUserInteractionEnabled = false
         field.autocapitalizationType = .words
+        field.textColor = theme.textColor
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
@@ -78,6 +86,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         field.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular)
         field.delegate = self
         field.isUserInteractionEnabled = false
+        field.textColor = theme.textColor
         field.translatesAutoresizingMaskIntoConstraints = false
          return field
     }()
@@ -88,6 +97,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         field.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular)
         field.delegate = self
         field.isUserInteractionEnabled = false
+        field.textColor = theme.textColor
         field.translatesAutoresizingMaskIntoConstraints = false
          return field
     }()
@@ -98,7 +108,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         button.setTitle("Cancel", for: .normal)
         button.setTitleColor(theme.textColor, for: .normal)
         button.layer.cornerRadius = 10
-        button.isUserInteractionEnabled = false
+        button.addTarget(self, action: #selector(cancelPressed), for: UIControl.Event.touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -110,6 +120,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         button.setTitleColor(theme.textColor, for: .normal)
         button.layer.cornerRadius = 10
         button.isUserInteractionEnabled = false
+        button.addTarget(self, action: #selector(saveGCDPressed), for: UIControl.Event.touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -121,8 +132,15 @@ final class ProfileView: UIView, UITextFieldDelegate {
         button.setTitleColor(theme.textColor, for: .normal)
         button.layer.cornerRadius = 10
         button.isUserInteractionEnabled = false
+        button.addTarget(self, action: #selector(saveOperationsPressed), for: UIControl.Event.touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
+    }()
+    
+    private lazy var activityIndicatorView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     weak var vc: UIViewController?
@@ -135,6 +153,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         setupConstraints()
         hideButtons()
         createDismissGesture()
+        loadData()
     }
     
     required init?(coder: NSCoder) {
@@ -193,7 +212,11 @@ final class ProfileView: UIView, UITextFieldDelegate {
             cancelButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
             cancelButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
             cancelButton.bottomAnchor.constraint(equalTo: saveGCDButton.topAnchor, constant: -8),
-            cancelButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08)
+            cancelButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
+            
+            activityIndicatorView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
+            activityIndicatorView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
+            activityIndicatorView.bottomAnchor.constraint(equalTo: cancelButton.topAnchor, constant: -20)
         ])
     }
     
@@ -209,6 +232,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         addSubview(saveGCDButton)
         addSubview(saveOperationsButton)
         addSubview(cancelButton)
+        addSubview(activityIndicatorView)
     }
     
     private func createDismissGesture() {
@@ -228,7 +252,32 @@ final class ProfileView: UIView, UITextFieldDelegate {
         allertControllerPresenter.presentAlert(vc: vc)
     }
     
-    @objc private func edit() {
+    private func loadData() {
+        queue.async {
+            self.showActivityIndicator()
+            self.profileData = self.dataManager.loadData()
+            DispatchQueue.main.async {
+                self.loadTextFields(profileData: self.profileData)
+            }
+            self.hideActivityIndicator()
+        }
+    }
+    
+    private func showActivityIndicator() {
+        DispatchQueue.main.async {
+            self.activityIndicatorView.isHidden = false
+            self.activityIndicatorView.startAnimating()
+        }
+    }
+    
+    private func hideActivityIndicator() {
+        DispatchQueue.main.async {
+            self.activityIndicatorView.stopAnimating()
+            self.activityIndicatorView.isHidden = true
+        }
+    }
+    
+    @objc private func editPressed() {
         nameTextField.isUserInteractionEnabled = true
         nameTextField.becomeFirstResponder()
         bioTextField.isUserInteractionEnabled = true
@@ -237,6 +286,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         saveGCDButton.isHidden = false
         saveOperationsButton.isHidden = false
         editButton.isHidden = true
+        
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -260,6 +310,74 @@ final class ProfileView: UIView, UITextFieldDelegate {
         scrollView.contentOffset = CGPoint(x: 0, y: 0)
     }
     
+    @objc func cancelPressed() {
+        cancelButton.isHidden = true
+        saveGCDButton.isHidden = true
+        saveOperationsButton.isHidden = true
+        editButton.isHidden = false
+        
+        nameTextField.text = profileData?.name
+        bioTextField.text = profileData?.bio
+        locationTextField.text = profileData?.location
+    }
+    
+    @objc private func saveGCDPressed() {
+        saveGCDButton.isUserInteractionEnabled = false
+        saveOperationsButton.isUserInteractionEnabled = false
+        self.saveData(textFIeld: self.nameTextField,
+                      text: self.profileData?.name,
+                      file: self.nameFile)
+        self.saveData(textFIeld: self.bioTextField,
+                      text: self.profileData?.bio,
+                      file: self.bioFile)
+        self.saveData(textFIeld: self.locationTextField,
+                      text: self.profileData?.location,
+                      file: self.locationFile)
+        profileData = ProfileData(name: nameTextField.text,
+                                  bio: bioTextField.text,
+                                  location: locationTextField.text)
+        saveGCDButton.isHidden = true
+        cancelButton.isHidden = true
+        saveOperationsButton.isHidden = true
+        editButton.isHidden = false
+    }
+    
+    private func saveData(textFIeld: UITextField, text: String?, file: String) {
+        let queue = DispatchQueue(label: "ru.apolinarys.serial2", qos: DispatchQoS.background)
+        if textFIeld.text != text {
+            if let inputText = textFIeld.text {
+                queue.async {
+                    self.showActivityIndicator()
+                    if let dir = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory,
+                                                          in: FileManager.SearchPathDomainMask.userDomainMask).first {
+                        let fileURL = dir.appendingPathComponent(file)
+                        
+                        do {
+                            try inputText.write(to: fileURL,
+                                                atomically: false,
+                                                encoding: String.Encoding.utf8)
+                            print("Writing data done")
+                        } catch {
+                            print("Error writing data")
+                        }
+                    }
+                    self.hideActivityIndicator()
+                }
+            }
+        }
+    }
+    
+    func loadTextFields(profileData: ProfileData?) {
+        self.profileData = profileData
+        nameTextField.text = profileData?.name
+        locationTextField.text = profileData?.location
+        bioTextField.text = profileData?.bio
+    }
+    
+    @objc private func saveOperationsPressed() {
+        
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
         case nameTextField:
@@ -270,6 +388,16 @@ final class ProfileView: UIView, UITextFieldDelegate {
             textField.endEditing(true)
         }
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if nameTextField.text != profileData?.name ||
+            bioTextField.text != profileData?.bio ||
+            locationTextField.text != profileData?.location
+        {
+            saveGCDButton.isUserInteractionEnabled = true
+            saveOperationsButton.isUserInteractionEnabled = true
+        }
     }
     
     private func hideButtons() {

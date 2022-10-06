@@ -9,9 +9,9 @@ import UIKit
 
 final class ThemeButton: UIView {
     
-    private var action: (() -> Void)?
-    private var theme: ButtonTheme?
-    private var name: String?
+    private var action: (() -> Void)
+    private var theme: ButtonTheme
+    private var name: String
     
     private let borderColor = CGColor(red: 45/255, green: 113/255, blue: 239/255, alpha: 1)
     
@@ -20,7 +20,7 @@ final class ThemeButton: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 20
         button.clipsToBounds = true
-        button.backgroundColor = theme?.backgroundColor
+        button.backgroundColor = theme.backgroundColor
         button.layer.borderColor = borderColor
         button.addTarget(self, action: #selector(addAction), for: UIControl.Event.touchUpInside)
         return button
@@ -30,7 +30,7 @@ final class ThemeButton: UIView {
        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 15
-        view.backgroundColor = theme?.firstMessageBubbleColor
+        view.backgroundColor = theme.firstMessageBubbleColor
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addAction)))
         return view
@@ -40,7 +40,7 @@ final class ThemeButton: UIView {
        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 15
-        view.backgroundColor = theme?.secondMessageBubbleColor
+        view.backgroundColor = theme.secondMessageBubbleColor
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addAction)))
         return view
@@ -59,10 +59,10 @@ final class ThemeButton: UIView {
     }()
     
     init(frame: CGRect, theme: ButtonTheme, name: String, action: @escaping () -> Void) {
-        super.init(frame: frame)
         self.theme = theme
         self.name = name
         self.action = action
+        super.init(frame: frame)
         addSubviews()
         setupConstraints()
     }
@@ -79,9 +79,6 @@ final class ThemeButton: UIView {
     }
     
     @objc private func addAction() {
-        guard let action = action else {
-            return
-        }
         action()
     }
     
