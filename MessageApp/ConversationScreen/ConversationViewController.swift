@@ -11,18 +11,19 @@ final class ConversationViewController: UIViewController {
     
     private lazy var tableView = UITableView(frame: CGRect.zero)
     
-    private var cells: [MessageCell] = []
-    
-    private let messageCellModel = MessageCellModel()
     var chatId: String?
+    var messages: [Message] = []
+    private var messagesListManager = MessagesListManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubviews()
         setupConstraints()
         setupTableView()
-        cells = messageCellModel.createCells()
-        tableView.reloadData()
+        messagesListManager.delegate = self
+        if let chatId = chatId {
+            messagesListManager.loadMessages(chatId: chatId)
+        }
     }
     
     private func addSubviews() {
@@ -51,13 +52,13 @@ final class ConversationViewController: UIViewController {
 
 extension ConversationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cells.count
+        return messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ConversationTableViewCell.self)) as? ConversationTableViewCell
         guard let cell = cell else {return UITableViewCell()}
-        cell.set(data: cells[indexPath.row])
+        cell.set(data: messages[indexPath.row])
         return cell
     }
 }
@@ -67,6 +68,8 @@ extension ConversationViewController: UITableViewDataSource {
 extension ConversationViewController: MessagesListManagerDelegate {
     
     func updateUI(messages: [Message]) {
-        <#code#>
+        print("Updating UI")
+        self.messages = messages
+        tableView.reloadData()
     }
 }

@@ -55,15 +55,10 @@ final class ConversationTableViewCell: UITableViewCell {
         ])
     }
     
-    func set(data: MessageCell) {
-        if data.isIncoming {
+    func set(data: Message) {
             messageBubble.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8).isActive = true
             messageBubble.backgroundColor = theme.incomingMessageColor
-        } else {
-            messageBubble.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8).isActive = true
-            messageBubble.backgroundColor = theme.outgoingMessageColor
-        }
-        messageLabel.text = data.text
+        messageLabel.text = data.content
     }
     
     override func prepareForReuse() {

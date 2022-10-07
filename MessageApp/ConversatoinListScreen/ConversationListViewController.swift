@@ -140,7 +140,6 @@ extension ConversationListViewController: ThemeViewDelegate {
 
 extension ConversationListViewController: ChannelManagerDelegate {
     func updateUI(channels: [Channel]) {
-        self.channels = []
         self.channels = channels
         tableView.reloadData()
     }
