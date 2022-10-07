@@ -6,13 +6,14 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 final class ConversationListViewController: UIViewController {
     
     let tableView = UITableView(frame: CGRect.zero)    
     var theme = ThemeManager.currentTheme()
-    
-    private let conversationCellModel = ConversationCellModel()
+    private var channelListManager = ChannelListManager()
+    private var channels: [Channel] = []
     
     private lazy var profileButton = UIBarButtonItem(
         image: UIImage(systemName: "person.circle"),
@@ -27,8 +28,11 @@ final class ConversationListViewController: UIViewController {
         target: self,
         action: #selector(showSettings))
     
-    private var onlineCells: [ConversationCell] = []
-    private var offlineCells: [ConversationCell] = []
+    private lazy var addChannelButton = UIBarButtonItem(
+        image: UIImage(systemName: "plus.circle"),
+        style: UIBarButtonItem.Style.plain,
+        target: self,
+        action: #selector(addChannel))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +41,8 @@ final class ConversationListViewController: UIViewController {
         ThemesViewController.delegate = self
         addSubviews()
         setUpCells()
+        channelListManager.delegate = self
+        channelListManager.loadChats()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,16 +61,14 @@ final class ConversationListViewController: UIViewController {
         navigationController?.pushViewController(settingsVC, animated: true)
     }
     
+    @objc private func addChannel() {
+        let alertPresenter = AlertPresenter(vc: self)
+        alertPresenter.showNewChannelAlert()
+    }
+    
     private func setUpCells() {
         setupConstraints()
         setupTableView()
-        conversationCellModel.createCells().forEach {
-            if $0.online {
-                onlineCells.append($0)
-            } else {
-                offlineCells.append($0)
-            }
-        }
         tableView.reloadData()
     }
     
@@ -92,7 +96,7 @@ final class ConversationListViewController: UIViewController {
     
     private func setUpNavigationBar() {
         navigationItem.title = "Message App"
-        navigationItem.rightBarButtonItem = profileButton
+        navigationItem.rightBarButtonItems = [addChannelButton, profileButton]
         navigationItem.leftBarButtonItem = settingsButton
     }
 }
@@ -102,24 +106,13 @@ final class ConversationListViewController: UIViewController {
 extension ConversationListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return onlineCells.count
-        }
-        return offlineCells.count
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return channels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ConversationListTableViewCell.self)) as? ConversationListTableViewCell
         guard let cell = cell else {return UITableViewCell()}
-        if indexPath.section == 0 {
-            cell.set(data: onlineCells[indexPath.row], theme: theme)
-        } else {
-            cell.set(data: offlineCells[indexPath.row], theme: theme)
-        }
+            cell.set(data: channels[indexPath.row], theme: theme)
         return cell
     }
 }
@@ -130,6 +123,7 @@ extension ConversationListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = ConversationViewController()
+        vc.chatId = channels[indexPath.row].identifier
         navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -138,6 +132,16 @@ extension ConversationListViewController: UITableViewDelegate {
 extension ConversationListViewController: ThemeViewDelegate {
     func updateTheme() {
         theme = ThemeManager.currentTheme()
+        tableView.reloadData()
+    }
+}
+
+//MARK: - ChannelListManagerDelegate
+
+extension ConversationListViewController: ChannelManagerDelegate {
+    func updateUI(channels: [Channel]) {
+        self.channels = []
+        self.channels = channels
         tableView.reloadData()
     }
 }

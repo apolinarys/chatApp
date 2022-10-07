@@ -14,6 +14,7 @@ final class ConversationViewController: UIViewController {
     private var cells: [MessageCell] = []
     
     private let messageCellModel = MessageCellModel()
+    var chatId: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,5 +59,14 @@ extension ConversationViewController: UITableViewDataSource {
         guard let cell = cell else {return UITableViewCell()}
         cell.set(data: cells[indexPath.row])
         return cell
+    }
+}
+
+//MARK: - MessagesListManagerDelegate
+
+extension ConversationViewController: MessagesListManagerDelegate {
+    
+    func updateUI(messages: [Message]) {
+        <#code#>
     }
 }

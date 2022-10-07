@@ -9,9 +9,9 @@ import UIKit
 
 struct AlertPresenter {
     
-    var hideSavingButtons: () -> Void
+    var vc: UIViewController?
     
-    func showSuccessAlert(vc: UIViewController?) {
+    func showSuccessAlert(hideSavingButtons: @escaping () -> Void) {
         let alert = UIAlertController(title: "Data was successfully saved",
                                       message: "",
                                       preferredStyle: UIAlertController.Style.alert)
@@ -25,13 +25,13 @@ struct AlertPresenter {
         vc?.present(alert, animated: true, completion: nil)
     }
     
-    func showErrorAlert(buttonAction: @escaping (_ textFIeld: UITextField,
+    func showErrorAlert(hideSavingButtons: @escaping () -> Void,
+                        buttonAction: @escaping (_ textFIeld: UITextField,
                                  _ text: String?,
                                  _ file: String) -> Void,
                         textField: UITextField,
                         text: String?,
-                        file: String,
-                        vc: UIViewController?) {
+                        file: String) {
         let alert = UIAlertController(title: "Error saving data",
                                       message: "Cannot save data",
                                       preferredStyle: UIAlertController.Style.alert)
@@ -46,6 +46,36 @@ struct AlertPresenter {
         }
         alert.addAction(repeatAction)
         alert.addAction(okAction)
+        
+        vc?.present(alert, animated: true, completion: nil)
+    }
+    
+    func showNewChannelAlert() {
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Channel", message: "", preferredStyle: .alert)
+        
+        let addAction = UIAlertAction(title: "Add", style: .default) { action in
+            let chanelListManager = ChannelListManager()
+            if let text = textField.text {
+                let idCreator = IDCreator()
+                let id = idCreator.createID(length: 10)
+                let date = Date()
+                chanelListManager.addChannel(identifier: id, name: text, lastMessage: nil, lastActivity: date)
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default) { action in
+            alert.dismiss(animated: true)
+        }
+        
+        alert.addTextField { alertTextField in
+            alertTextField.placeholder = "create new item"
+            textField = alertTextField
+        }
+        
+        alert.addAction(addAction)
+        alert.addAction(cancelAction)
         
         vc?.present(alert, animated: true, completion: nil)
     }

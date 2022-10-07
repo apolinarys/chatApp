@@ -330,8 +330,8 @@ final class ProfileView: UIView, UITextFieldDelegate {
         profileData = ProfileData(name: nameTextField.text,
                                   bio: bioTextField.text,
                                   location: locationTextField.text)
-        let alertPresenter = AlertPresenter(hideSavingButtons: hideSavingButtons)
-        alertPresenter.showSuccessAlert(vc: vc)
+        let alertPresenter = AlertPresenter(vc: vc)
+        alertPresenter.showSuccessAlert(hideSavingButtons: hideSavingButtons)
     }
     
     @objc private func saveOperationsPressed() {
@@ -350,8 +350,8 @@ final class ProfileView: UIView, UITextFieldDelegate {
         profileData = ProfileData(name: nameTextField.text,
                                   bio: bioTextField.text,
                                   location: locationTextField.text)
-        let alertPresenter = AlertPresenter(hideSavingButtons: hideSavingButtons)
-        alertPresenter.showSuccessAlert(vc: vc)
+        let alertPresenter = AlertPresenter(vc: vc)
+        alertPresenter.showSuccessAlert(hideSavingButtons: hideSavingButtons)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

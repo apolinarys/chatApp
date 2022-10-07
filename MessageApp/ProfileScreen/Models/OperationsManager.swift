@@ -29,8 +29,12 @@ struct OperationsManager {
                                                 atomically: false,
                                                 encoding: String.Encoding.utf8)
                         } catch {
-                            let alertPresenter = AlertPresenter(hideSavingButtons: hideSavingButtons)
-                            alertPresenter.showErrorAlert(buttonAction: saveData, textField: textField, text: text, file: file, vc: vc)
+                            let alertPresenter = AlertPresenter(vc: vc)
+                            alertPresenter.showErrorAlert(hideSavingButtons: hideSavingButtons,
+                                                          buttonAction: saveData,
+                                                          textField: textField,
+                                                          text: text,
+                                                          file: file)
                         }
                     }
                     hideActivityIndicator(activityIndicatorView: activityIndicator)

@@ -71,17 +71,17 @@ final class ConversationListTableViewCell: UITableViewCell {
         messageLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
     }
     
-    func set(data: ConversationCell, theme: Theme) {
+    func set(data: Channel, theme: Theme) {
         nameLabel.text = data.name
-        messageLabel.text = data.message
-        if data.message == nil {
+        messageLabel.text = data.lastMessage
+        if data.lastMessage == nil {
             messageLabel.text = "No messages yet"
         }
         messageLabel.textColor = theme.textColor
         dateLabel.textColor = theme.textColor
         nameLabel.textColor = theme.textColor
         self.backgroundColor = theme.mainColor
-        if let date = data.date {
+        if let date = data.lastActivity {
             let isDayInToday = Calendar.current.isDateInToday(date)
             let dateFormatter = DateFormatter()
             if isDayInToday {
@@ -91,12 +91,6 @@ final class ConversationListTableViewCell: UITableViewCell {
                 
             }
             dateLabel.text = dateFormatter.string(from: date)
-        }
-        if data.hasUnreadMessages {
-            messageLabel.font = .systemFont(ofSize: 15, weight: UIFont.Weight.heavy)
-        }
-        if data.online {
-            self.backgroundColor = theme.outgoingMessageColor
         }
     }
 }
