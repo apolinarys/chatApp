@@ -66,6 +66,11 @@ struct MessagesListManager {
     }
     
     func addMessage(content: String, created: Date, senderId: String, senderName: String) {
-        
+        reference.addDocument(data: [
+            Constants.Messages.content: content,
+            Constants.Messages.created: created,
+            Constants.Messages.senderId: senderId,
+            Constants.Messages.senderName: senderName
+        ])
     }
 }

@@ -26,12 +26,16 @@ struct AlertPresenter {
     }
     
     func showErrorAlert(hideSavingButtons: @escaping () -> Void,
-                        buttonAction: @escaping (_ textFIeld: UITextField,
-                                 _ text: String?,
-                                 _ file: String) -> Void,
+                        buttonAction: @escaping (_ textField: UITextField,
+                                                 _ text: String?,
+                                                 _ file: String,
+                                                 _ hideSavingButtons: @escaping () -> Void,
+                                                 _ vc: UIViewController?,
+                                                 _ activityIndicator: UIActivityIndicatorView) -> Void,
                         textField: UITextField,
                         text: String?,
-                        file: String) {
+                        file: String,
+                        activityIndicator: UIActivityIndicatorView) {
         let alert = UIAlertController(title: "Error saving data",
                                       message: "Cannot save data",
                                       preferredStyle: UIAlertController.Style.alert)
@@ -42,7 +46,7 @@ struct AlertPresenter {
         }
         
         let repeatAction = UIAlertAction(title: "Repeat", style: UIAlertAction.Style.default) { action in
-            buttonAction(textField, text, file)
+            buttonAction(textField, text, file, hideSavingButtons, vc, activityIndicator)
         }
         alert.addAction(repeatAction)
         alert.addAction(okAction)

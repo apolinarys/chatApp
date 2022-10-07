@@ -7,13 +7,12 @@
 
 import UIKit
 
-final class ProfileView: UIView, UITextFieldDelegate {
+final class ProfileView: UIView, UITextFieldDelegate, DataManagerDelegate {
     
     private let nameFile = "nameFile.txt"
     private let bioFile = "bioFile.txt"
     private let locationFile = "locationFile.txt"
     private let queue = DispatchQueue(label: "ru.apolinarys.serial", qos: DispatchQoS.background)
-    private let dataManager = DataManager()
     
     private let theme = ThemeManager.currentTheme()
     var profileData: ProfileData?
@@ -102,39 +101,27 @@ final class ProfileView: UIView, UITextFieldDelegate {
          return field
     }()
     
+    private lazy var saveButton: UIButton = {
+       let button = UIButton()
+        button.backgroundColor = theme.incomingMessageColor
+        button.setTitle("Save", for: .normal)
+        button.setTitleColor(theme.textColor, for: .normal)
+        button.layer.cornerRadius = 10
+        button.isUserInteractionEnabled = false
+        button.addTarget(self, action: #selector(saveButtonPressed), for: UIControl.Event.touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private lazy var cancelButton: UIButton = {
-       let button = UIButton()
-        button.backgroundColor = theme.incomingMessageColor
-        button.setTitle("Cancel", for: .normal)
-        button.setTitleColor(theme.textColor, for: .normal)
-        button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(cancelPressed), for: UIControl.Event.touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private lazy var saveGCDButton: UIButton = {
-       let button = UIButton()
-        button.backgroundColor = theme.incomingMessageColor
-        button.setTitle("Save GCD", for: .normal)
-        button.setTitleColor(theme.textColor, for: .normal)
-        button.layer.cornerRadius = 10
-        button.isUserInteractionEnabled = false
-        button.addTarget(self, action: #selector(saveGCDPressed), for: UIControl.Event.touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private lazy var saveOperationsButton: UIButton = {
-       let button = UIButton()
-        button.backgroundColor = theme.incomingMessageColor
-        button.setTitle("Save Operations", for: .normal)
-        button.setTitleColor(theme.textColor, for: .normal)
-        button.layer.cornerRadius = 10
-        button.isUserInteractionEnabled = false
-        button.addTarget(self, action: #selector(saveOperationsPressed), for: UIControl.Event.touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+        let button = UIButton()
+         button.backgroundColor = theme.incomingMessageColor
+         button.setTitle("Cancel", for: .normal)
+         button.setTitleColor(theme.textColor, for: .normal)
+         button.layer.cornerRadius = 10
+         button.addTarget(self, action: #selector(cancelPressed), for: UIControl.Event.touchUpInside)
+         button.translatesAutoresizingMaskIntoConstraints = false
+         return button
     }()
     
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
@@ -153,7 +140,8 @@ final class ProfileView: UIView, UITextFieldDelegate {
         setupConstraints()
         hideSavingButtons()
         createDismissGesture()
-        loadData()
+        let dataManager = DataManager(delegate: self)
+        dataManager.loadData()
     }
     
     required init?(coder: NSCoder) {
@@ -199,19 +187,14 @@ final class ProfileView: UIView, UITextFieldDelegate {
             editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
             editButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
             
-            saveGCDButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
-            saveGCDButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.46),
-            saveGCDButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-            saveGCDButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
+            saveButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
+            saveButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.46),
+            saveButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            saveButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
             
-            saveOperationsButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
-            saveOperationsButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.46),
-            saveOperationsButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-            saveOperationsButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
-            
-            cancelButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
             cancelButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
-            cancelButton.bottomAnchor.constraint(equalTo: saveGCDButton.topAnchor, constant: -8),
+            cancelButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.46),
+            cancelButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
             cancelButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
             
             activityIndicatorView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
@@ -229,8 +212,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         scrollView.addSubview(nameTextField)
         scrollView.addSubview(bioTextField)
         scrollView.addSubview(locationTextField)
-        addSubview(saveGCDButton)
-        addSubview(saveOperationsButton)
+        addSubview(saveButton)
         addSubview(cancelButton)
         addSubview(activityIndicatorView)
     }
@@ -253,17 +235,13 @@ final class ProfileView: UIView, UITextFieldDelegate {
         allertControllerPresenter.presentAlert(vc: vc)
     }
     
-    private func loadData() {
-        queue.async {
-            self.showActivityIndicator()
-            self.profileData = self.dataManager.loadData()
-            DispatchQueue.main.async {
-                self.nameTextField.text = self.profileData?.name
-                self.locationTextField.text = self.profileData?.location
-                self.bioTextField.text = self.profileData?.bio
-            }
-            self.hideActivityIndicator()
-        }
+    func updateData(data: ProfileData?) {
+        self.showActivityIndicator()
+        self.profileData = data
+        self.nameTextField.text = data?.name
+        self.locationTextField.text = data?.location
+        self.bioTextField.text = data?.bio
+        self.hideActivityIndicator()
     }
     
     private func showActivityIndicator() {
@@ -314,39 +292,28 @@ final class ProfileView: UIView, UITextFieldDelegate {
         locationTextField.text = profileData?.location
     }
     
-    @objc private func saveGCDPressed() {
-        saveGCDButton.isUserInteractionEnabled = false
-        saveOperationsButton.isUserInteractionEnabled = false
-        let gsdManager = GCDManager(hideSavingButtons: hideSavingButtons, vc: vc, activityIndicator: activityIndicatorView)
-        gsdManager.saveData(textField: self.nameTextField,
-                      text: self.profileData?.name,
-                      file: self.nameFile)
-        gsdManager.saveData(textField: self.bioTextField,
-                      text: self.profileData?.bio,
-                      file: self.bioFile)
-        gsdManager.saveData(textField: self.locationTextField,
-                      text: self.profileData?.location,
-                      file: self.locationFile)
-        profileData = ProfileData(name: nameTextField.text,
-                                  bio: bioTextField.text,
-                                  location: locationTextField.text)
-        let alertPresenter = AlertPresenter(vc: vc)
-        alertPresenter.showSuccessAlert(hideSavingButtons: hideSavingButtons)
-    }
-    
-    @objc private func saveOperationsPressed() {
-        saveGCDButton.isUserInteractionEnabled = false
-        saveOperationsButton.isUserInteractionEnabled = false
-        let operationsManager = OperationsManager(hideSavingButtons: hideSavingButtons, vc: vc, activityIndicator: activityIndicatorView)
-        operationsManager.saveData(textField: self.nameTextField,
-                      text: self.profileData?.name,
-                      file: self.nameFile)
-        operationsManager.saveData(textField: self.bioTextField,
-                      text: self.profileData?.bio,
-                      file: self.bioFile)
-        operationsManager.saveData(textField: self.locationTextField,
-                      text: self.profileData?.location,
-                      file: self.locationFile)
+    @objc private func saveButtonPressed() {
+        saveButton.isUserInteractionEnabled = false
+        cancelButton.isUserInteractionEnabled = false
+        let dataManager = DataManager()
+        dataManager.saveData(textField: nameTextField,
+                             text: profileData?.name,
+                             file: nameFile,
+                             hideSavingButtons: hideSavingButtons,
+                             vc: vc,
+                             activityIndicator: activityIndicatorView)
+        dataManager.saveData(textField: bioTextField,
+                             text: profileData?.bio,
+                             file: bioFile,
+                             hideSavingButtons: hideSavingButtons,
+                             vc: vc,
+                             activityIndicator: activityIndicatorView)
+        dataManager.saveData(textField: locationTextField,
+                             text: profileData?.location,
+                             file: locationFile,
+                             hideSavingButtons: hideSavingButtons,
+                             vc: vc,
+                             activityIndicator: activityIndicatorView)
         profileData = ProfileData(name: nameTextField.text,
                                   bio: bioTextField.text,
                                   location: locationTextField.text)
@@ -371,16 +338,16 @@ final class ProfileView: UIView, UITextFieldDelegate {
             bioTextField.text != profileData?.bio ||
             locationTextField.text != profileData?.location
         {
-            saveGCDButton.isUserInteractionEnabled = true
-            saveOperationsButton.isUserInteractionEnabled = true
+            saveButton.isUserInteractionEnabled = true
+            cancelButton.isUserInteractionEnabled = true
         }
     }
     
     private func showSavingButtons() {
         editButton.isHidden = true
         cancelButton.isHidden = false
-        saveGCDButton.isHidden = false
-        saveOperationsButton.isHidden = false
+        saveButton.isHidden = false
+        cancelButton.isHidden = false
         nameTextField.isUserInteractionEnabled = true
         bioTextField.isUserInteractionEnabled = true
         locationTextField.isUserInteractionEnabled = true
@@ -388,8 +355,8 @@ final class ProfileView: UIView, UITextFieldDelegate {
     
     private func hideSavingButtons() {
         cancelButton.isHidden = true
-        saveGCDButton.isHidden = true
-        saveOperationsButton.isHidden = true
+        saveButton.isHidden = true
+        cancelButton.isHidden = true
         editButton.isHidden = false
         nameTextField.isUserInteractionEnabled = false
         bioTextField.isUserInteractionEnabled = false
