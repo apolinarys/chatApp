@@ -8,12 +8,14 @@
 import UIKit
 
 final class ProfileView: UIView {
+    
+    private let theme = ThemeManager.currentTheme()
 
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "photo")
         imageView.tintColor = .darkGray
-        imageView.backgroundColor = .lightGray
+        imageView.backgroundColor = UIColor.lightGray
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 40
         imageView.clipsToBounds = true
@@ -26,6 +28,9 @@ final class ProfileView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor(red: 63/255, green: 120/255, blue: 240/255, alpha: 1)
         view.layer.cornerRadius = 40
+        view.isUserInteractionEnabled = true
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(addProfilePicture))
+        view.addGestureRecognizer(gesture)
         return view
     }()
     
@@ -33,20 +38,34 @@ final class ProfileView: UIView {
        let imageView = UIImageView()
         imageView.image = UIImage(systemName: "camera.fill")
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.tintColor = .white
+        imageView.tintColor = UIColor.white
         return imageView
     }()
     
-    lazy var editButton: UIButton = {
+    private lazy var editButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .white
-        button.setTitle("Edit", for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = theme.incomingMessageColor
+        button.setTitle("Edit", for: UIControl.State.normal)
+        button.setTitleColor(theme.textColor, for: UIControl.State.normal)
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 10
         return button
     }()
+    
+    weak var vc: UIViewController?
+    
+    init(frame: CGRect, vc: UIViewController) {
+        self.vc = vc
+        super.init(frame: CGRect.zero)
+        self.backgroundColor = theme.mainColor
+        addSubviews()
+        setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
@@ -72,8 +91,6 @@ final class ProfileView: UIView {
         ])
     }
     
-    
-    
     private func addSubviews() {
         addSubview(profileImageView)
         profileImageView.addSubview(addPhotoView)
@@ -81,15 +98,9 @@ final class ProfileView: UIView {
         addSubview(editButton)
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: .zero)
-        addSubviews()
-        setupConstraints()
-    }
-    
-   
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    @objc private func addProfilePicture() {
+        guard let vc = vc else {return}
+        let allertControllerPresenter = AllertControllerPresenter()
+        allertControllerPresenter.presentAlert(vc: vc)
     }
 }

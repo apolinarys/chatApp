@@ -7,9 +7,9 @@
 
 import UIKit
 
-class ConversationViewController: UIViewController {
+final class ConversationViewController: UIViewController {
     
-    private lazy var tableView = UITableView(frame: .zero)
+    private lazy var tableView = UITableView(frame: CGRect.zero)
     
     private var cells: [MessageCell] = []
     
@@ -17,20 +17,18 @@ class ConversationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        addSubviews()
+        setupConstraints()
         setupTableView()
-        view.backgroundColor = .green
-        // Do any additional setup after loading the view.
-        
-        tableView.register(ConversationTableViewCell.self, forCellReuseIdentifier: ConversationTableViewCell.reuseIdentifier)
-        tableView.delegate = self
-        tableView.dataSource = self
         cells = messageCellModel.createCells()
         tableView.reloadData()
-        tableView.separatorStyle = .none
     }
     
-    private func setupTableView() {
+    private func addSubviews() {
         view.addSubview(tableView)
+    }
+
+    private func setupConstraints() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -40,18 +38,25 @@ class ConversationViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    private func setupTableView() {
+        tableView.register(ConversationTableViewCell.self, forCellReuseIdentifier: String(describing: ConversationTableViewCell.self))
+        tableView.dataSource = self
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+    }
 }
 
-extension ConversationViewController: UITableViewDelegate, UITableViewDataSource {
+//MARK: - UITableViewDataSource
+
+extension ConversationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cells.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ConversationTableViewCell.reuseIdentifier) as! ConversationTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ConversationTableViewCell.self)) as? ConversationTableViewCell
+        guard let cell = cell else {return UITableViewCell()}
         cell.set(data: cells[indexPath.row])
         return cell
     }
-    
-    
 }
