@@ -15,16 +15,11 @@ struct Channel {
     let lastActivity: Date?
 }
 
-protocol ChannelManagerDelegate {
-    func updateUI(channels: [Channel])
-}
-
 struct ChannelListManager {
     
     private let reference = Firestore.firestore().collection("channels")
-    var delegate: ChannelManagerDelegate?
     
-    func loadChats() {
+    func loadChats(completion: @escaping ([Channel]) -> Void) {
         var channels: [Channel] = []
         reference.addSnapshotListener { snapshot, error in
             if let e = error {
@@ -32,10 +27,8 @@ struct ChannelListManager {
             } else {
                 channels = []
                 if let snapshotDocuments = snapshot?.documents {
-                    print("start loading data")
                     snapshotDocuments.forEach {
                         let data = $0.data()
-                        print(data)
                         let identifier = data[Constants.Channels.identifier] as? String
                         let name = data[Constants.Channels.name] as? String
                         let lastMessage = data[Constants.Channels.lastMessage] as? String
@@ -48,7 +41,7 @@ struct ChannelListManager {
                                                     lastActivity: date))
                         }
                     }
-                    delegate?.updateUI(channels: channels)
+                    completion(channels)
                 }
             }
         }

@@ -7,12 +7,13 @@
 
 import UIKit
 
-final class ProfileView: UIView, UITextFieldDelegate, DataManagerDelegate {
+final class ProfileView: UIView, UITextFieldDelegate {
     
     private let nameFile = "nameFile.txt"
     private let bioFile = "bioFile.txt"
     private let locationFile = "locationFile.txt"
     private let queue = DispatchQueue(label: "ru.apolinarys.serial", qos: DispatchQoS.background)
+    private let dataManager = DataManager()
     
     private let theme = ThemeManager.currentTheme()
     var profileData: ProfileData?
@@ -140,8 +141,9 @@ final class ProfileView: UIView, UITextFieldDelegate, DataManagerDelegate {
         setupConstraints()
         hideSavingButtons()
         createDismissGesture()
-        let dataManager = DataManager(delegate: self)
-        dataManager.loadData()
+        dataManager.loadData{[weak self] profileData in
+            self?.updateData(data: profileData)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -295,22 +297,12 @@ final class ProfileView: UIView, UITextFieldDelegate, DataManagerDelegate {
     @objc private func saveButtonPressed() {
         saveButton.isUserInteractionEnabled = false
         cancelButton.isUserInteractionEnabled = false
-        let dataManager = DataManager()
-        dataManager.saveData(textField: nameTextField,
-                             text: profileData?.name,
-                             file: nameFile,
-                             hideSavingButtons: hideSavingButtons,
-                             vc: vc,
-                             activityIndicator: activityIndicatorView)
-        dataManager.saveData(textField: bioTextField,
-                             text: profileData?.bio,
-                             file: bioFile,
-                             hideSavingButtons: hideSavingButtons,
-                             vc: vc,
-                             activityIndicator: activityIndicatorView)
-        dataManager.saveData(textField: locationTextField,
-                             text: profileData?.location,
-                             file: locationFile,
+        let data = [
+            (nameTextField, profileData?.name, nameFile),
+            (bioTextField, profileData?.bio, bioFile),
+            (locationTextField, profileData?.location, locationFile)
+        ]
+        dataManager.saveData(data: data,
                              hideSavingButtons: hideSavingButtons,
                              vc: vc,
                              activityIndicator: activityIndicatorView)

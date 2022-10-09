@@ -41,8 +41,9 @@ final class ConversationListViewController: UIViewController {
         ThemesViewController.delegate = self
         addSubviews()
         setUpCells()
-        channelListManager.delegate = self
-        channelListManager.loadChats()
+        channelListManager.loadChats{ [weak self] channels in
+            self?.updateUI(channels: channels)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -99,6 +100,11 @@ final class ConversationListViewController: UIViewController {
         navigationItem.rightBarButtonItems = [addChannelButton, profileButton]
         navigationItem.leftBarButtonItem = settingsButton
     }
+    
+    private func updateUI(channels: [Channel]) {
+        self.channels = channels
+        tableView.reloadData()
+    }
 }
 
 //MARK: - UITableViewDataSource
@@ -132,15 +138,6 @@ extension ConversationListViewController: UITableViewDelegate {
 extension ConversationListViewController: ThemeViewDelegate {
     func updateTheme() {
         theme = ThemeManager.currentTheme()
-        tableView.reloadData()
-    }
-}
-
-//MARK: - ChannelListManagerDelegate
-
-extension ConversationListViewController: ChannelManagerDelegate {
-    func updateUI(channels: [Channel]) {
-        self.channels = channels
         tableView.reloadData()
     }
 }

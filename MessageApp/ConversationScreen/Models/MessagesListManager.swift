@@ -15,16 +15,11 @@ struct Message {
     let senderName: String
 }
 
-protocol MessagesListManagerDelegate {
-    func updateUI(messages: [Message])
-}
-
 struct MessagesListManager {
     
     private let reference = Firestore.firestore().collection("channels")
-    var delegate: MessagesListManagerDelegate?
     
-    func loadMessages(chatId: String) {
+    func loadMessages(chatId: String, completion: @escaping ([Message]) -> Void) {
         var messages: [Message] = []
         reference.getDocuments { snapshot, error in
             if let error = error {
@@ -39,6 +34,7 @@ struct MessagesListManager {
                                 if let error = error {
                                     print("There was an issue reading messages data from Firestore, \(error)")
                                 } else {
+                                    messages = []
                                     if let documents = snapshot?.documents {
                                         documents.forEach {
                                             let data = $0.data()
@@ -54,7 +50,8 @@ struct MessagesListManager {
                                                                         senderName: senderName))
                                             }
                                         }
-                                        delegate?.updateUI(messages: messages)
+                                        print(messages)
+                                        completion(messages)
                                     }
                                 }
                             }
@@ -65,12 +62,26 @@ struct MessagesListManager {
         }
     }
     
-    func addMessage(content: String, created: Date, senderId: String, senderName: String) {
-        reference.addDocument(data: [
-            Constants.Messages.content: content,
-            Constants.Messages.created: created,
-            Constants.Messages.senderId: senderId,
-            Constants.Messages.senderName: senderName
-        ])
+    func addMessage(content: String, created: Date, senderId: String, senderName: String, chatId: String) {
+        reference.getDocuments { snapshot, error in
+            if let error = error {
+                print("There was an issue reading data from Firestore, \(error)")
+            } else {
+                if let documents = snapshot?.documents {
+                    documents.forEach {
+                        let data = $0.data()
+                        let identifier = data[Constants.Channels.identifier] as? String
+                        if identifier == chatId {
+                            reference.document($0.documentID).collection("messages").addDocument(data: [
+                                Constants.Messages.content: content,
+                                Constants.Messages.created: created,
+                                Constants.Messages.senderId: senderId,
+                                Constants.Messages.senderName: senderName
+                            ])
+                        }
+                    }
+                }
+            }
+        }
     }
 }

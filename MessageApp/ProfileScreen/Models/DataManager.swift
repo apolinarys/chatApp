@@ -13,19 +13,14 @@ struct ProfileData {
     var location: String?
 }
 
-protocol DataManagerDelegate {
-    func updateData(data: ProfileData?)
-}
-
 struct DataManager {
     
     private let nameFile = "nameFile.txt"
     private let bioFile = "bioFile.txt"
     private let locationFile = "locationFile.txt"
     private let queue = DispatchQueue(label: "ru.apolinarys.serial", qos: DispatchQoS.background)
-    var delegate: DataManagerDelegate?
     
-    func loadData() {
+    func loadData(completion: @escaping (ProfileData?) -> Void) {
         var profileData: ProfileData? = nil
         if let dir = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first {
             let nameFileURL = dir.appendingPathComponent(self.nameFile)
@@ -38,7 +33,9 @@ struct DataManager {
                     let bio = try String(contentsOf: bioFileURL, encoding: String.Encoding.utf8)
                     let location = try String(contentsOf: locationFileURL, encoding: String.Encoding.utf8)
                     profileData = ProfileData(name: name, bio: bio, location: location)
-                    delegate?.updateData(data: profileData)
+                    DispatchQueue.main.async {
+                        completion(profileData)
+                    }
                 } catch {
                     print("Error reading data")
                 }
@@ -46,36 +43,37 @@ struct DataManager {
         }
     }
     
-    func saveData(textField: UITextField,
-                  text: String?,
-                  file: String,
+    func saveData(data: [(UITextField, String?, String)],
                   hideSavingButtons: @escaping () -> Void,
                   vc: UIViewController?,
                   activityIndicator: UIActivityIndicatorView) {
         let queue = DispatchQueue(label: "ru.apolinarys.serial2", qos: DispatchQoS.background)
-        if textField.text != text {
-            if let inputText = textField.text {
-                queue.async {
-                    self.showActivityIndicator(activityIndicatorView: activityIndicator)
-                    if let dir = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory,
-                                                          in: FileManager.SearchPathDomainMask.userDomainMask).first {
-                        let fileURL = dir.appendingPathComponent(file)
-                        
-                        do {
-                            try inputText.write(to: fileURL,
-                                                atomically: false,
-                                                encoding: String.Encoding.utf8)
-                        } catch {
-                            let alertPresenter = AlertPresenter(vc: vc)
-                            alertPresenter.showErrorAlert(hideSavingButtons: hideSavingButtons,
-                                                          buttonAction: saveData,
-                                                          textField: textField,
-                                                          text: text,
-                                                          file: file,
-                                                          activityIndicator: activityIndicator)
+        data.forEach {
+            let textField = $0.0
+            let text = $0.1
+            let file = $0.2
+            if textField.text != text {
+                if let inputText = textField.text {
+                    queue.async {
+                        self.showActivityIndicator(activityIndicatorView: activityIndicator)
+                        if let dir = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory,
+                                                              in: FileManager.SearchPathDomainMask.userDomainMask).first {
+                            let fileURL = dir.appendingPathComponent(file)
+                            
+                            do {
+                                try inputText.write(to: fileURL,
+                                                    atomically: false,
+                                                    encoding: String.Encoding.utf8)
+                            } catch {
+                                let alertPresenter = AlertPresenter(vc: vc)
+                                alertPresenter.showErrorAlert(hideSavingButtons: hideSavingButtons,
+                                                              buttonAction: saveData,
+                                                              data: data,
+                                                              activityIndicator: activityIndicator)
+                            }
                         }
+                        self.hideActivityIndicator(activityIndicatorView: activityIndicator)
                     }
-                    self.hideActivityIndicator(activityIndicatorView: activityIndicator)
                 }
             }
         }

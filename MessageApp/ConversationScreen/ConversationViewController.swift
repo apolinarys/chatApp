@@ -39,6 +39,7 @@ final class ConversationViewController: UIViewController, UITextViewDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "paperplane.fill"), for: UIControl.State.normal)
         button.tintColor = UIColor(red: 63/255, green: 120/255, blue: 240/255, alpha: 1)
+        button.addTarget(self, action: #selector(sendMessage), for: UIControl.Event.touchUpInside)
         return button
     }()
 
@@ -47,10 +48,14 @@ final class ConversationViewController: UIViewController, UITextViewDelegate {
         addSubviews()
         setupConstraints()
         setupTableView()
-        messagesListManager.delegate = self
+        createDismissGesture()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         textView.delegate = self
         if let chatId = chatId {
-            messagesListManager.loadMessages(chatId: chatId)
+            messagesListManager.loadMessages(chatId: chatId, completion: { [weak self] messages in
+                self?.updateUI(messages: messages)
+            })
         }
     }
     
@@ -66,6 +71,17 @@ final class ConversationViewController: UIViewController, UITextViewDelegate {
         }
     }
     
+    private func createDismissGesture() {
+        tableView.isUserInteractionEnabled = true
+        view.isUserInteractionEnabled = true
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tableView.addGestureRecognizer(gesture)
+    }
+    
+    @objc private func dismissKeyboard() {
+        textView.resignFirstResponder()
+    }
+    
     private func addSubviews() {
         view.addSubview(tableView)
         view.addSubview(messageView)
@@ -74,8 +90,11 @@ final class ConversationViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc private func sendMessage() {
-        let dataManager = DataManager(delegate: self)
-        dataManager.loadData()
+        let dataManager = DataManager()
+        
+        dataManager.loadData { [weak self] profileData in
+            self?.updateData(data: profileData)
+        }
     }
 
     private func setupConstraints() {
@@ -128,7 +147,7 @@ extension ConversationViewController: UITableViewDataSource {
 
 //MARK: - MessagesListManagerDelegate
 
-extension ConversationViewController: MessagesListManagerDelegate {
+extension ConversationViewController {
     
     func updateUI(messages: [Message]) {
         print("Updating UI")
@@ -139,14 +158,30 @@ extension ConversationViewController: MessagesListManagerDelegate {
 
 //MARK: - DataManagerDelegate
 
-extension ConversationViewController: DataManagerDelegate {
+extension ConversationViewController {
     
     func updateData(data: ProfileData?) {
         if let senderId = UIDevice.current.identifierForVendor?.uuidString {
             print(senderId)
-            if let data = data {
-                messagesListManager.addMessage(content: textView.text, created: Date(), senderId: senderId, senderName: data.name ?? "")
+            if let data = data, let chatId = chatId {
+                messagesListManager.addMessage(content: textView.text, created: Date(), senderId: senderId, senderName: data.name ?? "", chatId: chatId)
             }
         }
+    }
+}
+
+//MARK: - Keyboard
+
+extension ConversationViewController {
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        print(view.frame.origin.y)
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            additionalSafeAreaInsets.bottom = keyboardSize.height
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        additionalSafeAreaInsets.bottom = CGFloat.zero
     }
 }
