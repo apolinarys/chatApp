@@ -31,23 +31,6 @@ final class ConversationListTableViewCell: UITableViewCell {
         return label
     }()
     
-    private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            
-            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            
-            messageLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            messageLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            
-            dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
-            dateLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
-        ])
-    }
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubviews()
@@ -92,5 +75,26 @@ final class ConversationListTableViewCell: UITableViewCell {
             }
             dateLabel.text = dateFormatter.string(from: date)
         }
+    }
+}
+
+//MARK: - Constraints
+
+extension ConversationListTableViewCell {
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            
+            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            
+            messageLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+            messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            messageLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            
+            dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
+            dateLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ])
     }
 }

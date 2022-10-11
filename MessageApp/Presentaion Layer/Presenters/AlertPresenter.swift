@@ -50,18 +50,14 @@ struct AlertPresenter {
         vc?.present(alert, animated: true, completion: nil)
     }
     
-    func showNewChannelAlert() {
+    func showNewChannelAlert(addChannel: @escaping (_ name: String) -> Void) {
         var textField = UITextField()
         
         let alert = UIAlertController(title: "Add New Channel", message: "", preferredStyle: .alert)
         
         let addAction = UIAlertAction(title: "Add", style: .default) { action in
-            let chanelListManager = ChannelListManager()
             if let text = textField.text {
-                let idCreator = IDCreator()
-                let id = idCreator.createID(length: 10)
-                let date = Date()
-                chanelListManager.addChannel(identifier: id, name: text, lastMessage: nil, lastActivity: date)
+                addChannel(text)
             }
         }
         

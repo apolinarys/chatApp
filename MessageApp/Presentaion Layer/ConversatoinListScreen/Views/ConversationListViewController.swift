@@ -10,46 +10,57 @@ import FirebaseFirestore
 
 final class ConversationListViewController: UIViewController {
     
-    let tableView = UITableView(frame: CGRect.zero)    
-    var theme = ThemeManager.currentTheme()
-    private var channelListManager = ChannelListManager()
+    private let tableView = UITableView(frame: CGRect.zero)
     private var channels: [Channel] = []
     
-    private lazy var profileButton = UIBarButtonItem(
-        image: UIImage(systemName: "person.circle"),
-        style: UIBarButtonItem.Style.plain,
-        target: self,
-        action: #selector(showProfile))
-    
-    
-    private lazy var settingsButton = UIBarButtonItem(
-        image: UIImage(systemName: "gear"),
-        style: UIBarButtonItem.Style.plain,
-        target: self,
-        action: #selector(showSettings))
-    
-    private lazy var addChannelButton = UIBarButtonItem(
-        image: UIImage(systemName: "plus.circle"),
-        style: UIBarButtonItem.Style.plain,
-        target: self,
-        action: #selector(addChannel))
+    var theme: Theme?
+    var presenter: IConversationListPresenter?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUpNavigationBar()
+        presenter?.onViewDidLoad()
+        view.backgroundColor = theme?.mainColor
+        customizeNavigationBar()
         ThemesViewController.delegate = self
-        addSubviews()
         setUpCells()
-        channelListManager.loadChats{ [weak self] channels in
-            self?.updateUI(channels: channels)
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
         navigationController?.navigationBar.tintColor = UIColor.gray
-        tableView.reloadData()
+//        tableView.reloadData()
+    }
+}
+
+//MARK: - NavigationBar
+
+extension ConversationListViewController {
+    
+    private func customizeNavigationBar() {
+        
+        let profileButton = UIBarButtonItem(
+            image: UIImage(systemName: "person.circle"),
+            style: UIBarButtonItem.Style.plain,
+            target: self,
+            action: #selector(showProfile))
+        
+        
+        let settingsButton = UIBarButtonItem(
+            image: UIImage(systemName: "gear"),
+            style: UIBarButtonItem.Style.plain,
+            target: self,
+            action: #selector(showSettings))
+        
+        let addChannelButton = UIBarButtonItem(
+            image: UIImage(systemName: "plus.circle"),
+            style: UIBarButtonItem.Style.plain,
+            target: self,
+            action: #selector(addChannel))
+        
+        navigationItem.title = "Message App"
+        navigationItem.rightBarButtonItems = [addChannelButton, profileButton]
+        navigationItem.leftBarButtonItem = settingsButton
     }
     
     @objc private func showProfile() {
@@ -64,10 +75,18 @@ final class ConversationListViewController: UIViewController {
     
     @objc private func addChannel() {
         let alertPresenter = AlertPresenter(vc: self)
-        alertPresenter.showNewChannelAlert()
+        guard let presenter = presenter else {return}
+        alertPresenter.showNewChannelAlert(addChannel: presenter.addNewChannel(name:))
     }
     
+}
+
+//MARK: - UITableViewDataSource
+
+extension ConversationListViewController: UITableViewDataSource {
+    
     private func setUpCells() {
+        addSubviews()
         setupConstraints()
         setupTableView()
         tableView.reloadData()
@@ -83,6 +102,21 @@ final class ConversationListViewController: UIViewController {
         tableView.dataSource = self
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return channels.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ConversationListTableViewCell.self)) as? ConversationListTableViewCell
+        guard let cell = cell else {return UITableViewCell()}
+        cell.set(data: channels[indexPath.row], theme: theme ?? Theme.Classic)
+        return cell
+    }
+}
+
+//MARK: - Constraints
+
+extension ConversationListViewController {
     private func setupConstraints() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -93,33 +127,6 @@ final class ConversationListViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-    }
-    
-    private func setUpNavigationBar() {
-        navigationItem.title = "Message App"
-        navigationItem.rightBarButtonItems = [addChannelButton, profileButton]
-        navigationItem.leftBarButtonItem = settingsButton
-    }
-    
-    private func updateUI(channels: [Channel]) {
-        self.channels = channels
-        tableView.reloadData()
-    }
-}
-
-//MARK: - UITableViewDataSource
-
-extension ConversationListViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return channels.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ConversationListTableViewCell.self)) as? ConversationListTableViewCell
-        guard let cell = cell else {return UITableViewCell()}
-            cell.set(data: channels[indexPath.row], theme: theme)
-        return cell
     }
 }
 
@@ -135,9 +142,20 @@ extension ConversationListViewController: UITableViewDelegate {
     }
 }
 
+//MARK: - ThemesViewDelegate
+
 extension ConversationListViewController: ThemeViewDelegate {
     func updateTheme() {
         theme = ThemeManager.currentTheme()
+        tableView.reloadData()
+    }
+}
+
+//MARK: - UpdateUI
+
+extension ConversationListViewController {
+    func updateUI(channels: [Channel]) {
+        self.channels += channels
         tableView.reloadData()
     }
 }
