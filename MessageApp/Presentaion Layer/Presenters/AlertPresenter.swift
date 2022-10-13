@@ -9,7 +9,7 @@ import UIKit
 
 struct AlertPresenter {
     
-    var vc: UIViewController?
+    weak var vc: UIViewController?
     
     func showSuccessAlert(completion: @escaping () -> Void) {
         let alert = UIAlertController(title: "Data was successfully saved",
@@ -45,7 +45,9 @@ struct AlertPresenter {
     func showNewChannelAlert(addChannel: @escaping (_ name: String) -> Void) {
         var textField = UITextField()
         
-        let alert = UIAlertController(title: "Add New Channel", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Add New Channel",
+                                      message: "",
+                                      preferredStyle: UIAlertController.Style.alert)
         
         let addAction = UIAlertAction(title: "Add", style: .default) { action in
             if let text = textField.text {
@@ -66,5 +68,17 @@ struct AlertPresenter {
         alert.addAction(cancelAction)
         
         vc?.present(alert, animated: true, completion: nil)
+    }
+    
+    func showNoProfileInformationAlert() {
+        let alert = UIAlertController(title: "No profile info",
+                                      message: "Add name to your profile",
+                                      preferredStyle: UIAlertController.Style.alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default)
+        
+        alert.addAction(okAction)
+        
+        vc?.present(alert, animated: true)
     }
 }

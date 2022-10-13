@@ -14,25 +14,18 @@ struct Channel {
     let lastMessage: String?
     let lastActivity: Date?
     
-    init(identifier: String, name: String, lastMessage: String?, lastActivity: Date?) {
-        self.identifier = identifier
-        self.name = name
-        self.lastMessage = lastMessage
-        self.lastActivity = lastActivity
-    }
-    
     init?(document: QueryDocumentSnapshot) {
         let data = document.data()
         
+        let lastMessage = data[Constants.Channels.lastMessage] as? String
+        let lastActivity = data[Constants.Channels.lastActivity] as? Timestamp
         guard let identifier = data[Constants.Channels.identifier] as? String,
-                let name = data[Constants.Channels.name] as? String,
-                let lastMessage = data[Constants.Channels.lastMessage] as? String,
-                let lastActivity = data[Constants.Channels.lastActivity] as? Timestamp
+                let name = data[Constants.Channels.name] as? String
         else {return nil}
         
         self.name = name
         self.identifier = identifier
-        self.lastActivity = lastActivity.dateValue()
+        self.lastActivity = lastActivity?.dateValue()
         self.lastMessage = lastMessage
     }
 }

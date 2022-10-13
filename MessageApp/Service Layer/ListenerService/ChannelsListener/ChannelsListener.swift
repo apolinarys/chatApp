@@ -9,15 +9,15 @@ import UIKit
 import FirebaseFirestore
 
 protocol IChannelsListener {
-    func addChannelsListener(completion: @escaping (Result<ChannelResult, Error>) -> Void)
+    func addChannelsListener(completion: @escaping (Result<ChannelResult, Error>) -> Void) -> ListenerRegistration? 
 }
 
 struct ChannelsListener: IChannelsListener {
     
     private let reference = Firestore.firestore().collection("channels")
     
-    func addChannelsListener(completion: @escaping (Result<ChannelResult, Error>) -> Void) {
-        reference.addSnapshotListener { snapshot, error in
+    func addChannelsListener(completion: @escaping (Result<ChannelResult, Error>) -> Void) -> ListenerRegistration? {
+        return reference.addSnapshotListener { snapshot, error in
             guard let snapshot = snapshot else {
                 guard let err = error else { return }
                 completion(.failure(err))

@@ -7,7 +7,13 @@
 
 import UIKit
 
-struct StorageManager {
+protocol IStorageManager {
+    func loadData(completion: @escaping (StorageManagerResult) -> Void)
+    func saveData(data: [(UITextField, String?, String)],
+                  completion: @escaping (Result<StorageManagerResult, Error>) -> Void)
+}
+
+struct StorageManager: IStorageManager {
     
     private let nameFile = "nameFile.txt"
     private let bioFile = "bioFile.txt"
@@ -39,7 +45,8 @@ struct StorageManager {
         }
     }
     
-    func saveData(data: [(UITextField, String?, String)], vc: UIViewController?, completion: @escaping (Result<StorageManagerResult, Error>) -> Void) {
+    func saveData(data: [(UITextField, String?, String)],
+                  completion: @escaping (Result<StorageManagerResult, Error>) -> Void) {
         data.forEach {
             let textField = $0.0
             let text = $0.1

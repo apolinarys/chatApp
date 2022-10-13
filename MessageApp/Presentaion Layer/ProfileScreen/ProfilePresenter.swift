@@ -23,7 +23,7 @@ struct ProfilePresenter: IProfilePresenter {
     }
     
     func saveData(data: [(UITextField, String?, String)]) {
-        storageManager.saveData(data: data, vc: vc) { result in
+        storageManager.saveData(data: data) { result in
             switch result {
             case .success(let profileResult):
                 switch profileResult {

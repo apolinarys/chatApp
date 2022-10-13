@@ -9,7 +9,8 @@ import UIKit
 
 protocol IAssemblyBuilder{
     func createConversationListModule(router: IRouter) -> UIViewController
-    func createMessagesModule(channelName: String, channelId: String) -> UIViewController
+    func createMessagesModule(chatName: String, chatId: String, router: IRouter) -> UIViewController
+    func createProfileModule(router: IRouter) -> UIViewController
 }
 
 struct AssemblyBuilder: IAssemblyBuilder {
@@ -26,8 +27,21 @@ struct AssemblyBuilder: IAssemblyBuilder {
         return view
     }
     
-    func createMessagesModule(channelName: String, channelId: String) -> UIViewController {
+    func createMessagesModule(chatName: String, chatId: String, router: IRouter) -> UIViewController {
         let view = ConversationViewController()
+        let firestoreManager = FirestoreManager()
+        let messagesListener = MessagesListener(chatId: chatId)
+        let storageManager = StorageManager()
+        let alertPresenter = AlertPresenter(vc: view)
+        let presenter = MessagesPresenter(view: view,
+                                          router: router,
+                                          firestoreManager: firestoreManager,
+                                          messagesListener: messagesListener,
+                                          storageManager: storageManager,
+                                          chatId: chatId,
+                                          chatName: chatName,
+                                          alertPresenter: alertPresenter)
+        view.presenter = presenter
         return view
     }
     

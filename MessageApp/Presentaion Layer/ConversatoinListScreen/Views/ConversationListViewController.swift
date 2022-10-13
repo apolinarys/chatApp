@@ -20,6 +20,7 @@ final class ConversationListViewController: UIViewController, IConversationView 
     
     var theme: Theme?
     var presenter: IConversationListPresenter?
+    private let themeViewController = ThemesViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,14 +28,14 @@ final class ConversationListViewController: UIViewController, IConversationView 
         presenter?.onViewDidLoad()
         view.backgroundColor = theme?.mainColor
         customizeNavigationBar()
-        ThemesViewController.delegate = self
+        themeViewController.delegate = self
         setUpCells()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
         navigationController?.navigationBar.tintColor = UIColor.gray
-//        tableView.reloadData()
+        tableView.reloadData()
     }
 }
 
@@ -137,9 +138,7 @@ extension ConversationListViewController {
 extension ConversationListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = ConversationViewController()
-        vc.chatId = channels[indexPath.row].identifier
-        navigationController?.pushViewController(vc, animated: true)
+        presenter?.presentMessages(chatID: channels[indexPath.row].identifier, chatName: channels[indexPath.row].name)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

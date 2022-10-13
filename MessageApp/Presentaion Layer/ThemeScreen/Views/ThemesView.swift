@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ThemeViewDelegate {
+protocol ThemeViewDelegate: AnyObject {
     func updateTheme()
 }
 

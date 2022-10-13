@@ -9,23 +9,24 @@ import UIKit
 
 protocol IRouter{
     func initialViewController()
-    func presentMessages(channelID: String, channelName: String)
+    func presentMessages(chatID: String, chatName: String)
     func presentProfile()
 }
 
 struct Router: IRouter {
     
     let navigationController: UINavigationController
-    let assemblyBuilder: AssemblyBuilder
+    let assemblyBuilder: IAssemblyBuilder
     
     func initialViewController() {
         let conversationListViewController = assemblyBuilder.createConversationListModule(router: self)
         navigationController.viewControllers = [conversationListViewController]
     }
     
-    func presentMessages(channelID: String, channelName: String) {
-        let conversationViewController = assemblyBuilder.createMessagesModule(channelName: channelName,
-                                                                              channelId: channelID)
+    func presentMessages(chatID: String, chatName: String) {
+        let conversationViewController = assemblyBuilder.createMessagesModule(chatName: chatName,
+                                                                              chatId: chatID,
+                                                                              router: self)
         navigationController.pushViewController(conversationViewController, animated: true)
     }
     

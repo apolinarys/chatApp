@@ -6,28 +6,41 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 protocol IConversationListPresenter {
     func onViewDidLoad()
     func addNewChannel()
-    func presentMessages(channelID: String, channelName: String)
+    func presentMessages(chatID: String, chatName: String)
     func presentProfile()
 }
 
-struct ConversationListPresenter: IConversationListPresenter {
+class ConversationListPresenter: IConversationListPresenter {
+    
+    private var listener: ListenerRegistration?
     
     weak var view: IConversationView?
     let firestoreManager: IFirestoreManager
     let router: IRouter
     let listenerService: IChannelsListener
     
+    init(view: IConversationView,
+         firestoreManager: IFirestoreManager,
+         router: IRouter,
+         listenerService: IChannelsListener) {
+        self.view = view
+        self.firestoreManager = firestoreManager
+        self.router = router
+        self.listenerService = listenerService
+    }
+    
     private func addChannelListener() {
-        listenerService.addChannelsListener { result in
+        listener = listenerService.addChannelsListener { [weak self] result in
             switch result {
             case .success(let channelResult):
                 switch channelResult.resultState {
                 case .added:
-                    view?.updateUI(channels: channelResult.channels)
+                    self?.view?.updateUI(channels: channelResult.channels)
                 case .modified:
                     return
                 case .removed:
@@ -46,13 +59,13 @@ struct ConversationListPresenter: IConversationListPresenter {
     
     func addNewChannel() {
         let alertPresenter = AlertPresenter(vc: view)
-        alertPresenter.showNewChannelAlert { name in
-            firestoreManager.saveChannel(name: name)
+        alertPresenter.showNewChannelAlert { [weak self] name in
+            self?.firestoreManager.saveChannel(name: name)
         }
     }
     
-    func presentMessages(channelID: String, channelName: String) {
-        router.presentMessages(channelID: channelID, channelName: channelName)
+    func presentMessages(chatID: String, chatName: String) {
+        router.presentMessages(chatID: chatID, chatName: chatName)
     }
     
     func presentProfile() {

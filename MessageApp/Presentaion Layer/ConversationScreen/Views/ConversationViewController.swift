@@ -8,17 +8,18 @@
 import UIKit
 
 protocol IMessageView: UIViewController {
+    var presenter: IMessagesPresenter? {get set}
     
+    func updateUI(messages: [Message])
 }
 
 final class ConversationViewController: UIViewController, UITextViewDelegate, IMessageView {
     
     private lazy var tableView = UITableView(frame: CGRect.zero)
     private let theme = ThemeManager.currentTheme()
-    private var messagesListManager = MessagesListManager()
-    private let storageManager = StorageManager()
-    var chatId: String?
     var messages: [Message] = []
+    
+    var presenter: IMessagesPresenter?
     
     private lazy var textView: UITextView = {
         let view = UITextView()
@@ -54,14 +55,10 @@ final class ConversationViewController: UIViewController, UITextViewDelegate, IM
         setupConstraints()
         setupTableView()
         createDismissGesture()
+        presenter?.onViewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         textView.delegate = self
-        if let chatId = chatId {
-            messagesListManager.loadMessages(chatId: chatId, completion: { [weak self] messages in
-                self?.updateUI(messages: messages)
-            })
-        }
     }
     
     func textViewDidChange(_ textView: UITextView) {
@@ -95,14 +92,9 @@ final class ConversationViewController: UIViewController, UITextViewDelegate, IM
     }
     
     @objc private func sendMessage() {
-        storageManager.loadData { [weak self] result in
-            switch result {
-            case .started:
-                print("")
-            case .finished(let profileData):
-                self?.updateData(data: profileData)
-            }
-        }
+        print(#function)
+        presenter?.sendMessage(message: textView.text)
+        textView.text = ""
     }
 
     private func setupConstraints() {
@@ -159,22 +151,8 @@ extension ConversationViewController {
     
     func updateUI(messages: [Message]) {
         print("Updating UI")
-        self.messages = messages
+        self.messages += messages
         tableView.reloadData()
-    }
-}
-
-//MARK: - DataManagerDelegate
-
-extension ConversationViewController {
-    
-    func updateData(data: ProfileData?) {
-        if let senderId = UIDevice.current.identifierForVendor?.uuidString {
-            print(senderId)
-            if let data = data, let chatId = chatId {
-                messagesListManager.addMessage(content: textView.text, created: Date(), senderId: senderId, senderName: data.name, chatId: chatId)
-            }
-        }
     }
 }
 

@@ -9,7 +9,7 @@ import UIKit
 
 final class ThemesViewController: UIViewController {
     
-    static var delegate: ThemeViewDelegate?
+    weak var delegate: ThemeViewDelegate?
     
     private lazy var themesView = ThemesView(frame: CGRect.zero)
     
@@ -34,7 +34,7 @@ final class ThemesViewController: UIViewController {
         navigationController?.popViewController(animated: true)
         guard let theme = ThemesViewController.theme else {return}
         themeManager.applyTheme(theme: theme)
-        ThemesViewController.delegate?.updateTheme()
+        delegate?.updateTheme()
     }
     
     private func setupNavigationController() {
