@@ -10,6 +10,7 @@
 		51F2E3ACC11BDBF8F7A4402D /* Pods_MessageApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04605BCCF771EE84E838351A /* Pods_MessageApp.framework */; };
 		FA44E9AD28F813BC00F319E3 /* AlertPresenterCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9AC28F813BC00F319E3 /* AlertPresenterCondition.swift */; };
 		FA44E9B028F8171300F319E3 /* ProfileDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9AF28F8171300F319E3 /* ProfileDataModel.swift */; };
+		FA44E9B228F83A7200F319E3 /* MessagesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9B128F83A7200F319E3 /* MessagesPresenter.swift */; };
 		FA56457E28F467E400F6964C /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56457D28F467E400F6964C /* Router.swift */; };
 		FA56458028F468F100F6964C /* AssemblyBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56457F28F468F100F6964C /* AssemblyBuilder.swift */; };
 		FA56458328F46C5B00F6964C /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56458228F46C5B00F6964C /* FirestoreManager.swift */; };
@@ -52,6 +53,7 @@
 		572294F6644A64DF8E01F9A6 /* Pods-MessageApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessageApp.release.xcconfig"; path = "Target Support Files/Pods-MessageApp/Pods-MessageApp.release.xcconfig"; sourceTree = "<group>"; };
 		FA44E9AC28F813BC00F319E3 /* AlertPresenterCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterCondition.swift; sourceTree = "<group>"; };
 		FA44E9AF28F8171300F319E3 /* ProfileDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDataModel.swift; sourceTree = "<group>"; };
+		FA44E9B128F83A7200F319E3 /* MessagesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesPresenter.swift; sourceTree = "<group>"; };
 		FA56457D28F467E400F6964C /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		FA56457F28F468F100F6964C /* AssemblyBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblyBuilder.swift; sourceTree = "<group>"; };
 		FA56458228F46C5B00F6964C /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
@@ -131,10 +133,13 @@
 		FA56457C28F4667700F6964C /* Presentaion Layer */ = {
 			isa = PBXGroup;
 			children = (
-				FA56459328F5C75000F6964C /* Presenters */,
 				FA56457D28F467E400F6964C /* Router.swift */,
 				FA56457F28F468F100F6964C /* AssemblyBuilder.swift */,
+				FA56459328F5C75000F6964C /* Presenters */,
 				FAA1A84628EC5CA600ED9954 /* ConversatoinListScreen */,
+				FAA1A84428EC5C7E00ED9954 /* ProfileScreen */,
+				FAA1A84828EC5CCD00ED9954 /* ConversationScreen */,
+				FAA1A84A28EC5CED00ED9954 /* ThemeScreen */,
 			);
 			path = "Presentaion Layer";
 			sourceTree = "<group>";
@@ -238,9 +243,9 @@
 		FAA1A84828EC5CCD00ED9954 /* ConversationScreen */ = {
 			isa = PBXGroup;
 			children = (
-				FAD69E0328E1F119006208BA /* ConversationViewController.swift */,
-				FAA1A84928EC5CE500ED9954 /* Views */,
 				FAA1A84C28EC5D4000ED9954 /* Models */,
+				FAA1A84928EC5CE500ED9954 /* Views */,
+				FA44E9B128F83A7200F319E3 /* MessagesPresenter.swift */,
 			);
 			path = ConversationScreen;
 			sourceTree = "<group>";
@@ -248,6 +253,7 @@
 		FAA1A84928EC5CE500ED9954 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FAD69E0328E1F119006208BA /* ConversationViewController.swift */,
 				FAD69E0528E1F131006208BA /* ConversationTableViewCell.swift */,
 			);
 			path = Views;
@@ -295,9 +301,6 @@
 				FAD2C78A28DCA88B00B3CE3F /* AppDelegate.swift */,
 				FA56457C28F4667700F6964C /* Presentaion Layer */,
 				FA56458128F46BCB00F6964C /* Service Layer */,
-				FAA1A84428EC5C7E00ED9954 /* ProfileScreen */,
-				FAA1A84828EC5CCD00ED9954 /* ConversationScreen */,
-				FAA1A84A28EC5CED00ED9954 /* ThemeScreen */,
 				FAD2C7A428E0AB2C00B3CE3F /* Helpers */,
 				FAD2C79828DCA89200B3CE3F /* Info.plist */,
 				FAEF79D228EF350D00705B08 /* GoogleService-Info.plist */,
@@ -462,6 +465,7 @@
 				FA56458E28F5A37F00F6964C /* ResultState.swift in Sources */,
 				FAD2C78F28DCA88B00B3CE3F /* ProfileViewController.swift in Sources */,
 				FA56458A28F4757500F6964C /* ChannelModel.swift in Sources */,
+				FA44E9B228F83A7200F319E3 /* MessagesPresenter.swift in Sources */,
 				FAD2C78B28DCA88B00B3CE3F /* AppDelegate.swift in Sources */,
 				FA56458028F468F100F6964C /* AssemblyBuilder.swift in Sources */,
 				FA56457E28F467E400F6964C /* Router.swift in Sources */,

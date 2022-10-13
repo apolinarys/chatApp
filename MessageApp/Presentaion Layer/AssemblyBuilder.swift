@@ -33,12 +33,11 @@ struct AssemblyBuilder: IAssemblyBuilder {
     
     func createProfileModule(router: IRouter) -> UIViewController {
         let vc = ProfileViewController()
-        let view = ProfileView()
         let storageManager = StorageManager()
-        let presenter = ProfilePresenter(view: view,
+        let presenter = ProfilePresenter(vc: vc,
                                          router: router,
                                          storageManager: storageManager)
-        view.presenter = presenter
+        vc.presenter = presenter
         return vc
     }
 }

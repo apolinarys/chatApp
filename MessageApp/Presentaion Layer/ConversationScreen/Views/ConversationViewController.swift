@@ -7,7 +7,11 @@
 
 import UIKit
 
-final class ConversationViewController: UIViewController, UITextViewDelegate {
+protocol IMessageView: UIViewController {
+    
+}
+
+final class ConversationViewController: UIViewController, UITextViewDelegate, IMessageView {
     
     private lazy var tableView = UITableView(frame: CGRect.zero)
     private let theme = ThemeManager.currentTheme()

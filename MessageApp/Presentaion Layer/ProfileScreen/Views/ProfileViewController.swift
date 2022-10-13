@@ -8,24 +8,49 @@
 import UIKit
 
 protocol IProfileViewController: UIViewController {
-    var profileView: IProfileView {get}
+    var profileView: IProfileView {get set}
+    func saveButtonPressed()
 }
 
 final class ProfileViewController: UIViewController, IProfileViewController {
     
-    private(set) lazy var profileView: IProfileView = ProfileView(frame: CGRect.zero, vc: self)
+    private let nameFile = "nameFile.txt"
+    private let bioFile = "bioFile.txt"
+    private let locationFile = "locationFile.txt"
+    
+    lazy var profileView: IProfileView = ProfileView(frame: CGRect.zero)
     private let theme = ThemeManager.currentTheme()
+    var profileData: ProfileData?
+    var presenter: IProfilePresenter?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         addSubviews()
         setupConstraints()
+        addButtonActions()
+        presenter?.loadData()
         view.backgroundColor = theme.mainColor
     }
     
     private func addSubviews() {
         view.addSubview(profileView)
+    }
+    
+    private func addButtonActions() {
+        profileView.saveButton.addTarget(self, action: #selector(saveButtonPressed), for: UIControl.Event.touchUpInside)
+    }
+    
+    @objc func saveButtonPressed() {
+        print("pressed")
+        profileView.saveButton.isUserInteractionEnabled = false
+        profileView.cancelButton.isUserInteractionEnabled = false
+        let data = [
+            (profileView.nameTextField, profileData?.name, nameFile),
+            (profileView.bioTextField, profileData?.bio, bioFile),
+            (profileView.locationTextField, profileData?.location, locationFile)
+        ]
+        presenter?.saveData(data: data)
     }
     
     private func setupConstraints() {

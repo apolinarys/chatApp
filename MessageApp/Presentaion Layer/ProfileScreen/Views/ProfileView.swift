@@ -11,15 +11,21 @@ protocol IProfileView: UIView {
     var theme: Theme? {get set}
     var vc: UIViewController? {get}
     var profileImageView: UIImageView {get}
+    var editButton: UIButton {get}
+    var saveButton: UIButton {get}
+    var cancelButton: UIButton {get}
+    var nameTextField: UITextField {get}
+    var bioTextField: UITextField {get}
+    var locationTextField: UITextField {get}
     
     func showActivityIndicator()
     func hideActivityIndicator()
     func hideSavingButtons()
-    func saveButtonPressed()
     func updateData(data: ProfileData?)
 }
 
 final class ProfileView: UIView, UITextFieldDelegate, IProfileView {
+    
     
     private let nameFile = "nameFile.txt"
     private let bioFile = "bioFile.txt"
@@ -28,7 +34,6 @@ final class ProfileView: UIView, UITextFieldDelegate, IProfileView {
     var theme: Theme?
     private let profileViewElements = ProfileViewElements(theme: ThemeManager.currentTheme())
     var profileData: ProfileData?
-    var presenter: IProfilePresenter?
     
     private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -67,17 +72,17 @@ final class ProfileView: UIView, UITextFieldDelegate, IProfileView {
         return imageView
     }()
     
-    private lazy var editButton = profileViewElements.createButton(text: "edit")
+    lazy var editButton = profileViewElements.createButton(text: "edit")
     
-    private lazy var nameTextField = profileViewElements.createTextField(text: "Name", delegate: self)
+    lazy var nameTextField = profileViewElements.createTextField(text: "Name", delegate: self)
     
-    private lazy var bioTextField = profileViewElements.createTextField(text: "bio", delegate: self)
+    lazy var bioTextField = profileViewElements.createTextField(text: "bio", delegate: self)
     
-    private lazy var locationTextField = profileViewElements.createTextField(text: "Location", delegate: self)
+    lazy var locationTextField = profileViewElements.createTextField(text: "Location", delegate: self)
     
-    private lazy var saveButton = profileViewElements.createButton(text: "Save")
+    lazy var saveButton = profileViewElements.createButton(text: "Save")
     
-    private lazy var cancelButton = profileViewElements.createButton(text: "Cancel")
+    lazy var cancelButton = profileViewElements.createButton(text: "Cancel")
     
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView()
@@ -95,7 +100,6 @@ final class ProfileView: UIView, UITextFieldDelegate, IProfileView {
         hideSavingButtons()
         createDismissGesture()
         createButtonsActions()
-        presenter?.loadData()
     }
     
     required init?(coder: NSCoder) {
@@ -105,7 +109,6 @@ final class ProfileView: UIView, UITextFieldDelegate, IProfileView {
     private func createButtonsActions() {
         editButton.isUserInteractionEnabled = true
         editButton.addTarget(self, action: #selector(editPressed), for: UIControl.Event.touchUpInside)
-        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: UIControl.Event.touchUpInside)
         cancelButton.addTarget(self, action: #selector(cancelPressed), for: UIControl.Event.touchUpInside)
     }
     
@@ -248,17 +251,6 @@ final class ProfileView: UIView, UITextFieldDelegate, IProfileView {
         nameTextField.text = profileData?.name
         bioTextField.text = profileData?.bio
         locationTextField.text = profileData?.location
-    }
-    
-    @objc func saveButtonPressed() {
-        saveButton.isUserInteractionEnabled = false
-        cancelButton.isUserInteractionEnabled = false
-        let data = [
-            (nameTextField, profileData?.name, nameFile),
-            (bioTextField, profileData?.bio, bioFile),
-            (locationTextField, profileData?.location, locationFile)
-        ]
-        presenter?.saveData(data: data)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

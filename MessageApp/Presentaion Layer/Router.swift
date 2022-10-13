@@ -31,7 +31,7 @@ struct Router: IRouter {
     
     func presentProfile() {
         let profileViewController = assemblyBuilder.createProfileModule(router: self)
-        let previousVC = ConversationListViewController()
+        guard let previousVC = navigationController.viewControllers.last else { return }
         previousVC.present(profileViewController, animated: true)
     }
 }
