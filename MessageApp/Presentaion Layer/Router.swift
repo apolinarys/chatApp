@@ -10,6 +10,7 @@ import UIKit
 protocol IRouter{
     func initialViewController()
     func presentMessages(channelID: String, channelName: String)
+    func presentProfile()
 }
 
 struct Router: IRouter {
@@ -26,5 +27,11 @@ struct Router: IRouter {
         let conversationViewController = assemblyBuilder.createMessagesModule(channelName: channelName,
                                                                               channelId: channelID)
         navigationController.pushViewController(conversationViewController, animated: true)
+    }
+    
+    func presentProfile() {
+        let profileViewController = assemblyBuilder.createProfileModule(router: self)
+        let previousVC = ConversationListViewController()
+        previousVC.present(profileViewController, animated: true)
     }
 }

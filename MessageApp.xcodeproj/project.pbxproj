@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		51F2E3ACC11BDBF8F7A4402D /* Pods_MessageApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04605BCCF771EE84E838351A /* Pods_MessageApp.framework */; };
+		FA44E9AD28F813BC00F319E3 /* AlertPresenterCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9AC28F813BC00F319E3 /* AlertPresenterCondition.swift */; };
+		FA44E9B028F8171300F319E3 /* ProfileDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9AF28F8171300F319E3 /* ProfileDataModel.swift */; };
 		FA56457E28F467E400F6964C /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56457D28F467E400F6964C /* Router.swift */; };
 		FA56458028F468F100F6964C /* AssemblyBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56457F28F468F100F6964C /* AssemblyBuilder.swift */; };
 		FA56458328F46C5B00F6964C /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56458228F46C5B00F6964C /* FirestoreManager.swift */; };
@@ -16,8 +18,13 @@
 		FA56458A28F4757500F6964C /* ChannelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56458928F4757500F6964C /* ChannelModel.swift */; };
 		FA56458C28F5A36200F6964C /* ChannelResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56458B28F5A36100F6964C /* ChannelResult.swift */; };
 		FA56458E28F5A37F00F6964C /* ResultState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56458D28F5A37F00F6964C /* ResultState.swift */; };
+		FA56459528F5C8E700F6964C /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56459428F5C8E700F6964C /* ProfilePresenter.swift */; };
+		FA56459828F5C9DF00F6964C /* MessagesListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56459728F5C9DF00F6964C /* MessagesListener.swift */; };
+		FA56459A28F5CA0200F6964C /* MessageResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56459928F5CA0200F6964C /* MessageResult.swift */; };
+		FA56459C28F5CB5000F6964C /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56459B28F5CB5000F6964C /* StorageManager.swift */; };
+		FA56459E28F5D2FF00F6964C /* StorageManagerResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56459D28F5D2FF00F6964C /* StorageManagerResult.swift */; };
+		FA5645A028F5D7B800F6964C /* ProfileViewElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56459F28F5D7B800F6964C /* ProfileViewElements.swift */; };
 		FAA1A84328EC306C00ED9954 /* ThemeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1A84228EC306C00ED9954 /* ThemeButton.swift */; };
-		FAA1A86328EDA9A700ED9954 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1A86228EDA9A600ED9954 /* DataManager.swift */; };
 		FAA1A86828EEFE7000ED9954 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1A86728EEFE7000ED9954 /* AlertPresenter.swift */; };
 		FAD2C78B28DCA88B00B3CE3F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2C78A28DCA88B00B3CE3F /* AppDelegate.swift */; };
 		FAD2C78F28DCA88B00B3CE3F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD2C78E28DCA88B00B3CE3F /* ProfileViewController.swift */; };
@@ -43,6 +50,8 @@
 		04605BCCF771EE84E838351A /* Pods_MessageApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MessageApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		11D6A99F2CCAE8C42D190552 /* Pods-MessageApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessageApp.debug.xcconfig"; path = "Target Support Files/Pods-MessageApp/Pods-MessageApp.debug.xcconfig"; sourceTree = "<group>"; };
 		572294F6644A64DF8E01F9A6 /* Pods-MessageApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessageApp.release.xcconfig"; path = "Target Support Files/Pods-MessageApp/Pods-MessageApp.release.xcconfig"; sourceTree = "<group>"; };
+		FA44E9AC28F813BC00F319E3 /* AlertPresenterCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterCondition.swift; sourceTree = "<group>"; };
+		FA44E9AF28F8171300F319E3 /* ProfileDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDataModel.swift; sourceTree = "<group>"; };
 		FA56457D28F467E400F6964C /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		FA56457F28F468F100F6964C /* AssemblyBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblyBuilder.swift; sourceTree = "<group>"; };
 		FA56458228F46C5B00F6964C /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
@@ -51,8 +60,13 @@
 		FA56458928F4757500F6964C /* ChannelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelModel.swift; sourceTree = "<group>"; };
 		FA56458B28F5A36100F6964C /* ChannelResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelResult.swift; sourceTree = "<group>"; };
 		FA56458D28F5A37F00F6964C /* ResultState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultState.swift; sourceTree = "<group>"; };
+		FA56459428F5C8E700F6964C /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
+		FA56459728F5C9DF00F6964C /* MessagesListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesListener.swift; sourceTree = "<group>"; };
+		FA56459928F5CA0200F6964C /* MessageResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageResult.swift; sourceTree = "<group>"; };
+		FA56459B28F5CB5000F6964C /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		FA56459D28F5D2FF00F6964C /* StorageManagerResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManagerResult.swift; sourceTree = "<group>"; };
+		FA56459F28F5D7B800F6964C /* ProfileViewElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewElements.swift; sourceTree = "<group>"; };
 		FAA1A84228EC306C00ED9954 /* ThemeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeButton.swift; sourceTree = "<group>"; };
-		FAA1A86228EDA9A600ED9954 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		FAA1A86728EEFE7000ED9954 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		FAD2C78728DCA88B00B3CE3F /* MessageApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MessageApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAD2C78A28DCA88B00B3CE3F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -105,6 +119,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		FA44E9AE28F816FC00F319E3 /* StorageManager */ = {
+			isa = PBXGroup;
+			children = (
+				FA56459B28F5CB5000F6964C /* StorageManager.swift */,
+				FA56459D28F5D2FF00F6964C /* StorageManagerResult.swift */,
+			);
+			path = StorageManager;
+			sourceTree = "<group>";
+		};
 		FA56457C28F4667700F6964C /* Presentaion Layer */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +144,7 @@
 			children = (
 				FA56459228F5C73300F6964C /* FirestoreManager */,
 				FA56458828F472CE00F6964C /* ListenerService */,
+				FA44E9AE28F816FC00F319E3 /* StorageManager */,
 			);
 			path = "Service Layer";
 			sourceTree = "<group>";
@@ -128,6 +152,7 @@
 		FA56458828F472CE00F6964C /* ListenerService */ = {
 			isa = PBXGroup;
 			children = (
+				FA56459628F5C9A800F6964C /* MessagesListener */,
 				FA56459128F5C70B00F6964C /* ChannelsListener */,
 				FA56458D28F5A37F00F6964C /* ResultState.swift */,
 			);
@@ -157,16 +182,26 @@
 			isa = PBXGroup;
 			children = (
 				FAA1A86728EEFE7000ED9954 /* AlertPresenter.swift */,
+				FA44E9AC28F813BC00F319E3 /* AlertPresenterCondition.swift */,
 			);
 			path = Presenters;
+			sourceTree = "<group>";
+		};
+		FA56459628F5C9A800F6964C /* MessagesListener */ = {
+			isa = PBXGroup;
+			children = (
+				FA56459728F5C9DF00F6964C /* MessagesListener.swift */,
+				FA56459928F5CA0200F6964C /* MessageResult.swift */,
+			);
+			path = MessagesListener;
 			sourceTree = "<group>";
 		};
 		FAA1A84428EC5C7E00ED9954 /* ProfileScreen */ = {
 			isa = PBXGroup;
 			children = (
-				FAD2C78E28DCA88B00B3CE3F /* ProfileViewController.swift */,
-				FAA1A86428EED93600ED9954 /* Models */,
+				FA44E9AF28F8171300F319E3 /* ProfileDataModel.swift */,
 				FAA1A84528EC5C9A00ED9954 /* Views */,
+				FA56459428F5C8E700F6964C /* ProfilePresenter.swift */,
 			);
 			path = ProfileScreen;
 			sourceTree = "<group>";
@@ -174,7 +209,9 @@
 		FAA1A84528EC5C9A00ED9954 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FAD2C78E28DCA88B00B3CE3F /* ProfileViewController.swift */,
 				FAD2C7A028DDE46D00B3CE3F /* ProfileView.swift */,
+				FA56459F28F5D7B800F6964C /* ProfileViewElements.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -192,8 +229,8 @@
 		FAA1A84728EC5CBD00ED9954 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				FAD69DFC28E1BB95006208BA /* ConversationListTableViewCell.swift */,
 				FAD69DFA28E0B200006208BA /* ConversationListViewController.swift */,
+				FAD69DFC28E1BB95006208BA /* ConversationListTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -230,14 +267,6 @@
 			isa = PBXGroup;
 			children = (
 				FAEF79D628F02D8900705B08 /* MessagesListManager.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		FAA1A86428EED93600ED9954 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				FAA1A86228EDA9A600ED9954 /* DataManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -422,9 +451,10 @@
 				FAD69DFD28E1BB95006208BA /* ConversationListTableViewCell.swift in Sources */,
 				FAEF79D928F02F8400705B08 /* Constants.swift in Sources */,
 				FAEF79D728F02D8900705B08 /* MessagesListManager.swift in Sources */,
-				FAA1A86328EDA9A700ED9954 /* DataManager.swift in Sources */,
+				FA44E9AD28F813BC00F319E3 /* AlertPresenterCondition.swift in Sources */,
 				FAD69DFB28E0B200006208BA /* ConversationListViewController.swift in Sources */,
 				FAD2C7A128DDE46E00B3CE3F /* ProfileView.swift in Sources */,
+				FA44E9B028F8171300F319E3 /* ProfileDataModel.swift in Sources */,
 				FA56458528F46E3D00F6964C /* ConversationListPresenter.swift in Sources */,
 				FAD69E0428E1F119006208BA /* ConversationViewController.swift in Sources */,
 				FAA1A86828EEFE7000ED9954 /* AlertPresenter.swift in Sources */,
@@ -438,11 +468,17 @@
 				FAD69E1228E5CB39006208BA /* AllertControllerPresenter.swift in Sources */,
 				FAEF79D528F02ABE00705B08 /* IDCreator.swift in Sources */,
 				FAD69E0B28E44B62006208BA /* ThemesViewController.swift in Sources */,
+				FA56459828F5C9DF00F6964C /* MessagesListener.swift in Sources */,
 				FAD2C7A328E0AB2100B3CE3F /* Logger.swift in Sources */,
 				FAD69E0628E1F131006208BA /* ConversationTableViewCell.swift in Sources */,
 				FAD69E1428E5DBB4006208BA /* ThemeManager.swift in Sources */,
 				FA56458C28F5A36200F6964C /* ChannelResult.swift in Sources */,
+				FA56459A28F5CA0200F6964C /* MessageResult.swift in Sources */,
+				FA56459528F5C8E700F6964C /* ProfilePresenter.swift in Sources */,
+				FA56459E28F5D2FF00F6964C /* StorageManagerResult.swift in Sources */,
+				FA5645A028F5D7B800F6964C /* ProfileViewElements.swift in Sources */,
 				FAA1A84328EC306C00ED9954 /* ThemeButton.swift in Sources */,
+				FA56459C28F5CB5000F6964C /* StorageManager.swift in Sources */,
 				FA56458328F46C5B00F6964C /* FirestoreManager.swift in Sources */,
 				FA56458728F4728D00F6964C /* ChannelsListener.swift in Sources */,
 			);

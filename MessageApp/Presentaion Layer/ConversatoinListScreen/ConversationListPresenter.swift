@@ -9,13 +9,14 @@ import UIKit
 
 protocol IConversationListPresenter {
     func onViewDidLoad()
-    func addNewChannel(name: String)
+    func addNewChannel()
     func presentMessages(channelID: String, channelName: String)
+    func presentProfile()
 }
 
 struct ConversationListPresenter: IConversationListPresenter {
     
-    weak var view: ConversationListViewController?
+    weak var view: IConversationView?
     let firestoreManager: IFirestoreManager
     let router: IRouter
     let listenerService: IChannelsListener
@@ -43,11 +44,18 @@ struct ConversationListPresenter: IConversationListPresenter {
         view?.theme = ThemeManager.currentTheme()
     }
     
-    func addNewChannel(name: String) {
-        firestoreManager.saveChannel(name: name)
+    func addNewChannel() {
+        let alertPresenter = AlertPresenter(vc: view)
+        alertPresenter.showNewChannelAlert { name in
+            firestoreManager.saveChannel(name: name)
+        }
     }
     
     func presentMessages(channelID: String, channelName: String) {
         router.presentMessages(channelID: channelID, channelName: channelName)
+    }
+    
+    func presentProfile() {
+        router.presentProfile()
     }
 }

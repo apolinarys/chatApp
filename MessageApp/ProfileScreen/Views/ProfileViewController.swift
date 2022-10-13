@@ -7,9 +7,13 @@
 
 import UIKit
 
-final class ProfileViewController: UIViewController {
+protocol IProfileViewController: UIViewController {
+    var profileView: IProfileView {get}
+}
+
+final class ProfileViewController: UIViewController, IProfileViewController {
     
-    private lazy var profileView = ProfileView(frame: CGRect.zero, vc: self)
+    private(set) lazy var profileView: IProfileView = ProfileView(frame: CGRect.zero, vc: self)
     private let theme = ThemeManager.currentTheme()
     
     override func viewDidLoad() {

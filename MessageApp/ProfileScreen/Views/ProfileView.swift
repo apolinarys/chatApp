@@ -7,16 +7,28 @@
 
 import UIKit
 
-final class ProfileView: UIView, UITextFieldDelegate {
+protocol IProfileView: UIView {
+    var theme: Theme? {get set}
+    var vc: UIViewController? {get}
+    var profileImageView: UIImageView {get}
+    
+    func showActivityIndicator()
+    func hideActivityIndicator()
+    func hideSavingButtons()
+    func saveButtonPressed()
+    func updateData(data: ProfileData?)
+}
+
+final class ProfileView: UIView, UITextFieldDelegate, IProfileView {
     
     private let nameFile = "nameFile.txt"
     private let bioFile = "bioFile.txt"
     private let locationFile = "locationFile.txt"
-    private let queue = DispatchQueue(label: "ru.apolinarys.serial", qos: DispatchQoS.background)
-    private let dataManager = DataManager()
     
-    private let theme = ThemeManager.currentTheme()
+    var theme: Theme?
+    private let profileViewElements = ProfileViewElements(theme: ThemeManager.currentTheme())
     var profileData: ProfileData?
+    var presenter: IProfilePresenter?
     
     private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -55,75 +67,17 @@ final class ProfileView: UIView, UITextFieldDelegate {
         return imageView
     }()
     
-    private lazy var editButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = theme.incomingMessageColor
-        button.setTitle("Edit", for: UIControl.State.normal)
-        button.setTitleColor(theme.textColor, for: UIControl.State.normal)
-        button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(editPressed), for: UIControl.Event.touchUpInside)
-        return button
-    }()
+    private lazy var editButton = profileViewElements.createButton(text: "edit")
     
-    private lazy var nameTextField: UITextField = {
-       let field = UITextField()
-        field.placeholder = "Name"
-        field.textAlignment = .center
-        field.adjustsFontSizeToFitWidth = true
-        field.delegate = self
-        field.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.heavy)
-        field.isUserInteractionEnabled = false
-        field.autocapitalizationType = .words
-        field.textColor = theme.textColor
-        field.translatesAutoresizingMaskIntoConstraints = false
-        return field
-    }()
+    private lazy var nameTextField = profileViewElements.createTextField(text: "Name", delegate: self)
     
-    private lazy var bioTextField: UITextField = {
-        let field = UITextField()
-        field.placeholder = "bio"
-        field.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular)
-        field.delegate = self
-        field.isUserInteractionEnabled = false
-        field.textColor = theme.textColor
-        field.translatesAutoresizingMaskIntoConstraints = false
-         return field
-    }()
+    private lazy var bioTextField = profileViewElements.createTextField(text: "bio", delegate: self)
     
-    private lazy var locationTextField: UITextField = {
-        let field = UITextField()
-        field.placeholder = "Location"
-        field.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular)
-        field.delegate = self
-        field.isUserInteractionEnabled = false
-        field.textColor = theme.textColor
-        field.translatesAutoresizingMaskIntoConstraints = false
-         return field
-    }()
+    private lazy var locationTextField = profileViewElements.createTextField(text: "Location", delegate: self)
     
-    private lazy var saveButton: UIButton = {
-       let button = UIButton()
-        button.backgroundColor = theme.incomingMessageColor
-        button.setTitle("Save", for: .normal)
-        button.setTitleColor(theme.textColor, for: .normal)
-        button.layer.cornerRadius = 10
-        button.isUserInteractionEnabled = false
-        button.addTarget(self, action: #selector(saveButtonPressed), for: UIControl.Event.touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private lazy var saveButton = profileViewElements.createButton(text: "Save")
     
-    private lazy var cancelButton: UIButton = {
-        let button = UIButton()
-         button.backgroundColor = theme.incomingMessageColor
-         button.setTitle("Cancel", for: .normal)
-         button.setTitleColor(theme.textColor, for: .normal)
-         button.layer.cornerRadius = 10
-         button.addTarget(self, action: #selector(cancelPressed), for: UIControl.Event.touchUpInside)
-         button.translatesAutoresizingMaskIntoConstraints = false
-         return button
-    }()
+    private lazy var cancelButton = profileViewElements.createButton(text: "Cancel")
     
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView()
@@ -133,24 +87,31 @@ final class ProfileView: UIView, UITextFieldDelegate {
     
     weak var vc: UIViewController?
     
-    init(frame: CGRect, vc: UIViewController) {
-        self.vc = vc
+    override init(frame: CGRect) {
         super.init(frame: CGRect.zero)
-        self.backgroundColor = theme.mainColor
+        self.backgroundColor = theme?.mainColor
         addSubviews()
         setupConstraints()
         hideSavingButtons()
         createDismissGesture()
-        dataManager.loadData{[weak self] profileData in
-            self?.updateData(data: profileData)
-        }
+        createButtonsActions()
+        presenter?.loadData()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func createButtonsActions() {
+        editButton.isUserInteractionEnabled = true
+        editButton.addTarget(self, action: #selector(editPressed), for: UIControl.Event.touchUpInside)
+        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: UIControl.Event.touchUpInside)
+        cancelButton.addTarget(self, action: #selector(cancelPressed), for: UIControl.Event.touchUpInside)
+    }
+    
     private func setupConstraints() {
+        let cancelButtonConstraints = createConstraintsForButtons(button: cancelButton, anchor: self.trailingAnchor)
+        let saveButtonConstraints = createConstraintsForButtons(button: saveButton, anchor: self.leadingAnchor)
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: self.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
@@ -189,20 +150,19 @@ final class ProfileView: UIView, UITextFieldDelegate {
             editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
             editButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
             
-            saveButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
-            saveButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.46),
-            saveButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-            saveButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
-            
-            cancelButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
-            cancelButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.46),
-            cancelButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-            cancelButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
-            
             activityIndicatorView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
             activityIndicatorView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
             activityIndicatorView.bottomAnchor.constraint(equalTo: cancelButton.topAnchor, constant: -20)
-        ])
+        ] + saveButtonConstraints + cancelButtonConstraints)
+    }
+    
+    private func createConstraintsForButtons(button: UIButton, anchor: NSLayoutXAxisAnchor) -> [NSLayoutConstraint] {
+        return [
+            button.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.46),
+            button.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            button.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
+            anchor == self.trailingAnchor ? button.trailingAnchor.constraint(equalTo: anchor, constant: -8) : button.leadingAnchor.constraint(equalTo: anchor, constant: 8)
+        ]
     }
     
     private func addSubviews() {
@@ -246,18 +206,14 @@ final class ProfileView: UIView, UITextFieldDelegate {
         self.hideActivityIndicator()
     }
     
-    private func showActivityIndicator() {
-        DispatchQueue.main.async {
-            self.activityIndicatorView.isHidden = false
-            self.activityIndicatorView.startAnimating()
-        }
+    func showActivityIndicator() {
+        self.activityIndicatorView.isHidden = false
+        self.activityIndicatorView.startAnimating()
     }
     
-    private func hideActivityIndicator() {
-        DispatchQueue.main.async {
-            self.activityIndicatorView.stopAnimating()
-            self.activityIndicatorView.isHidden = true
-        }
+    func hideActivityIndicator() {
+        self.activityIndicatorView.stopAnimating()
+        self.activityIndicatorView.isHidden = true
     }
     
     @objc private func editPressed() {
@@ -294,7 +250,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         locationTextField.text = profileData?.location
     }
     
-    @objc private func saveButtonPressed() {
+    @objc func saveButtonPressed() {
         saveButton.isUserInteractionEnabled = false
         cancelButton.isUserInteractionEnabled = false
         let data = [
@@ -302,15 +258,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
             (bioTextField, profileData?.bio, bioFile),
             (locationTextField, profileData?.location, locationFile)
         ]
-        dataManager.saveData(data: data,
-                             hideSavingButtons: hideSavingButtons,
-                             vc: vc,
-                             activityIndicator: activityIndicatorView)
-        profileData = ProfileData(name: nameTextField.text,
-                                  bio: bioTextField.text,
-                                  location: locationTextField.text)
-        let alertPresenter = AlertPresenter(vc: vc)
-        alertPresenter.showSuccessAlert(hideSavingButtons: hideSavingButtons)
+        presenter?.saveData(data: data)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -345,7 +293,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         locationTextField.isUserInteractionEnabled = true
     }
     
-    private func hideSavingButtons() {
+    func hideSavingButtons() {
         cancelButton.isHidden = true
         saveButton.isHidden = true
         cancelButton.isHidden = true

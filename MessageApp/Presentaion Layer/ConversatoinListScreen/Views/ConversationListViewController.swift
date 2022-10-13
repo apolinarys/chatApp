@@ -8,7 +8,12 @@
 import UIKit
 import FirebaseFirestore
 
-final class ConversationListViewController: UIViewController {
+protocol IConversationView: UIViewController {
+    var theme: Theme? {get set}
+    func updateUI(channels: [Channel])
+}
+
+final class ConversationListViewController: UIViewController, IConversationView {
     
     private let tableView = UITableView(frame: CGRect.zero)
     private var channels: [Channel] = []
@@ -64,8 +69,7 @@ extension ConversationListViewController {
     }
     
     @objc private func showProfile() {
-        let profileVC = ProfileViewController()
-        present(profileVC, animated: true)
+        presenter?.presentProfile()
     }
     
     @objc private func showSettings() {
@@ -74,9 +78,7 @@ extension ConversationListViewController {
     }
     
     @objc private func addChannel() {
-        let alertPresenter = AlertPresenter(vc: self)
-        guard let presenter = presenter else {return}
-        alertPresenter.showNewChannelAlert(addChannel: presenter.addNewChannel(name:))
+        presenter?.addNewChannel()
     }
     
 }

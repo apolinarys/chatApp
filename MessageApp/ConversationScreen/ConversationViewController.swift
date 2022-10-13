@@ -12,6 +12,7 @@ final class ConversationViewController: UIViewController, UITextViewDelegate {
     private lazy var tableView = UITableView(frame: CGRect.zero)
     private let theme = ThemeManager.currentTheme()
     private var messagesListManager = MessagesListManager()
+    private let storageManager = StorageManager()
     var chatId: String?
     var messages: [Message] = []
     
@@ -90,10 +91,13 @@ final class ConversationViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc private func sendMessage() {
-        let dataManager = DataManager()
-        
-        dataManager.loadData { [weak self] profileData in
-            self?.updateData(data: profileData)
+        storageManager.loadData { [weak self] result in
+            switch result {
+            case .started:
+                print("")
+            case .finished(let profileData):
+                self?.updateData(data: profileData)
+            }
         }
     }
 
@@ -164,7 +168,7 @@ extension ConversationViewController {
         if let senderId = UIDevice.current.identifierForVendor?.uuidString {
             print(senderId)
             if let data = data, let chatId = chatId {
-                messagesListManager.addMessage(content: textView.text, created: Date(), senderId: senderId, senderName: data.name ?? "", chatId: chatId)
+                messagesListManager.addMessage(content: textView.text, created: Date(), senderId: senderId, senderName: data.name, chatId: chatId)
             }
         }
     }

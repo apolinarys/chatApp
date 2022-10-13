@@ -30,4 +30,15 @@ struct AssemblyBuilder: IAssemblyBuilder {
         let view = ConversationViewController()
         return view
     }
+    
+    func createProfileModule(router: IRouter) -> UIViewController {
+        let vc = ProfileViewController()
+        let view = ProfileView()
+        let storageManager = StorageManager()
+        let presenter = ProfilePresenter(view: view,
+                                         router: router,
+                                         storageManager: storageManager)
+        view.presenter = presenter
+        return vc
+    }
 }

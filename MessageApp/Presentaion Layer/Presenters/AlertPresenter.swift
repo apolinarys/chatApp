@@ -11,38 +11,30 @@ struct AlertPresenter {
     
     var vc: UIViewController?
     
-    func showSuccessAlert(hideSavingButtons: @escaping () -> Void) {
+    func showSuccessAlert(completion: @escaping () -> Void) {
         let alert = UIAlertController(title: "Data was successfully saved",
                                       message: "",
                                       preferredStyle: UIAlertController.Style.alert)
         
         let action = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default) { action in
-            
-            hideSavingButtons()
+            completion()
         }
         alert.addAction(action)
         
         vc?.present(alert, animated: true, completion: nil)
     }
     
-    func showErrorAlert(hideSavingButtons: @escaping () -> Void,
-                        buttonAction: @escaping (_ data: [(UITextField, String?, String)],
-                                                 _ hideSavingButtons: @escaping () -> Void,
-                                                 _ vc: UIViewController?,
-                                                 _ activityIndicator: UIActivityIndicatorView) -> Void,
-                        data: [(UITextField, String?, String)],
-                        activityIndicator: UIActivityIndicatorView) {
+    func showErrorAlert(completion: @escaping (AlertPresenterCondition) -> Void) {
         let alert = UIAlertController(title: "Error saving data",
                                       message: "Cannot save data",
                                       preferredStyle: UIAlertController.Style.alert)
         
         let okAction = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default) { action in
-            
-            hideSavingButtons()
+            completion(AlertPresenterCondition.okActionPressed)
         }
         
         let repeatAction = UIAlertAction(title: "Repeat", style: UIAlertAction.Style.default) { action in
-            buttonAction(data, hideSavingButtons, vc, activityIndicator)
+            completion(AlertPresenterCondition.repeatActionPressed)
         }
         alert.addAction(repeatAction)
         alert.addAction(okAction)
