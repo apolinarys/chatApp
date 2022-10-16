@@ -11,6 +11,7 @@ protocol IAssemblyBuilder{
     func createConversationListModule(router: IRouter) -> UIViewController
     func createMessagesModule(chatName: String, chatId: String, router: IRouter) -> UIViewController
     func createProfileModule(router: IRouter) -> UIViewController
+    func createThemesModule(router: IRouter) -> UIViewController
 }
 
 struct AssemblyBuilder: IAssemblyBuilder {
@@ -48,10 +49,20 @@ struct AssemblyBuilder: IAssemblyBuilder {
     func createProfileModule(router: IRouter) -> UIViewController {
         let vc = ProfileViewController()
         let storageManager = StorageManager()
+        let alertControllerPresenter = AllertControllerPresenter()
         let presenter = ProfilePresenter(vc: vc,
                                          router: router,
-                                         storageManager: storageManager)
+                                         storageManager: storageManager,
+                                         allertControllerPresenter: alertControllerPresenter)
         vc.presenter = presenter
         return vc
+    }
+    
+    func createThemesModule(router: IRouter) -> UIViewController {
+        let view = ThemesViewController()
+        let themeManager = ThemeManager.shared
+        let presenter = ThemesPresenter(router: router, themeManager: themeManager)
+        view.presenter = presenter
+        return view
     }
 }

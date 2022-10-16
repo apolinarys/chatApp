@@ -92,35 +92,9 @@ final class ConversationViewController: UIViewController, UITextViewDelegate, IM
     }
     
     @objc private func sendMessage() {
-        print(#function)
-        presenter?.sendMessage(message: textView.text)
+        guard let message = presenter?.checkMessage(text: textView.text) else {return}
+        presenter?.sendMessage(message: message)
         textView.text = ""
-    }
-
-    private func setupConstraints() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            messageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            messageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            messageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            messageView.topAnchor.constraint(equalTo: textView.topAnchor, constant: -16),
-            
-            sendMessageButton.trailingAnchor.constraint(equalTo: messageView.trailingAnchor, constant: -8),
-            sendMessageButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-            sendMessageButton.heightAnchor.constraint(equalToConstant: 40),
-            sendMessageButton.widthAnchor.constraint(equalTo: sendMessageButton.heightAnchor),
-            
-            textView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            textView.trailingAnchor.constraint(equalTo: sendMessageButton.leadingAnchor, constant: -8),
-            textView.leadingAnchor.constraint(equalTo: messageView.leadingAnchor, constant: 8),
-            
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: messageView.topAnchor)
-        ])
-        textView.frame.size.height = 30
     }
     
     private func setupTableView() {
@@ -151,8 +125,10 @@ extension ConversationViewController {
     
     func updateUI(messages: [Message]) {
         print("Updating UI")
-        self.messages += messages
+        self.messages = messages
         tableView.reloadData()
+        let indexPath = IndexPath(row: messages.count - 1, section: 0)
+        tableView.scrollToRow(at: indexPath, at: .top, animated: false)
     }
 }
 
@@ -169,5 +145,36 @@ extension ConversationViewController {
     
     @objc private func keyboardWillHide(notification: NSNotification) {
         additionalSafeAreaInsets.bottom = CGFloat.zero
+    }
+}
+
+//MARK: - Constraints
+
+extension ConversationViewController {
+    
+    private func setupConstraints() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            messageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            messageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            messageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            messageView.topAnchor.constraint(equalTo: textView.topAnchor, constant: -16),
+            
+            sendMessageButton.trailingAnchor.constraint(equalTo: messageView.trailingAnchor, constant: -8),
+            sendMessageButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+            sendMessageButton.heightAnchor.constraint(equalToConstant: 40),
+            sendMessageButton.widthAnchor.constraint(equalTo: sendMessageButton.heightAnchor),
+            
+            textView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            textView.trailingAnchor.constraint(equalTo: sendMessageButton.leadingAnchor, constant: -8),
+            textView.leadingAnchor.constraint(equalTo: messageView.leadingAnchor, constant: 8),
+            
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: messageView.topAnchor)
+        ])
+        textView.frame.size.height = 30
     }
 }

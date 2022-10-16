@@ -12,6 +12,7 @@
 		FA44E9B028F8171300F319E3 /* ProfileDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9AF28F8171300F319E3 /* ProfileDataModel.swift */; };
 		FA44E9B228F83A7200F319E3 /* MessagesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9B128F83A7200F319E3 /* MessagesPresenter.swift */; };
 		FA44E9B428F84F7800F319E3 /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9B328F84F7800F319E3 /* MessageModel.swift */; };
+		FA44E9B828F96FAD00F319E3 /* ThemesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9B728F96FAD00F319E3 /* ThemesPresenter.swift */; };
 		FA56457E28F467E400F6964C /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56457D28F467E400F6964C /* Router.swift */; };
 		FA56458028F468F100F6964C /* AssemblyBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56457F28F468F100F6964C /* AssemblyBuilder.swift */; };
 		FA56458328F46C5B00F6964C /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56458228F46C5B00F6964C /* FirestoreManager.swift */; };
@@ -54,6 +55,7 @@
 		FA44E9AF28F8171300F319E3 /* ProfileDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDataModel.swift; sourceTree = "<group>"; };
 		FA44E9B128F83A7200F319E3 /* MessagesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesPresenter.swift; sourceTree = "<group>"; };
 		FA44E9B328F84F7800F319E3 /* MessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
+		FA44E9B728F96FAD00F319E3 /* ThemesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesPresenter.swift; sourceTree = "<group>"; };
 		FA56457D28F467E400F6964C /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		FA56457F28F468F100F6964C /* AssemblyBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblyBuilder.swift; sourceTree = "<group>"; };
 		FA56458228F46C5B00F6964C /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
@@ -259,9 +261,9 @@
 		FAA1A84A28EC5CED00ED9954 /* ThemeScreen */ = {
 			isa = PBXGroup;
 			children = (
-				FAD69E0A28E44B62006208BA /* ThemesViewController.swift */,
+				FAD69E1328E5DBB3006208BA /* ThemeManager.swift */,
 				FAD69DFE28E1BBA7006208BA /* Views */,
-				FAD69E0228E1ED7D006208BA /* Models */,
+				FA44E9B728F96FAD00F319E3 /* ThemesPresenter.swift */,
 			);
 			path = ThemeScreen;
 			sourceTree = "<group>";
@@ -311,18 +313,11 @@
 		FAD69DFE28E1BBA7006208BA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FAD69E0A28E44B62006208BA /* ThemesViewController.swift */,
 				FAD69E0D28E44C1D006208BA /* ThemesView.swift */,
 				FAA1A84228EC306C00ED9954 /* ThemeButton.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		FAD69E0228E1ED7D006208BA /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				FAD69E1328E5DBB3006208BA /* ThemeManager.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -458,6 +453,7 @@
 				FA56458028F468F100F6964C /* AssemblyBuilder.swift in Sources */,
 				FA56457E28F467E400F6964C /* Router.swift in Sources */,
 				FAD69E1228E5CB39006208BA /* AllertControllerPresenter.swift in Sources */,
+				FA44E9B828F96FAD00F319E3 /* ThemesPresenter.swift in Sources */,
 				FAEF79D528F02ABE00705B08 /* IDCreator.swift in Sources */,
 				FAD69E0B28E44B62006208BA /* ThemesViewController.swift in Sources */,
 				FA56459828F5C9DF00F6964C /* MessagesListener.swift in Sources */,

@@ -14,7 +14,7 @@ protocol IChannelsListener {
 
 struct ChannelsListener: IChannelsListener {
     
-    private let reference = Firestore.firestore().collection("channels")
+    private let reference = Firestore.firestore().collection("channels").order(by: Constants.Channels.lastActivity, descending: true)
     
     func addChannelsListener(completion: @escaping (Result<ChannelResult, Error>) -> Void) -> ListenerRegistration? {
         return reference.addSnapshotListener { snapshot, error in

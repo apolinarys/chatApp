@@ -10,6 +10,7 @@ import UIKit
 protocol IProfilePresenter {
     func saveData(data: [(UITextField, String?, String)])
     func loadData()
+    func presentAlert()
 }
 
 struct ProfilePresenter: IProfilePresenter {
@@ -17,6 +18,7 @@ struct ProfilePresenter: IProfilePresenter {
     weak var vc: IProfileViewController?
     let router: IRouter
     let storageManager: StorageManager
+    let allertControllerPresenter: AllertControllerPresenter
     
     func onViewDidLoad() {
         vc?.profileView.theme = ThemeManager.currentTheme()
@@ -65,7 +67,6 @@ struct ProfilePresenter: IProfilePresenter {
     
     func presentAlert() {
         guard let vc = vc else {return}
-        let allertControllerPresenter = AllertControllerPresenter()
         allertControllerPresenter.presentAlert(vc: vc)
     }
 }

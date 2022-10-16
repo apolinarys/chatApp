@@ -81,6 +81,11 @@ final class ThemeButton: UIView {
     @objc private func addAction() {
         action()
     }
+}
+
+//MARK: - Constraints
+
+extension ThemeButton {
     
     private func setupConstraints() {
         

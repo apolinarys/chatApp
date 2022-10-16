@@ -7,10 +7,12 @@
 
 import UIKit
 import FirebaseFirestore
+import SwipeCellKit
 
 protocol IConversationView: UIViewController {
     var theme: Theme? {get set}
     func updateUI(channels: [Channel])
+    func channelDeleted(channel: Channel)
 }
 
 final class ConversationListViewController: UIViewController, IConversationView {
@@ -28,14 +30,13 @@ final class ConversationListViewController: UIViewController, IConversationView 
         presenter?.onViewDidLoad()
         view.backgroundColor = theme?.mainColor
         customizeNavigationBar()
-        themeViewController.delegate = self
         setUpCells()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
         navigationController?.navigationBar.tintColor = UIColor.gray
-        tableView.reloadData()
+        updateTheme()
     }
 }
 
@@ -74,8 +75,7 @@ extension ConversationListViewController {
     }
     
     @objc private func showSettings() {
-        let settingsVC = ThemesViewController()
-        navigationController?.pushViewController(settingsVC, animated: true)
+        presenter?.presentTemesScreen()
     }
     
     @objc private func addChannel() {
@@ -117,6 +117,39 @@ extension ConversationListViewController: UITableViewDataSource {
     }
 }
 
+//MARK: - UITableViewDelegate
+
+extension ConversationListViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter?.presentMessages(chatID: channels[indexPath.row].identifier, chatName: channels[indexPath.row].name)
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    func updateTheme() {
+        theme = ThemeManager.currentTheme()
+        tableView.reloadData()
+    }
+}
+
+//MARK: - UpdateUI
+
+extension ConversationListViewController {
+    func updateUI(channels: [Channel]) {
+        self.channels += channels
+        tableView.reloadData()
+    }
+    
+    func channelDeleted(channel: Channel) {
+        for i in 0...channels.count - 1 {
+            if channels[i].identifier == channel.identifier {
+                channels.remove(at: i)
+            }
+        }
+        tableView.reloadData()
+    }
+}
+
 //MARK: - Constraints
 
 extension ConversationListViewController {
@@ -130,33 +163,5 @@ extension ConversationListViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-    }
-}
-
-//MARK: - UITableViewDelegate
-
-extension ConversationListViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter?.presentMessages(chatID: channels[indexPath.row].identifier, chatName: channels[indexPath.row].name)
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-}
-
-//MARK: - ThemesViewDelegate
-
-extension ConversationListViewController: ThemeViewDelegate {
-    func updateTheme() {
-        theme = ThemeManager.currentTheme()
-        tableView.reloadData()
-    }
-}
-
-//MARK: - UpdateUI
-
-extension ConversationListViewController {
-    func updateUI(channels: [Channel]) {
-        self.channels += channels
-        tableView.reloadData()
     }
 }

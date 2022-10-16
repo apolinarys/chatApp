@@ -10,6 +10,7 @@ import UIKit
 protocol IMessagesPresenter {
     func sendMessage(message: String)
     func onViewDidLoad()
+    func checkMessage(text: String) -> String?
 }
 
 class MessagesPresenter: IMessagesPresenter {
@@ -58,11 +59,18 @@ class MessagesPresenter: IMessagesPresenter {
         }
     }
     
+    func checkMessage(text: String) -> String? {
+        let trimmedMessage = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmedMessage.isEmpty {
+            return nil
+        }
+        return trimmedMessage
+    }
+    
     private func addSnapshotListener() {
         messagesListener.addMessagesListener { [weak self] result in
             switch result {
             case .success(let messages):
-                print(222)
                 self?.view?.updateUI(messages: messages)
             case .failure(let error):
                 Logger.shared.message(error.localizedDescription)

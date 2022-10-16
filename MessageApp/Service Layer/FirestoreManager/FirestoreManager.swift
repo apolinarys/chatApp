@@ -11,6 +11,7 @@ import FirebaseFirestore
 protocol IFirestoreManager {
     func saveChannel(name: String)
     func saveMessage(chatId: String, message: String, senderName: String)
+    func deleteChannel(chatId: String)
 }
 
 struct FirestoreManager: IFirestoreManager {
@@ -29,6 +30,19 @@ struct FirestoreManager: IFirestoreManager {
         ])
     }
     
+    func deleteChannel(chatId: String) {
+        reference.getDocuments { snapshot, error in
+            guard let documents = snapshot?.documents else {return}
+            documents.forEach {
+                let data = $0.data()
+                let identifier = data[Constants.Channels.identifier] as? String
+                if identifier == chatId {
+                    reference.document($0.documentID).delete()
+                }
+            }
+        }
+    }
+    
     func saveMessage(chatId: String, message: String, senderName: String) {
         reference.getDocuments { snapshot, error in
             guard let documents = snapshot?.documents else {return}
@@ -38,6 +52,10 @@ struct FirestoreManager: IFirestoreManager {
                 if identifier == chatId {
                     let created = Date()
                     let senderId = UIDevice.current.identifierForVendor?.uuidString
+                    reference.document($0.documentID).updateData([
+                        Constants.Channels.lastActivity: created,
+                        Constants.Channels.lastMessage: message
+                    ])
                     reference.document($0.documentID).collection("messages").addDocument(data: [
                         Constants.Messages.content: message,
                         Constants.Messages.created: created,

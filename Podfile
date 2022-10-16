@@ -8,5 +8,6 @@ target 'MessageApp' do
   # Pods for MessageApp
 pod 'Firebase/Auth' 
 pod 'Firebase/Firestore' 
+pod 'SwipeCellKit'
 
 end

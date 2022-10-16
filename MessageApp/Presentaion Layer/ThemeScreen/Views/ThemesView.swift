@@ -7,14 +7,6 @@
 
 import UIKit
 
-protocol ThemeViewDelegate: AnyObject {
-    func updateTheme()
-}
-
-protocol ThemesPickerDelegate {
-    func applyTheme(theme: Theme)
-}
-
 final class ThemesView: UIStackView {
     
     private let borderColor = CGColor(red: 45/255, green: 113/255, blue: 239/255, alpha: 1)
@@ -49,6 +41,11 @@ final class ThemesView: UIStackView {
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+//MARK: - Buttons Actions
+
+extension ThemesView {
     
     private func classicTapped() {
         classicView.button.layer.borderWidth = 4
@@ -76,6 +73,11 @@ final class ThemesView: UIStackView {
         
         ThemesViewController.theme = Theme.Night
     }
+}
+
+//MARK: - Setting up view
+
+extension ThemesView {
     
     private func setupBorder() {
         let theme = ThemeManager.currentTheme()

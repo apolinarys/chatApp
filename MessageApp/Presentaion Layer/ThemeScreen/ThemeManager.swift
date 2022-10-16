@@ -92,7 +92,7 @@ enum ButtonTheme: Int {
     }
 }
 
-final class ThemeManager: ThemesPickerDelegate {
+final class ThemeManager {
     
     static let shared = ThemeManager()
     

@@ -53,6 +53,11 @@ final class ConversationListTableViewCell: UITableViewCell {
         dateLabel.text = nil
         messageLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
     }
+}
+
+//MARK: - Adding data
+
+extension ConversationListTableViewCell {
     
     func set(data: Channel, theme: Theme) {
         nameLabel.text = data.name

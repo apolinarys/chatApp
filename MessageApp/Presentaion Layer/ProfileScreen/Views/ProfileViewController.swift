@@ -36,9 +36,38 @@ final class ProfileViewController: UIViewController, IProfileViewController {
     private func addSubviews() {
         view.addSubview(profileView)
     }
+}
+
+//MARK: - UIImagePickerControllerDelegate
+
+extension ProfileViewController: UIImagePickerControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            profileView.profileImageView.contentMode = .scaleAspectFill
+            profileView.profileImageView.image = pickedImage
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
+    }
+}
+
+//MARK: - Buttons
+
+extension ProfileViewController {
     
     private func addButtonActions() {
         profileView.saveButton.addTarget(self, action: #selector(saveButtonPressed), for: UIControl.Event.touchUpInside)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(addProfilePicturePressed))
+        profileView.addPhotoView.addGestureRecognizer(gesture)
+    }
+    
+    @objc private func addProfilePicturePressed() {
+        profileView.showSavingButtons()
+        presenter?.presentAlert()
     }
     
     @objc func saveButtonPressed() {
@@ -52,6 +81,11 @@ final class ProfileViewController: UIViewController, IProfileViewController {
         ]
         presenter?.saveData(data: data)
     }
+}
+
+//MARK: - Constraints
+
+extension ProfileViewController {
     
     private func setupConstraints() {
         profileView.translatesAutoresizingMaskIntoConstraints = false
@@ -61,22 +95,5 @@ final class ProfileViewController: UIViewController, IProfileViewController {
             profileView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             profileView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
         ])
-    }
-}
-
-//MARK: - Extension for UIImagePickerController
-
-extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            profileView.profileImageView.contentMode = .scaleAspectFill
-            profileView.profileImageView.image = pickedImage
-        }
-        self.dismiss(animated: true, completion: nil)
-    }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.dismiss(animated: true, completion: nil)
     }
 }

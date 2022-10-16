@@ -11,6 +11,8 @@ protocol IRouter{
     func initialViewController()
     func presentMessages(chatID: String, chatName: String)
     func presentProfile()
+    func popViewController()
+    func presentThemesScreen()
 }
 
 struct Router: IRouter {
@@ -34,5 +36,14 @@ struct Router: IRouter {
         let profileViewController = assemblyBuilder.createProfileModule(router: self)
         guard let previousVC = navigationController.viewControllers.last else { return }
         previousVC.present(profileViewController, animated: true)
+    }
+    
+    func presentThemesScreen() {
+        let themesViewController = assemblyBuilder.createThemesModule(router: self)
+        navigationController.pushViewController(themesViewController, animated: true)
+    }
+    
+    func popViewController() {
+        navigationController.popViewController(animated: true)
     }
 }

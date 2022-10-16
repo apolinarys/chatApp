@@ -17,11 +17,13 @@ protocol IProfileView: UIView {
     var nameTextField: UITextField {get}
     var bioTextField: UITextField {get}
     var locationTextField: UITextField {get}
+    var addPhotoView: UIView {get}
     
     func showActivityIndicator()
     func hideActivityIndicator()
     func hideSavingButtons()
     func updateData(data: ProfileData?)
+    func showSavingButtons()
 }
 
 final class ProfileView: UIView, UITextFieldDelegate, IProfileView {
@@ -59,8 +61,6 @@ final class ProfileView: UIView, UITextFieldDelegate, IProfileView {
         view.backgroundColor = UIColor(red: 63/255, green: 120/255, blue: 240/255, alpha: 1)
         view.layer.cornerRadius = 40
         view.isUserInteractionEnabled = true
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(addProfilePicturePressed))
-        view.addGestureRecognizer(gesture)
         return view
     }()
     
@@ -106,11 +106,161 @@ final class ProfileView: UIView, UITextFieldDelegate, IProfileView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func addSubviews() {
+        addSubview(scrollView)
+        scrollView.addSubview(profileImageView)
+        profileImageView.addSubview(addPhotoView)
+        addPhotoView.addSubview(photoImageView)
+        addSubview(editButton)
+        scrollView.addSubview(nameTextField)
+        scrollView.addSubview(bioTextField)
+        scrollView.addSubview(locationTextField)
+        addSubview(saveButton)
+        addSubview(cancelButton)
+        addSubview(activityIndicatorView)
+    }
+}
+
+//MARK: - Updating data
+
+extension ProfileView {
+    
+    func updateData(data: ProfileData?) {
+        self.showActivityIndicator()
+        self.profileData = data
+        self.nameTextField.text = data?.name
+        self.locationTextField.text = data?.location
+        self.bioTextField.text = data?.bio
+        self.hideActivityIndicator()
+    }
+}
+
+//MARK: - Hiding and showing elements
+
+extension ProfileView {
+    
+    func showActivityIndicator() {
+        self.activityIndicatorView.isHidden = false
+        self.activityIndicatorView.startAnimating()
+    }
+    
+    func hideActivityIndicator() {
+        self.activityIndicatorView.stopAnimating()
+        self.activityIndicatorView.isHidden = true
+    }
+    
+    func showSavingButtons() {
+        editButton.isHidden = true
+        cancelButton.isHidden = false
+        saveButton.isHidden = false
+        cancelButton.isHidden = false
+        nameTextField.isUserInteractionEnabled = true
+        bioTextField.isUserInteractionEnabled = true
+        locationTextField.isUserInteractionEnabled = true
+    }
+    
+    func hideSavingButtons() {
+        cancelButton.isHidden = true
+        saveButton.isHidden = true
+        cancelButton.isHidden = true
+        editButton.isHidden = false
+        nameTextField.isUserInteractionEnabled = false
+        bioTextField.isUserInteractionEnabled = false
+        locationTextField.isUserInteractionEnabled = false
+    }
+}
+
+//MARK: - TextFields
+
+extension ProfileView {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        switch textField {
+        case nameTextField:
+            bioTextField.becomeFirstResponder()
+        case bioTextField:
+            locationTextField.becomeFirstResponder()
+        default:
+            textField.endEditing(true)
+        }
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if nameTextField.text != profileData?.name ||
+            bioTextField.text != profileData?.bio ||
+            locationTextField.text != profileData?.location
+        {
+            saveButton.isUserInteractionEnabled = true
+            cancelButton.isUserInteractionEnabled = true
+        }
+    }
+}
+
+//MARK: - Keyboard
+
+extension ProfileView {
+    
+    private func createDismissGesture() {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.addGestureRecognizer(gesture)
+    }
+    
+    @objc private func dismissKeyboard() {
+        nameTextField.resignFirstResponder()
+        locationTextField.resignFirstResponder()
+        bioTextField.resignFirstResponder()
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        var textField = nameTextField
+        if bioTextField.isFirstResponder {
+            textField = bioTextField
+        } else if locationTextField.isFirstResponder {
+            textField = locationTextField
+        }
+        let userInfo = notification.userInfo!
+        let keyboardFrame: CGRect = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+        let inset = textField.frame.maxY - keyboardFrame.size.height
+        scrollView.contentOffset = CGPoint(x: 0, y: inset)
+        
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentOffset = CGPoint(x: 0, y: 0)
+    }
+}
+
+//MARK: - Buttons Actions
+
+extension ProfileView {
+    
     private func createButtonsActions() {
         editButton.isUserInteractionEnabled = true
         editButton.addTarget(self, action: #selector(editPressed), for: UIControl.Event.touchUpInside)
         cancelButton.addTarget(self, action: #selector(cancelPressed), for: UIControl.Event.touchUpInside)
     }
+    
+    @objc private func editPressed() {
+        showSavingButtons()
+        nameTextField.becomeFirstResponder()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func cancelPressed() {
+        hideSavingButtons()
+        
+        nameTextField.text = profileData?.name
+        bioTextField.text = profileData?.bio
+        locationTextField.text = profileData?.location
+    }
+}
+
+//MARK: - Constraints
+
+extension ProfileView {
     
     private func setupConstraints() {
         let cancelButtonConstraints = createConstraintsForButtons(button: cancelButton, anchor: self.trailingAnchor)
@@ -167,132 +317,4 @@ final class ProfileView: UIView, UITextFieldDelegate, IProfileView {
             anchor == self.trailingAnchor ? button.trailingAnchor.constraint(equalTo: anchor, constant: -8) : button.leadingAnchor.constraint(equalTo: anchor, constant: 8)
         ]
     }
-    
-    private func addSubviews() {
-        addSubview(scrollView)
-        scrollView.addSubview(profileImageView)
-        profileImageView.addSubview(addPhotoView)
-        addPhotoView.addSubview(photoImageView)
-        addSubview(editButton)
-        scrollView.addSubview(nameTextField)
-        scrollView.addSubview(bioTextField)
-        scrollView.addSubview(locationTextField)
-        addSubview(saveButton)
-        addSubview(cancelButton)
-        addSubview(activityIndicatorView)
-    }
-    
-    private func createDismissGesture() {
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        self.addGestureRecognizer(gesture)
-    }
-    
-    @objc private func dismissKeyboard() {
-        nameTextField.resignFirstResponder()
-        locationTextField.resignFirstResponder()
-        bioTextField.resignFirstResponder()
-    }
-    
-    @objc private func addProfilePicturePressed() {
-        showSavingButtons()
-        guard let vc = vc else {return}
-        let allertControllerPresenter = AllertControllerPresenter()
-        allertControllerPresenter.presentAlert(vc: vc)
-    }
-    
-    func updateData(data: ProfileData?) {
-        self.showActivityIndicator()
-        self.profileData = data
-        self.nameTextField.text = data?.name
-        self.locationTextField.text = data?.location
-        self.bioTextField.text = data?.bio
-        self.hideActivityIndicator()
-    }
-    
-    func showActivityIndicator() {
-        self.activityIndicatorView.isHidden = false
-        self.activityIndicatorView.startAnimating()
-    }
-    
-    func hideActivityIndicator() {
-        self.activityIndicatorView.stopAnimating()
-        self.activityIndicatorView.isHidden = true
-    }
-    
-    @objc private func editPressed() {
-        showSavingButtons()
-        nameTextField.becomeFirstResponder()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc private func keyboardWillShow(notification: NSNotification) {
-        var textField = nameTextField
-        if bioTextField.isFirstResponder {
-            textField = bioTextField
-        } else if locationTextField.isFirstResponder {
-            textField = locationTextField
-        }
-        let userInfo = notification.userInfo!
-        let keyboardFrame: CGRect = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
-        let inset = textField.frame.maxY - keyboardFrame.size.height
-        scrollView.contentOffset = CGPoint(x: 0, y: inset)
-        
-    }
-    
-    @objc private func keyboardWillHide(notification: NSNotification) {
-        scrollView.contentOffset = CGPoint(x: 0, y: 0)
-    }
-    
-    @objc func cancelPressed() {
-        hideSavingButtons()
-        
-        nameTextField.text = profileData?.name
-        bioTextField.text = profileData?.bio
-        locationTextField.text = profileData?.location
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        switch textField {
-        case nameTextField:
-            bioTextField.becomeFirstResponder()
-        case bioTextField:
-            locationTextField.becomeFirstResponder()
-        default:
-            textField.endEditing(true)
-        }
-        return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if nameTextField.text != profileData?.name ||
-            bioTextField.text != profileData?.bio ||
-            locationTextField.text != profileData?.location
-        {
-            saveButton.isUserInteractionEnabled = true
-            cancelButton.isUserInteractionEnabled = true
-        }
-    }
-    
-    private func showSavingButtons() {
-        editButton.isHidden = true
-        cancelButton.isHidden = false
-        saveButton.isHidden = false
-        cancelButton.isHidden = false
-        nameTextField.isUserInteractionEnabled = true
-        bioTextField.isUserInteractionEnabled = true
-        locationTextField.isUserInteractionEnabled = true
-    }
-    
-    func hideSavingButtons() {
-        cancelButton.isHidden = true
-        saveButton.isHidden = true
-        cancelButton.isHidden = true
-        editButton.isHidden = false
-        nameTextField.isUserInteractionEnabled = false
-        bioTextField.isUserInteractionEnabled = false
-        locationTextField.isUserInteractionEnabled = false
-    }
-
 }

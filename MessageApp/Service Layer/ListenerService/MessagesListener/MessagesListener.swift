@@ -20,16 +20,18 @@ struct MessagesListener: IMessagesListener {
     
     func addMessagesListener(completion: @escaping (Result<[Message], Error>) -> Void) {
         loadDocumentID { documentId in
-            reference.document(documentId).collection("messages").addSnapshotListener { snapshot, error in
+            reference.document(documentId).collection("messages").order(by: Constants.Messages.created).addSnapshotListener { snapshot, error in
                 guard let snapshot = snapshot else {
                     guard let err = error else { return }
                     completion(.failure(err))
                     return
                 }
-                snapshot.documentChanges.forEach { changes in
-                    guard let message = Message(document: changes.document) else {return}
-                    completion(.success([message]))
+                var messages: [Message] = []
+                snapshot.documents.forEach { document in
+                    guard let message = Message(document: document) else {return}
+                    messages.append(message)
                 }
+                completion(.success(messages))
             }
         }
     }

@@ -9,13 +9,10 @@ import UIKit
 
 final class ThemesViewController: UIViewController {
     
-    weak var delegate: ThemeViewDelegate?
-    
     private lazy var themesView = ThemesView(frame: CGRect.zero)
+    var presenter: IThemePresenter?
     
     static var theme: Theme? = nil
-    
-    private let themeManager = ThemeManager.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,17 +22,11 @@ final class ThemesViewController: UIViewController {
         addSubviews()
         setupConstraints()
     }
-    
-    @objc private func cancelPressed() {
-        navigationController?.popViewController(animated: true)
-    }
-    
-    @objc private func backPressed() {
-        navigationController?.popViewController(animated: true)
-        guard let theme = ThemesViewController.theme else {return}
-        themeManager.applyTheme(theme: theme)
-        delegate?.updateTheme()
-    }
+}
+
+//MARK: - NavigationController
+
+extension ThemesViewController {
     
     private func setupNavigationController() {
         navigationItem.title = "Settings"
@@ -46,6 +37,19 @@ final class ThemesViewController: UIViewController {
         navigationItem.rightBarButtonItem = cancelButton
         navigationItem.leftBarButtonItem = backButton
     }
+    
+    @objc private func cancelPressed() {
+        presenter?.cancelPressed()
+    }
+    
+    @objc private func backPressed() {
+        presenter?.backPressed()
+    }
+}
+
+//MARK: - Constraints
+
+extension ThemesViewController {
     
     private func addSubviews() {
         view.addSubview(themesView)

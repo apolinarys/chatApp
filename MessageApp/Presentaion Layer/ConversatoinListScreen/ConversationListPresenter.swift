@@ -13,6 +13,8 @@ protocol IConversationListPresenter {
     func addNewChannel()
     func presentMessages(chatID: String, chatName: String)
     func presentProfile()
+    func presentTemesScreen()
+    func deletChannel(channelId: String)
 }
 
 class ConversationListPresenter: IConversationListPresenter {
@@ -44,7 +46,7 @@ class ConversationListPresenter: IConversationListPresenter {
                 case .modified:
                     return
                 case .removed:
-                    return
+                    self?.view?.channelDeleted(channel: channelResult.channels[0])
                 }
             case .failure(let error):
                 Logger.shared.message(error.localizedDescription)
@@ -64,11 +66,19 @@ class ConversationListPresenter: IConversationListPresenter {
         }
     }
     
+    func deletChannel(channelId: String) {
+        firestoreManager.deleteChannel(chatId: channelId)
+    }
+    
     func presentMessages(chatID: String, chatName: String) {
         router.presentMessages(chatID: chatID, chatName: chatName)
     }
     
     func presentProfile() {
         router.presentProfile()
+    }
+    
+    func presentTemesScreen() {
+        router.presentThemesScreen()
     }
 }
