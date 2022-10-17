@@ -7,26 +7,7 @@
 
 import UIKit
 
-protocol IProfileView: UIView {
-    var theme: Theme? {get set}
-    var vc: UIViewController? {get}
-    var profileImageView: UIImageView {get}
-    var editButton: UIButton {get}
-    var saveButton: UIButton {get}
-    var cancelButton: UIButton {get}
-    var nameTextField: UITextField {get}
-    var bioTextField: UITextField {get}
-    var locationTextField: UITextField {get}
-    var addPhotoView: UIView {get}
-    
-    func showActivityIndicator()
-    func hideActivityIndicator()
-    func hideSavingButtons()
-    func updateData(data: ProfileData?)
-    func showSavingButtons()
-}
-
-final class ProfileView: UIView, UITextFieldDelegate, IProfileView {
+final class ProfileView: UIView, UITextFieldDelegate {
     
     
     private let nameFile = "nameFile.txt"

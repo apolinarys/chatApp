@@ -17,14 +17,14 @@ protocol IConversationListPresenter {
     func deletChannel(channelId: String)
 }
 
-class ConversationListPresenter: IConversationListPresenter {
+final class ConversationListPresenter: IConversationListPresenter {
     
     private var listener: ListenerRegistration?
     
-    weak var view: IConversationView?
-    let firestoreManager: IFirestoreManager
-    let router: IRouter
-    let listenerService: IChannelsListener
+    private weak var view: IConversationView?
+    private let firestoreManager: IFirestoreManager
+    private let router: IRouter
+    private let listenerService: IChannelsListener
     
     init(view: IConversationView,
          firestoreManager: IFirestoreManager,
@@ -60,8 +60,8 @@ class ConversationListPresenter: IConversationListPresenter {
     }
     
     func addNewChannel() {
-        let alertPresenter = AlertPresenter(vc: view)
-        alertPresenter.showNewChannelAlert { [weak self] name in
+        let alertPresenter = AlertPresenter()
+        alertPresenter.showNewChannelAlert(vc: view) { [weak self] name in
             self?.firestoreManager.saveChannel(name: name)
         }
     }

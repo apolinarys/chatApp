@@ -14,7 +14,7 @@
 		FA44E9B428F84F7800F319E3 /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9B328F84F7800F319E3 /* MessageModel.swift */; };
 		FA44E9B828F96FAD00F319E3 /* ThemesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9B728F96FAD00F319E3 /* ThemesPresenter.swift */; };
 		FA56457E28F467E400F6964C /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56457D28F467E400F6964C /* Router.swift */; };
-		FA56458028F468F100F6964C /* AssemblyBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56457F28F468F100F6964C /* AssemblyBuilder.swift */; };
+		FA56458028F468F100F6964C /* IViewControllersFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56457F28F468F100F6964C /* IViewControllersFactory.swift */; };
 		FA56458328F46C5B00F6964C /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56458228F46C5B00F6964C /* FirestoreManager.swift */; };
 		FA56458528F46E3D00F6964C /* ConversationListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56458428F46E3D00F6964C /* ConversationListPresenter.swift */; };
 		FA56458728F4728D00F6964C /* ChannelsListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56458628F4728D00F6964C /* ChannelsListener.swift */; };
@@ -57,7 +57,7 @@
 		FA44E9B328F84F7800F319E3 /* MessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		FA44E9B728F96FAD00F319E3 /* ThemesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesPresenter.swift; sourceTree = "<group>"; };
 		FA56457D28F467E400F6964C /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
-		FA56457F28F468F100F6964C /* AssemblyBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssemblyBuilder.swift; sourceTree = "<group>"; };
+		FA56457F28F468F100F6964C /* IViewControllersFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IViewControllersFactory.swift; sourceTree = "<group>"; };
 		FA56458228F46C5B00F6964C /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
 		FA56458428F46E3D00F6964C /* ConversationListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationListPresenter.swift; sourceTree = "<group>"; };
 		FA56458628F4728D00F6964C /* ChannelsListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsListener.swift; sourceTree = "<group>"; };
@@ -134,7 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				FA56457D28F467E400F6964C /* Router.swift */,
-				FA56457F28F468F100F6964C /* AssemblyBuilder.swift */,
+				FA56457F28F468F100F6964C /* IViewControllersFactory.swift */,
 				FA56459328F5C75000F6964C /* Presenters */,
 				FAA1A84628EC5CA600ED9954 /* ConversatoinListScreen */,
 				FAA1A84428EC5C7E00ED9954 /* ProfileScreen */,
@@ -450,7 +450,7 @@
 				FA56458A28F4757500F6964C /* ChannelModel.swift in Sources */,
 				FA44E9B228F83A7200F319E3 /* MessagesPresenter.swift in Sources */,
 				FAD2C78B28DCA88B00B3CE3F /* AppDelegate.swift in Sources */,
-				FA56458028F468F100F6964C /* AssemblyBuilder.swift in Sources */,
+				FA56458028F468F100F6964C /* IViewControllersFactory.swift in Sources */,
 				FA56457E28F467E400F6964C /* Router.swift in Sources */,
 				FAD69E1228E5CB39006208BA /* AllertControllerPresenter.swift in Sources */,
 				FA44E9B828F96FAD00F319E3 /* ThemesPresenter.swift in Sources */,

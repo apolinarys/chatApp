@@ -15,11 +15,18 @@ protocol IMessageView: UIViewController {
 
 final class ConversationViewController: UIViewController, UITextViewDelegate, IMessageView {
     
-    private lazy var tableView = UITableView(frame: CGRect.zero)
     private let theme = ThemeManager.currentTheme()
     var messages: [Message] = []
     
     var presenter: IMessagesPresenter?
+    
+    lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(ConversationTableViewCell.self, forCellReuseIdentifier: String(describing: ConversationTableViewCell.self))
+        tableView.dataSource = self
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        return tableView
+    }()
     
     private lazy var textView: UITextView = {
         let view = UITextView()
@@ -53,7 +60,6 @@ final class ConversationViewController: UIViewController, UITextViewDelegate, IM
         super.viewDidLoad()
         addSubviews()
         setupConstraints()
-        setupTableView()
         createDismissGesture()
         presenter?.onViewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -92,15 +98,8 @@ final class ConversationViewController: UIViewController, UITextViewDelegate, IM
     }
     
     @objc private func sendMessage() {
-        guard let message = presenter?.checkMessage(text: textView.text) else {return}
-        presenter?.sendMessage(message: message)
+        presenter?.sendMessage(message: textView.text)
         textView.text = ""
-    }
-    
-    private func setupTableView() {
-        tableView.register(ConversationTableViewCell.self, forCellReuseIdentifier: String(describing: ConversationTableViewCell.self))
-        tableView.dataSource = self
-        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
     }
 }
 
@@ -124,11 +123,10 @@ extension ConversationViewController: UITableViewDataSource {
 extension ConversationViewController {
     
     func updateUI(messages: [Message]) {
-        print("Updating UI")
         self.messages = messages
         tableView.reloadData()
         let indexPath = IndexPath(row: messages.count - 1, section: 0)
-        tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+        tableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.top, animated: false)
     }
 }
 

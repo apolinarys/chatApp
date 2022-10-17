@@ -9,9 +9,7 @@ import UIKit
 
 struct AlertPresenter {
     
-    weak var vc: UIViewController?
-    
-    func showSuccessAlert(completion: @escaping () -> Void) {
+    func showSuccessAlert(vc: UIViewController?, completion: @escaping () -> Void) {
         let alert = UIAlertController(title: "Data was successfully saved",
                                       message: "",
                                       preferredStyle: UIAlertController.Style.alert)
@@ -24,7 +22,7 @@ struct AlertPresenter {
         vc?.present(alert, animated: true, completion: nil)
     }
     
-    func showErrorAlert(completion: @escaping (AlertPresenterCondition) -> Void) {
+    func showErrorAlert(vc: UIViewController?, completion: @escaping (AlertPresenterCondition) -> Void) {
         let alert = UIAlertController(title: "Error saving data",
                                       message: "Cannot save data",
                                       preferredStyle: UIAlertController.Style.alert)
@@ -42,20 +40,20 @@ struct AlertPresenter {
         vc?.present(alert, animated: true, completion: nil)
     }
     
-    func showNewChannelAlert(addChannel: @escaping (_ name: String) -> Void) {
+    func showNewChannelAlert(vc: UIViewController?, addChannel: @escaping (_ name: String) -> Void) {
         var textField = UITextField()
         
         let alert = UIAlertController(title: "Add New Channel",
                                       message: "",
                                       preferredStyle: UIAlertController.Style.alert)
         
-        let addAction = UIAlertAction(title: "Add", style: .default) { action in
+        let addAction = UIAlertAction(title: "Add", style: UIAlertAction.Style.default) { action in
             if let text = textField.text {
                 addChannel(text)
             }
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default) { action in
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default) { action in
             alert.dismiss(animated: true)
         }
         
@@ -70,7 +68,7 @@ struct AlertPresenter {
         vc?.present(alert, animated: true, completion: nil)
     }
     
-    func showNoProfileInformationAlert() {
+    func showNoProfileInformationAlert(vc: UIViewController?) {
         let alert = UIAlertController(title: "No profile info",
                                       message: "Add name to your profile",
                                       preferredStyle: UIAlertController.Style.alert)

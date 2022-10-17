@@ -10,10 +10,9 @@ import UIKit
 protocol IMessagesPresenter {
     func sendMessage(message: String)
     func onViewDidLoad()
-    func checkMessage(text: String) -> String?
 }
 
-class MessagesPresenter: IMessagesPresenter {
+final class MessagesPresenter: IMessagesPresenter {
     
     weak var view: IMessageView?
     let router: IRouter
@@ -51,15 +50,16 @@ class MessagesPresenter: IMessagesPresenter {
     func sendMessage(message: String) {
         getSenderName { [weak self] profileData in
             guard let senderName = profileData?.name else {
-                self?.alertPresenter.showNoProfileInformationAlert()
+                self?.alertPresenter.showNoProfileInformationAlert(vc: self?.view)
                 return
             }
+            guard let checkedMessage = self?.checkMessage(text: message) else {return}
             guard let self = self else {return}
-            self.firestoreManager.saveMessage(chatId: self.chatId, message: message, senderName: senderName)
+            self.firestoreManager.saveMessage(chatId: self.chatId, message: checkedMessage, senderName: senderName)
         }
     }
     
-    func checkMessage(text: String) -> String? {
+    private func checkMessage(text: String) -> String? {
         let trimmedMessage = text.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmedMessage.isEmpty {
             return nil
