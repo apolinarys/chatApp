@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,8 +15,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        FirebaseApp.configure()
+        
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = UINavigationController(rootViewController: ConversationListViewController()) 
+        let navigationController = UINavigationController()
+        let assemblyBuilder = ViewControllersFactory()
+        let router = Router(navigationController: navigationController, assemblyBuilder: assemblyBuilder)
+        router.initialViewController()
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         
         return true

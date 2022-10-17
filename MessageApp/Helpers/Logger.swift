@@ -9,12 +9,11 @@ import Foundation
 import UIKit
 
 struct Logger {
+    static let shared = Logger()
     
-    static let choice = false
-    
-    static func printFrame(subject: UIButton) {
-        if choice {
-            print(subject.frame)
-        }
+    func message(_ message: String) {
+        #if DEBUG
+        print(message)
+        #endif
     }
 }
