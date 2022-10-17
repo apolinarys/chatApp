@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseFirestore
+import SwipeCellKit
 
 protocol IConversationView: UIViewController {
     var theme: Theme? {get set}
@@ -111,7 +112,7 @@ extension ConversationListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ConversationListTableViewCell.self)) as? ConversationListTableViewCell
         guard let cell = cell else {return UITableViewCell()}
-        cell.configure(data: channels[indexPath.row], theme: theme ?? Theme.Classic)
+        cell.set(data: channels[indexPath.row], theme: theme ?? Theme.Classic)
         return cell
     }
 }

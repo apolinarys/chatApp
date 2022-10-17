@@ -59,7 +59,7 @@ final class ConversationListTableViewCell: UITableViewCell {
 
 extension ConversationListTableViewCell {
     
-    func configure(data: Channel, theme: Theme) {
+    func set(data: Channel, theme: Theme) {
         nameLabel.text = data.name
         messageLabel.text = data.lastMessage
         if data.lastMessage == nil {

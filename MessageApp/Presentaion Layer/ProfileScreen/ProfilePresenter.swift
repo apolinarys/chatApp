@@ -20,27 +20,31 @@ struct ProfilePresenter: IProfilePresenter {
     let storageManager: StorageManager
     let allertControllerPresenter: AllertControllerPresenter
     
+    func onViewDidLoad() {
+        vc?.profileView.theme = ThemeManager.currentTheme()
+    }
+    
     func saveData(data: [(UITextField, String?, String)]) {
         storageManager.saveData(data: data) { result in
             switch result {
             case .success(let profileResult):
                 switch profileResult {
                 case .started:
-                    vc?.showActivityIndicator()
+                    vc?.profileView.showActivityIndicator()
                 case .finished:
-                    vc?.hideActivityIndicator()
-                    let alertPresenter = AlertPresenter()
-                    alertPresenter.showSuccessAlert(vc: vc) {
-                        vc?.hideSavingButtons()
+                    vc?.profileView.hideActivityIndicator()
+                    let alertPresenter = AlertPresenter(vc: vc)
+                    alertPresenter.showSuccessAlert {
+                        vc?.profileView.hideSavingButtons()
                     }
                 }
             case .failure(let error):
                 Logger.shared.message(error.localizedDescription)
-                let alertPresenter = AlertPresenter()
-                alertPresenter.showErrorAlert(vc: vc) { condition in
+                let alertPresenter = AlertPresenter(vc: vc)
+                alertPresenter.showErrorAlert { condition in
                     switch condition {
                     case .okActionPressed:
-                        vc?.hideSavingButtons()
+                        vc?.profileView.hideSavingButtons()
                     case .repeatActionPressed:
                         vc?.saveButtonPressed()
                     }
@@ -53,10 +57,10 @@ struct ProfilePresenter: IProfilePresenter {
         storageManager.loadData { result in
             switch result {
             case .started:
-                vc?.showActivityIndicator()
+                vc?.profileView.showActivityIndicator()
             case .finished(let profileData):
-                vc?.updateCellData(data: profileData)
-                vc?.hideActivityIndicator()
+                vc?.profileView.updateData(data: profileData)
+                vc?.profileView.hideActivityIndicator()
             }
         }
     }

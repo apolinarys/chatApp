@@ -8,11 +8,8 @@
 import UIKit
 
 protocol IProfileViewController: UIViewController {
+    var profileView: IProfileView {get set}
     func saveButtonPressed()
-    func showActivityIndicator()
-    func hideActivityIndicator()
-    func hideSavingButtons()
-    func updateCellData(data: ProfileData?)
 }
 
 final class ProfileViewController: UIViewController, IProfileViewController {
@@ -21,7 +18,7 @@ final class ProfileViewController: UIViewController, IProfileViewController {
     private let bioFile = "bioFile.txt"
     private let locationFile = "locationFile.txt"
     
-    lazy var profileView = ProfileView(frame: CGRect.zero)
+    lazy var profileView: IProfileView = ProfileView(frame: CGRect.zero)
     private let theme = ThemeManager.currentTheme()
     var profileData: ProfileData?
     var presenter: IProfilePresenter?
@@ -38,27 +35,6 @@ final class ProfileViewController: UIViewController, IProfileViewController {
     
     private func addSubviews() {
         view.addSubview(profileView)
-    }
-}
-
-//MARK: - Cell Methods
-
-extension ProfileViewController {
-    
-    func showActivityIndicator() {
-        profileView.showActivityIndicator()
-    }
-    
-    func hideActivityIndicator() {
-        profileView.hideActivityIndicator()
-    }
-    
-    func hideSavingButtons() {
-        profileView.hideSavingButtons()
-    }
-    
-    func updateCellData(data: ProfileData?) {
-        profileView.updateData(data: data)
     }
 }
 
@@ -95,6 +71,7 @@ extension ProfileViewController {
     }
     
     @objc func saveButtonPressed() {
+        print("pressed")
         profileView.saveButton.isUserInteractionEnabled = false
         profileView.cancelButton.isUserInteractionEnabled = false
         let data = [

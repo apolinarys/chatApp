@@ -18,7 +18,7 @@ protocol IRouter{
 struct Router: IRouter {
     
     let navigationController: UINavigationController
-    let assemblyBuilder: IViewControllersFactory
+    let assemblyBuilder: IAssemblyBuilder
     
     func initialViewController() {
         let conversationListViewController = assemblyBuilder.createConversationListModule(router: self)

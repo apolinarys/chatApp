@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol IViewControllersFactory{
+protocol IAssemblyBuilder{
     func createConversationListModule(router: IRouter) -> UIViewController
     func createMessagesModule(chatName: String, chatId: String, router: IRouter) -> UIViewController
     func createProfileModule(router: IRouter) -> UIViewController
     func createThemesModule(router: IRouter) -> UIViewController
 }
 
-struct ViewControllersFactory: IViewControllersFactory {
+struct AssemblyBuilder: IAssemblyBuilder {
     
     func createConversationListModule(router: IRouter) -> UIViewController {
         let view = ConversationListViewController()
@@ -33,7 +33,7 @@ struct ViewControllersFactory: IViewControllersFactory {
         let firestoreManager = FirestoreManager()
         let messagesListener = MessagesListener(chatId: chatId)
         let storageManager = StorageManager()
-        let alertPresenter = AlertPresenter()
+        let alertPresenter = AlertPresenter(vc: view)
         let presenter = MessagesPresenter(view: view,
                                           router: router,
                                           firestoreManager: firestoreManager,
