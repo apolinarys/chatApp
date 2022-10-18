@@ -65,6 +65,7 @@ extension ConversationListViewController {
             action: #selector(addChannel))
         
         navigationItem.title = "Message App"
+        profileButton.accessibilityIdentifier = "profileButton"
         navigationItem.rightBarButtonItems = [addChannelButton, profileButton]
         navigationItem.leftBarButtonItem = settingsButton
     }

@@ -81,6 +81,7 @@ final class ProfileView: UIView, UITextFieldDelegate {
         hideSavingButtons()
         createDismissGesture()
         createButtonsActions()
+        setupAccessibilityIdentifiers()
     }
     
     required init?(coder: NSCoder) {
@@ -297,5 +298,20 @@ extension ProfileView {
             button.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08),
             anchor == self.trailingAnchor ? button.trailingAnchor.constraint(equalTo: anchor, constant: -8) : button.leadingAnchor.constraint(equalTo: anchor, constant: 8)
         ]
+    }
+}
+
+//MARK: - Accessibility identifiers setup
+
+extension ProfileView {
+    func setupAccessibilityIdentifiers() {
+        self.accessibilityIdentifier = "profileView"
+        profileImageView.accessibilityIdentifier = "profileImageView"
+        editButton.accessibilityIdentifier = "editButton"
+        nameTextField.accessibilityIdentifier = "nameTextField"
+        bioTextField.accessibilityIdentifier = "bioTextField"
+        locationTextField.accessibilityIdentifier = "locationTextField"
+        saveButton.accessibilityIdentifier = "saveButton"
+        cancelButton.accessibilityIdentifier = "cancelButton"
     }
 }

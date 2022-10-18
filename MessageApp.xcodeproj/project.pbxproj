@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		51F2E3ACC11BDBF8F7A4402D /* Pods_MessageApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04605BCCF771EE84E838351A /* Pods_MessageApp.framework */; };
+		606F43A5AEFFAA271172556E /* Pods_MessageAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFD5087E69A19544D19BA8C7 /* Pods_MessageAppTests.framework */; };
 		FA44E9AD28F813BC00F319E3 /* AlertPresenterCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9AC28F813BC00F319E3 /* AlertPresenterCondition.swift */; };
 		FA44E9B028F8171300F319E3 /* ProfileDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9AF28F8171300F319E3 /* ProfileDataModel.swift */; };
 		FA44E9B228F83A7200F319E3 /* MessagesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9B128F83A7200F319E3 /* MessagesPresenter.swift */; };
@@ -17,6 +18,9 @@
 		FA44E9DF28FD9AAD00F319E3 /* OldCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9DE28FD9AAD00F319E3 /* OldCoreDataStack.swift */; };
 		FA44E9E128FDA74D00F319E3 /* NewCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9E028FDA74D00F319E3 /* NewCoreDataStack.swift */; };
 		FA44E9E328FDA9DD00F319E3 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9E228FDA9DD00F319E3 /* CoreDataService.swift */; };
+		FA44E9F228FEE93100F319E3 /* CoreDataServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9F128FEE93100F319E3 /* CoreDataServiceTest.swift */; };
+		FA44E9F428FEEA2000F319E3 /* CoreDataStackMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9F328FEEA2000F319E3 /* CoreDataStackMock.swift */; };
+		FA44E9FC28FEFC3900F319E3 /* ProfileScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9FB28FEFC3900F319E3 /* ProfileScreenUITests.swift */; };
 		FA56457E28F467E400F6964C /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56457D28F467E400F6964C /* Router.swift */; };
 		FA56458028F468F100F6964C /* IViewControllersFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56457F28F468F100F6964C /* IViewControllersFactory.swift */; };
 		FA56458328F46C5B00F6964C /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56458228F46C5B00F6964C /* FirestoreManager.swift */; };
@@ -51,10 +55,30 @@
 		FAEF79D928F02F8400705B08 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEF79D828F02F8400705B08 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		FA44E9EC28FEDE6C00F319E3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FAD2C77F28DCA88A00B3CE3F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FAD2C78628DCA88B00B3CE3F;
+			remoteInfo = MessageApp;
+		};
+		FA44E9FF28FEFC3900F319E3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FAD2C77F28DCA88A00B3CE3F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FAD2C78628DCA88B00B3CE3F;
+			remoteInfo = MessageApp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		04605BCCF771EE84E838351A /* Pods_MessageApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MessageApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		11D6A99F2CCAE8C42D190552 /* Pods-MessageApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessageApp.debug.xcconfig"; path = "Target Support Files/Pods-MessageApp/Pods-MessageApp.debug.xcconfig"; sourceTree = "<group>"; };
+		4C2FD7E7A3A203F83CA8D681 /* Pods-MessageAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessageAppTests.release.xcconfig"; path = "Target Support Files/Pods-MessageAppTests/Pods-MessageAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		572294F6644A64DF8E01F9A6 /* Pods-MessageApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessageApp.release.xcconfig"; path = "Target Support Files/Pods-MessageApp/Pods-MessageApp.release.xcconfig"; sourceTree = "<group>"; };
+		DFD5087E69A19544D19BA8C7 /* Pods_MessageAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MessageAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7CF11FFE63CA13598F8931F /* Pods-MessageAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MessageAppTests.debug.xcconfig"; path = "Target Support Files/Pods-MessageAppTests/Pods-MessageAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FA44E9AC28F813BC00F319E3 /* AlertPresenterCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterCondition.swift; sourceTree = "<group>"; };
 		FA44E9AF28F8171300F319E3 /* ProfileDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDataModel.swift; sourceTree = "<group>"; };
 		FA44E9B128F83A7200F319E3 /* MessagesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesPresenter.swift; sourceTree = "<group>"; };
@@ -64,6 +88,13 @@
 		FA44E9DE28FD9AAD00F319E3 /* OldCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldCoreDataStack.swift; sourceTree = "<group>"; };
 		FA44E9E028FDA74D00F319E3 /* NewCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCoreDataStack.swift; sourceTree = "<group>"; };
 		FA44E9E228FDA9DD00F319E3 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
+		FA44E9E828FEDE6C00F319E3 /* MessageAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MessageAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA44E9F128FEE93100F319E3 /* CoreDataServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataServiceTest.swift; sourceTree = "<group>"; };
+		FA44E9F328FEEA2000F319E3 /* CoreDataStackMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStackMock.swift; sourceTree = "<group>"; };
+		FA44E9F928FEFC3800F319E3 /* MessageAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MessageAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA44E9FB28FEFC3900F319E3 /* ProfileScreenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenUITests.swift; sourceTree = "<group>"; };
+		FA44EA0828FF064700F319E3 /* UITestsPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UITestsPlan.xctestplan; sourceTree = "<group>"; };
+		FA44EA0928FF065E00F319E3 /* UnitTestsPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTestsPlan.xctestplan; sourceTree = "<group>"; };
 		FA56457D28F467E400F6964C /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		FA56457F28F468F100F6964C /* IViewControllersFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IViewControllersFactory.swift; sourceTree = "<group>"; };
 		FA56458228F46C5B00F6964C /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
@@ -101,6 +132,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		FA44E9E528FEDE6C00F319E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				606F43A5AEFFAA271172556E /* Pods_MessageAppTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA44E9F628FEFC3800F319E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FAD2C78428DCA88B00B3CE3F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -117,6 +163,8 @@
 			children = (
 				11D6A99F2CCAE8C42D190552 /* Pods-MessageApp.debug.xcconfig */,
 				572294F6644A64DF8E01F9A6 /* Pods-MessageApp.release.xcconfig */,
+				E7CF11FFE63CA13598F8931F /* Pods-MessageAppTests.debug.xcconfig */,
+				4C2FD7E7A3A203F83CA8D681 /* Pods-MessageAppTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -125,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				04605BCCF771EE84E838351A /* Pods_MessageApp.framework */,
+				DFD5087E69A19544D19BA8C7 /* Pods_MessageAppTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -146,6 +195,56 @@
 				FA44E9DE28FD9AAD00F319E3 /* OldCoreDataStack.swift */,
 			);
 			path = "Core Layer";
+			sourceTree = "<group>";
+		};
+		FA44E9E928FEDE6C00F319E3 /* MessageAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				FA44EA0628FF05CD00F319E3 /* CoreDataService */,
+				FA44EA0528FF05C700F319E3 /* Mocks */,
+			);
+			path = MessageAppTests;
+			sourceTree = "<group>";
+		};
+		FA44E9FA28FEFC3900F319E3 /* MessageAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				FA44EA0428FF05B100F319E3 /* ProfileScreenTests */,
+			);
+			path = MessageAppUITests;
+			sourceTree = "<group>";
+		};
+		FA44EA0428FF05B100F319E3 /* ProfileScreenTests */ = {
+			isa = PBXGroup;
+			children = (
+				FA44E9FB28FEFC3900F319E3 /* ProfileScreenUITests.swift */,
+			);
+			path = ProfileScreenTests;
+			sourceTree = "<group>";
+		};
+		FA44EA0528FF05C700F319E3 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				FA44E9F328FEEA2000F319E3 /* CoreDataStackMock.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		FA44EA0628FF05CD00F319E3 /* CoreDataService */ = {
+			isa = PBXGroup;
+			children = (
+				FA44E9F128FEE93100F319E3 /* CoreDataServiceTest.swift */,
+			);
+			path = CoreDataService;
+			sourceTree = "<group>";
+		};
+		FA44EA0728FF062400F319E3 /* TestPlans */ = {
+			isa = PBXGroup;
+			children = (
+				FA44EA0828FF064700F319E3 /* UITestsPlan.xctestplan */,
+				FA44EA0928FF065E00F319E3 /* UnitTestsPlan.xctestplan */,
+			);
+			path = TestPlans;
 			sourceTree = "<group>";
 		};
 		FA56457C28F4667700F6964C /* Presentaion Layer */ = {
@@ -291,6 +390,9 @@
 			isa = PBXGroup;
 			children = (
 				FAD2C78928DCA88B00B3CE3F /* MessageApp */,
+				FA44E9E928FEDE6C00F319E3 /* MessageAppTests */,
+				FA44E9FA28FEFC3900F319E3 /* MessageAppUITests */,
+				FA44EA0728FF062400F319E3 /* TestPlans */,
 				FAD2C78828DCA88B00B3CE3F /* Products */,
 				4341DA3C3032609FA2DED1EE /* Pods */,
 				A112533D4B69B33790FB1091 /* Frameworks */,
@@ -301,6 +403,8 @@
 			isa = PBXGroup;
 			children = (
 				FAD2C78728DCA88B00B3CE3F /* MessageApp.app */,
+				FA44E9E828FEDE6C00F319E3 /* MessageAppTests.xctest */,
+				FA44E9F928FEFC3800F319E3 /* MessageAppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -343,6 +447,44 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		FA44E9E728FEDE6C00F319E3 /* MessageAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA44E9EE28FEDE6D00F319E3 /* Build configuration list for PBXNativeTarget "MessageAppTests" */;
+			buildPhases = (
+				82475DF32B7DEE4DEF73EFC7 /* [CP] Check Pods Manifest.lock */,
+				FA44E9E428FEDE6C00F319E3 /* Sources */,
+				FA44E9E528FEDE6C00F319E3 /* Frameworks */,
+				FA44E9E628FEDE6C00F319E3 /* Resources */,
+				5CDF8B70509BA9DD85B33674 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FA44E9ED28FEDE6C00F319E3 /* PBXTargetDependency */,
+			);
+			name = MessageAppTests;
+			productName = MessageAppTests;
+			productReference = FA44E9E828FEDE6C00F319E3 /* MessageAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		FA44E9F828FEFC3800F319E3 /* MessageAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA44EA0128FEFC3900F319E3 /* Build configuration list for PBXNativeTarget "MessageAppUITests" */;
+			buildPhases = (
+				FA44E9F528FEFC3800F319E3 /* Sources */,
+				FA44E9F628FEFC3800F319E3 /* Frameworks */,
+				FA44E9F728FEFC3800F319E3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FA44EA0028FEFC3900F319E3 /* PBXTargetDependency */,
+			);
+			name = MessageAppUITests;
+			productName = MessageAppUITests;
+			productReference = FA44E9F928FEFC3800F319E3 /* MessageAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		FAD2C78628DCA88B00B3CE3F /* MessageApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FAD2C79B28DCA89200B3CE3F /* Build configuration list for PBXNativeTarget "MessageApp" */;
@@ -372,6 +514,14 @@
 				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1340;
 				TargetAttributes = {
+					FA44E9E728FEDE6C00F319E3 = {
+						CreatedOnToolsVersion = 13.4.1;
+						TestTargetID = FAD2C78628DCA88B00B3CE3F;
+					};
+					FA44E9F828FEFC3800F319E3 = {
+						CreatedOnToolsVersion = 13.4.1;
+						TestTargetID = FAD2C78628DCA88B00B3CE3F;
+					};
 					FAD2C78628DCA88B00B3CE3F = {
 						CreatedOnToolsVersion = 13.4.1;
 					};
@@ -391,11 +541,27 @@
 			projectRoot = "";
 			targets = (
 				FAD2C78628DCA88B00B3CE3F /* MessageApp */,
+				FA44E9E728FEDE6C00F319E3 /* MessageAppTests */,
+				FA44E9F828FEFC3800F319E3 /* MessageAppUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		FA44E9E628FEDE6C00F319E3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA44E9F728FEFC3800F319E3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FAD2C78528DCA88B00B3CE3F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -409,6 +575,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		5CDF8B70509BA9DD85B33674 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MessageAppTests/Pods-MessageAppTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MessageAppTests/Pods-MessageAppTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MessageAppTests/Pods-MessageAppTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		60FFDCBE59998F529EA60D63 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -448,9 +631,48 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		82475DF32B7DEE4DEF73EFC7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MessageAppTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		FA44E9E428FEDE6C00F319E3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA44E9F428FEEA2000F319E3 /* CoreDataStackMock.swift in Sources */,
+				FA44E9F228FEE93100F319E3 /* CoreDataServiceTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA44E9F528FEFC3800F319E3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA44E9FC28FEFC3900F319E3 /* ProfileScreenUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FAD2C78328DCA88B00B3CE3F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -498,6 +720,19 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		FA44E9ED28FEDE6C00F319E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FAD2C78628DCA88B00B3CE3F /* MessageApp */;
+			targetProxy = FA44E9EC28FEDE6C00F319E3 /* PBXContainerItemProxy */;
+		};
+		FA44EA0028FEFC3900F319E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FAD2C78628DCA88B00B3CE3F /* MessageApp */;
+			targetProxy = FA44E9FF28FEFC3900F319E3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		FAD2C79528DCA89200B3CE3F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -510,6 +745,78 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		FA44E9EF28FEDE6D00F319E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E7CF11FFE63CA13598F8931F /* Pods-MessageAppTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.apolinarys.MessageAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MessageApp.app/MessageApp";
+			};
+			name = Debug;
+		};
+		FA44E9F028FEDE6D00F319E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4C2FD7E7A3A203F83CA8D681 /* Pods-MessageAppTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.apolinarys.MessageAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MessageApp.app/MessageApp";
+			};
+			name = Release;
+		};
+		FA44EA0228FEFC3900F319E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.apolinarys.MessageAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MessageApp;
+			};
+			name = Debug;
+		};
+		FA44EA0328FEFC3900F319E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.apolinarys.MessageAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MessageApp;
+			};
+			name = Release;
+		};
 		FAD2C79928DCA89200B3CE3F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -683,6 +990,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		FA44E9EE28FEDE6D00F319E3 /* Build configuration list for PBXNativeTarget "MessageAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA44E9EF28FEDE6D00F319E3 /* Debug */,
+				FA44E9F028FEDE6D00F319E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA44EA0128FEFC3900F319E3 /* Build configuration list for PBXNativeTarget "MessageAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA44EA0228FEFC3900F319E3 /* Debug */,
+				FA44EA0328FEFC3900F319E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		FAD2C78228DCA88A00B3CE3F /* Build configuration list for PBXProject "MessageApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
