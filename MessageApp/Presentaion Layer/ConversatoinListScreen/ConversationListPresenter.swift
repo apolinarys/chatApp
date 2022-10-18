@@ -25,15 +25,18 @@ final class ConversationListPresenter: IConversationListPresenter {
     private let firestoreManager: IFirestoreManager
     private let router: IRouter
     private let listenerService: IChannelsListener
+    private let coreDataService: ICoreDataService
     
     init(view: IConversationView,
          firestoreManager: IFirestoreManager,
          router: IRouter,
-         listenerService: IChannelsListener) {
+         listenerService: IChannelsListener,
+         coreDataService: ICoreDataService) {
         self.view = view
         self.firestoreManager = firestoreManager
         self.router = router
         self.listenerService = listenerService
+        self.coreDataService = coreDataService
     }
     
     private func addChannelListener() {
@@ -44,9 +47,9 @@ final class ConversationListPresenter: IConversationListPresenter {
                 case .added:
                     self?.view?.updateUI(channels: channelResult.channels)
                 case .modified:
-                    return
+                    self?.coreDataService.updateChannel(channel: channelResult.channels)
                 case .removed:
-                    self?.view?.channelDeleted(channel: channelResult.channels[0])
+                    return
                 }
             case .failure(let error):
                 Logger.shared.message(error.localizedDescription)
@@ -56,7 +59,12 @@ final class ConversationListPresenter: IConversationListPresenter {
     
     func onViewDidLoad() {
         addChannelListener()
+        view?.updateUI(channels: loadChannels())
         view?.theme = ThemeManager.currentTheme()
+    }
+    
+    private func loadChannels() -> [Channel] {
+        return coreDataService.getChannels()
     }
     
     func addNewChannel() {

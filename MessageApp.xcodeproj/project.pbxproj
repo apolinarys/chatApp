@@ -13,6 +13,10 @@
 		FA44E9B228F83A7200F319E3 /* MessagesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9B128F83A7200F319E3 /* MessagesPresenter.swift */; };
 		FA44E9B428F84F7800F319E3 /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9B328F84F7800F319E3 /* MessageModel.swift */; };
 		FA44E9B828F96FAD00F319E3 /* ThemesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9B728F96FAD00F319E3 /* ThemesPresenter.swift */; };
+		FA44E9DD28FD9A0100F319E3 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9DB28FD9A0100F319E3 /* CoreDataModel.xcdatamodeld */; };
+		FA44E9DF28FD9AAD00F319E3 /* OldCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9DE28FD9AAD00F319E3 /* OldCoreDataStack.swift */; };
+		FA44E9E128FDA74D00F319E3 /* NewCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9E028FDA74D00F319E3 /* NewCoreDataStack.swift */; };
+		FA44E9E328FDA9DD00F319E3 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA44E9E228FDA9DD00F319E3 /* CoreDataService.swift */; };
 		FA56457E28F467E400F6964C /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56457D28F467E400F6964C /* Router.swift */; };
 		FA56458028F468F100F6964C /* IViewControllersFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56457F28F468F100F6964C /* IViewControllersFactory.swift */; };
 		FA56458328F46C5B00F6964C /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA56458228F46C5B00F6964C /* FirestoreManager.swift */; };
@@ -56,6 +60,10 @@
 		FA44E9B128F83A7200F319E3 /* MessagesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesPresenter.swift; sourceTree = "<group>"; };
 		FA44E9B328F84F7800F319E3 /* MessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		FA44E9B728F96FAD00F319E3 /* ThemesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesPresenter.swift; sourceTree = "<group>"; };
+		FA44E9DC28FD9A0100F319E3 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
+		FA44E9DE28FD9AAD00F319E3 /* OldCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldCoreDataStack.swift; sourceTree = "<group>"; };
+		FA44E9E028FDA74D00F319E3 /* NewCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCoreDataStack.swift; sourceTree = "<group>"; };
+		FA44E9E228FDA9DD00F319E3 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		FA56457D28F467E400F6964C /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		FA56457F28F468F100F6964C /* IViewControllersFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IViewControllersFactory.swift; sourceTree = "<group>"; };
 		FA56458228F46C5B00F6964C /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
@@ -130,6 +138,16 @@
 			path = StorageManager;
 			sourceTree = "<group>";
 		};
+		FA44E9DA28FD99E200F319E3 /* Core Layer */ = {
+			isa = PBXGroup;
+			children = (
+				FA44E9DB28FD9A0100F319E3 /* CoreDataModel.xcdatamodeld */,
+				FA44E9E028FDA74D00F319E3 /* NewCoreDataStack.swift */,
+				FA44E9DE28FD9AAD00F319E3 /* OldCoreDataStack.swift */,
+			);
+			path = "Core Layer";
+			sourceTree = "<group>";
+		};
 		FA56457C28F4667700F6964C /* Presentaion Layer */ = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +168,7 @@
 				FA56459228F5C73300F6964C /* FirestoreManager */,
 				FA56458828F472CE00F6964C /* ListenerService */,
 				FA44E9AE28F816FC00F319E3 /* StorageManager */,
+				FA44E9E228FDA9DD00F319E3 /* CoreDataService.swift */,
 			);
 			path = "Service Layer";
 			sourceTree = "<group>";
@@ -292,6 +311,7 @@
 				FAD2C78A28DCA88B00B3CE3F /* AppDelegate.swift */,
 				FA56457C28F4667700F6964C /* Presentaion Layer */,
 				FA56458128F46BCB00F6964C /* Service Layer */,
+				FA44E9DA28FD99E200F319E3 /* Core Layer */,
 				FAD2C7A428E0AB2C00B3CE3F /* Helpers */,
 				FAD2C79828DCA89200B3CE3F /* Info.plist */,
 				FAEF79D228EF350D00705B08 /* GoogleService-Info.plist */,
@@ -454,7 +474,9 @@
 				FA56457E28F467E400F6964C /* Router.swift in Sources */,
 				FAD69E1228E5CB39006208BA /* AllertControllerPresenter.swift in Sources */,
 				FA44E9B828F96FAD00F319E3 /* ThemesPresenter.swift in Sources */,
+				FA44E9DD28FD9A0100F319E3 /* CoreDataModel.xcdatamodeld in Sources */,
 				FAEF79D528F02ABE00705B08 /* IDCreator.swift in Sources */,
+				FA44E9DF28FD9AAD00F319E3 /* OldCoreDataStack.swift in Sources */,
 				FAD69E0B28E44B62006208BA /* ThemesViewController.swift in Sources */,
 				FA56459828F5C9DF00F6964C /* MessagesListener.swift in Sources */,
 				FAD2C7A328E0AB2100B3CE3F /* Logger.swift in Sources */,
@@ -462,8 +484,10 @@
 				FAD69E1428E5DBB4006208BA /* ThemeManager.swift in Sources */,
 				FA56458C28F5A36200F6964C /* ChannelResult.swift in Sources */,
 				FA56459528F5C8E700F6964C /* ProfilePresenter.swift in Sources */,
+				FA44E9E128FDA74D00F319E3 /* NewCoreDataStack.swift in Sources */,
 				FA56459E28F5D2FF00F6964C /* StorageManagerResult.swift in Sources */,
 				FA5645A028F5D7B800F6964C /* ProfileViewElements.swift in Sources */,
+				FA44E9E328FDA9DD00F319E3 /* CoreDataService.swift in Sources */,
 				FA44E9B428F84F7800F319E3 /* MessageModel.swift in Sources */,
 				FAA1A84328EC306C00ED9954 /* ThemeButton.swift in Sources */,
 				FA56459C28F5CB5000F6964C /* StorageManager.swift in Sources */,
@@ -678,6 +702,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		FA44E9DB28FD9A0100F319E3 /* CoreDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				FA44E9DC28FD9A0100F319E3 /* CoreDataModel.xcdatamodel */,
+			);
+			currentVersion = FA44E9DC28FD9A0100F319E3 /* CoreDataModel.xcdatamodel */;
+			path = CoreDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = FAD2C77F28DCA88A00B3CE3F /* Project object */;
 }

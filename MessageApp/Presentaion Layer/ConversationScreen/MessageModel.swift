@@ -14,6 +14,13 @@ struct Message {
     let senderId: String
     let senderName: String
     
+    init(content: String, created: Date, senderId: String, senderName: String) {
+        self.content = content
+        self.created = created
+        self.senderId = senderId
+        self.senderName = senderName
+    }
+    
     init?(document: QueryDocumentSnapshot) {
         let data = document.data()
         
