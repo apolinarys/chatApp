@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "3739075E-A73D-423F-912E-94E5CFC8D407",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:MessageApp.xcodeproj",
+        "identifier" : "FA44E9F828FEFC3800F319E3",
+        "name" : "MessageAppUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

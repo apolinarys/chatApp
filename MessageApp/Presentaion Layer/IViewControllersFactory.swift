@@ -20,10 +20,13 @@ struct ViewControllersFactory: IViewControllersFactory {
         let view = ConversationListViewController()
         let firestoreManager = FirestoreManager()
         let listenerService = ChannelsListener()
+        let coreDataStack = NewCoreDataStack()
+        let coreDataService = CoreDataService(coreDataStack: coreDataStack)
         let presenter = ConversationListPresenter(view: view,
                                                   firestoreManager: firestoreManager,
                                                   router: router,
-                                                  listenerService: listenerService)
+                                                  listenerService: listenerService,
+                                                  coreDataService: coreDataService)
         view.presenter = presenter
         return view
     }
@@ -34,6 +37,8 @@ struct ViewControllersFactory: IViewControllersFactory {
         let messagesListener = MessagesListener(chatId: chatId)
         let storageManager = StorageManager()
         let alertPresenter = AlertPresenter()
+        let coreDataStack = NewCoreDataStack()
+        let coreDataService = CoreDataService(coreDataStack: coreDataStack)
         let presenter = MessagesPresenter(view: view,
                                           router: router,
                                           firestoreManager: firestoreManager,
@@ -41,7 +46,8 @@ struct ViewControllersFactory: IViewControllersFactory {
                                           storageManager: storageManager,
                                           chatId: chatId,
                                           chatName: chatName,
-                                          alertPresenter: alertPresenter)
+                                          alertPresenter: alertPresenter,
+                                          coreDataService: coreDataService)
         view.presenter = presenter
         return view
     }

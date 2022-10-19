@@ -125,8 +125,10 @@ extension ConversationViewController {
     func updateUI(messages: [Message]) {
         self.messages = messages
         tableView.reloadData()
-        let indexPath = IndexPath(row: messages.count - 1, section: 0)
-        tableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.top, animated: false)
+        if !messages.isEmpty {
+            let indexPath = IndexPath(row: messages.count - 1, section: 0)
+            tableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.top, animated: false)
+        }
     }
 }
 

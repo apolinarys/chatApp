@@ -50,6 +50,7 @@ extension ConversationListViewController {
             style: UIBarButtonItem.Style.plain,
             target: self,
             action: #selector(showProfile))
+        profileButton.accessibilityIdentifier = "profileButton"
         
         
         let settingsButton = UIBarButtonItem(

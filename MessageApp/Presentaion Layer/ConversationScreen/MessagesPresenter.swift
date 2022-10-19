@@ -15,13 +15,14 @@ protocol IMessagesPresenter {
 final class MessagesPresenter: IMessagesPresenter {
     
     weak var view: IMessageView?
-    let router: IRouter
-    let firestoreManager: IFirestoreManager
-    let messagesListener: IMessagesListener
-    let storageManager: IStorageManager
-    let chatId: String
-    let chatName: String
-    let alertPresenter: AlertPresenter
+    private let router: IRouter
+    private let firestoreManager: IFirestoreManager
+    private let messagesListener: IMessagesListener
+    private let storageManager: IStorageManager
+    private let chatId: String
+    private let chatName: String
+    private let alertPresenter: AlertPresenter
+    private let coreDataService: ICoreDataService
     private var profileData: ProfileData?
     
     init(view: IMessageView,
@@ -31,7 +32,8 @@ final class MessagesPresenter: IMessagesPresenter {
          storageManager: IStorageManager,
          chatId: String,
          chatName: String,
-         alertPresenter: AlertPresenter) {
+         alertPresenter: AlertPresenter,
+         coreDataService: ICoreDataService) {
         self.view = view
         self.router = router
         self.firestoreManager = firestoreManager
@@ -40,10 +42,12 @@ final class MessagesPresenter: IMessagesPresenter {
         self.chatId = chatId
         self.chatName = chatName
         self.alertPresenter = alertPresenter
+        self.coreDataService = coreDataService
     }
     
     func onViewDidLoad() {
         addSnapshotListener()
+        view?.updateUI(messages: loadMessages())
         view?.navigationItem.title = chatName
     }
     
@@ -59,8 +63,12 @@ final class MessagesPresenter: IMessagesPresenter {
         }
     }
     
+    private func loadMessages() -> [Message] {
+        return coreDataService.getMessages()
+    }
+    
     private func checkMessage(text: String) -> String? {
-        let trimmedMessage = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedMessage = text.trimmingCharacters(in: Foundation.CharacterSet.whitespacesAndNewlines)
         if trimmedMessage.isEmpty {
             return nil
         }
@@ -72,6 +80,8 @@ final class MessagesPresenter: IMessagesPresenter {
             switch result {
             case .success(let messages):
                 self?.view?.updateUI(messages: messages)
+                guard let chatId = self?.chatId else {return}
+                self?.coreDataService.saveMessage(message: messages, channelId: chatId)
             case .failure(let error):
                 Logger.shared.message(error.localizedDescription)
             }
