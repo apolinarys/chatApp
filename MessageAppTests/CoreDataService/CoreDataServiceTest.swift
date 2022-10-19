@@ -10,30 +10,52 @@ import XCTest
 
 final class CoreDataServiceTest: XCTestCase {
     
-    private let coreDataStackMock = CoreDataStackMock()
-    private let channelMock = Channel(identifier: "", name: "", lastMessage: nil, lastActivity: nil)
+    // MARK: - Dependencies
     
-    func testPerformSaveCalled() {
+    private var coreDataStack: CoreDataStackMock!
+    
+    private var coreDataService: CoreDataService!
+    
+    // MARK: - XCTestCase
+    
+    override func setUp() {
+        super.setUp()
         
-        let service = build()
+        continueAfterFailure = false
         
-        service.saveChannel(channel: [channelMock])
+        coreDataStack = CoreDataStackMock()
         
-        XCTAssertTrue(coreDataStackMock.invokedPerformSave)
-        XCTAssertEqual(coreDataStackMock.invokedPerformSaveCount, 1)
+        coreDataService = CoreDataService(coreDataStack: coreDataStack)
     }
     
-    func testFetchCalled() {
+    override func tearDown() {
+        super.tearDown()
         
-        let service = build()
+        coreDataStack = nil
         
-        let _ = service.getChannels()
-        
-        XCTAssertTrue(coreDataStackMock.invokedFetch)
-        XCTAssertEqual(coreDataStackMock.invokedFetchCount, 1)
+        coreDataService = nil
     }
     
-    private func build() -> CoreDataService {
-        return CoreDataService(coreDataStack: coreDataStackMock)
+    // MARK: - Tests
+    
+    func test_coreDataService_saveChannel() {
+        // given
+        let channel = Channel(identifier: "", name: "", lastMessage: nil, lastActivity: nil)
+        
+        // when
+        coreDataService.saveChannel(channel: [channel])
+        
+        // then
+        XCTAssertTrue(coreDataStack.invokedPerformSave)
+        XCTAssertEqual(coreDataStack.invokedPerformSaveCount, 1)
+    }
+    
+    func test_coreDataService_getChannels() {
+        // when
+        let _ = coreDataService.getChannels()
+        
+        // then
+        XCTAssertTrue(coreDataStack.invokedFetch)
+        XCTAssertEqual(coreDataStack.invokedFetchCount, 1)
     }
 }

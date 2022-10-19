@@ -12,10 +12,14 @@ protocol ICoreDataStack {
     func performSave(_ block: @escaping (NSManagedObjectContext) -> Void)
 }
 
+private extension String {
+    static let coreDataStackContainerName = "CoreDataModel"
+}
+
 final class NewCoreDataStack: ICoreDataStack {
     
     private lazy var container: NSPersistentContainer = {
-       let container = NSPersistentContainer(name: "CoreDataModel")
+        let container = NSPersistentContainer(name: String.coreDataStackContainerName)
         container.loadPersistentStores { _, error in
             if let error = error {
                 Logger.shared.message(error.localizedDescription)
@@ -25,7 +29,7 @@ final class NewCoreDataStack: ICoreDataStack {
     }()
     
     func fetch<T>(fetchRequest: NSFetchRequest<T>) -> [T]? {
-        return try? container.viewContext.fetch(fetchRequest)
+        try? container.viewContext.fetch(fetchRequest)
     }
     
     func performSave(_ block: @escaping (NSManagedObjectContext) -> Void) {

@@ -64,7 +64,7 @@ final class ConversationListPresenter: IConversationListPresenter {
     }
     
     private func loadChannels() -> [Channel] {
-        return coreDataService.getChannels()
+        coreDataService.getChannels()
     }
     
     func addNewChannel() {

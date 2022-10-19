@@ -247,6 +247,14 @@
 			path = TestPlans;
 			sourceTree = "<group>";
 		};
+		FA44EA0A28FFE7BC00F319E3 /* CoreDataService */ = {
+			isa = PBXGroup;
+			children = (
+				FA44E9E228FDA9DD00F319E3 /* CoreDataService.swift */,
+			);
+			path = CoreDataService;
+			sourceTree = "<group>";
+		};
 		FA56457C28F4667700F6964C /* Presentaion Layer */ = {
 			isa = PBXGroup;
 			children = (
@@ -267,7 +275,7 @@
 				FA56459228F5C73300F6964C /* FirestoreManager */,
 				FA56458828F472CE00F6964C /* ListenerService */,
 				FA44E9AE28F816FC00F319E3 /* StorageManager */,
-				FA44E9E228FDA9DD00F319E3 /* CoreDataService.swift */,
+				FA44EA0A28FFE7BC00F319E3 /* CoreDataService */,
 			);
 			path = "Service Layer";
 			sourceTree = "<group>";

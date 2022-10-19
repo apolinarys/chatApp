@@ -50,6 +50,7 @@ extension ConversationListViewController {
             style: UIBarButtonItem.Style.plain,
             target: self,
             action: #selector(showProfile))
+        profileButton.accessibilityIdentifier = "profileButton"
         
         
         let settingsButton = UIBarButtonItem(
@@ -65,7 +66,6 @@ extension ConversationListViewController {
             action: #selector(addChannel))
         
         navigationItem.title = "Message App"
-        profileButton.accessibilityIdentifier = "profileButton"
         navigationItem.rightBarButtonItems = [addChannelButton, profileButton]
         navigationItem.leftBarButtonItem = settingsButton
     }

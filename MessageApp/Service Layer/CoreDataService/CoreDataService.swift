@@ -82,7 +82,7 @@ struct CoreDataService: ICoreDataService {
         let fetchRequest: NSFetchRequest<DBChannel> = DBChannel.fetchRequest()
         let channels = coreDataStack.fetch(fetchRequest: fetchRequest)
         var output: [Channel] = []
-        channels?.forEach{
+        channels?.forEach {
             if let identifier = $0.identifier, let name = $0.name {
                 output.append(Channel(identifier: identifier,
                                       name: name,

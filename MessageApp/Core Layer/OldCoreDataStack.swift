@@ -7,10 +7,14 @@
 
 import CoreData
 
+private extension String {
+    static let coreDataStackContainerName = "CoreDataModel"
+}
+
 final class OldCoreDataStack {
     
     private lazy var managedObjectModel: NSManagedObjectModel? = {
-        guard let moduleURL = Bundle.main.url(forResource: "CoreDataModel", withExtension: "momd") else {return nil}
+        guard let moduleURL = Bundle.main.url(forResource: String.coreDataStackContainerName, withExtension: "momd") else {return nil}
         return NSManagedObjectModel(contentsOf: moduleURL)
     }()
     
@@ -50,7 +54,7 @@ final class OldCoreDataStack {
     }()
     
     func fetch<T>(fetchRequest: NSFetchRequest<T>) -> [T]? {
-        return try? readContext.fetch(fetchRequest)
+        try? readContext.fetch(fetchRequest)
     }
     
     func performSave(_ block: @escaping (NSManagedObjectContext) -> Void) {
