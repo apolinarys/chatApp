@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseFirestore
+import CoreData
 
 protocol IConversationListPresenter {
     func onViewDidLoad()
@@ -15,6 +16,7 @@ protocol IConversationListPresenter {
     func presentProfile()
     func presentTemesScreen()
     func deletChannel(channelId: String)
+    func setupFetchedResultController() -> NSFetchedResultsController<DBChannel>
 }
 
 final class ConversationListPresenter: IConversationListPresenter {
@@ -45,16 +47,21 @@ final class ConversationListPresenter: IConversationListPresenter {
             case .success(let channelResult):
                 switch channelResult.resultState {
                 case .added:
-                    self?.view?.updateUI(channels: channelResult.channels)
+                    print("saved")
+                    self?.coreDataService.saveChannel(channel: channelResult.channels)
                 case .modified:
                     self?.coreDataService.updateChannel(channel: channelResult.channels)
                 case .removed:
-                    return
+                    self?.coreDataService.deleteChannel(channel: channelResult.channels)
                 }
             case .failure(let error):
                 Logger.shared.message(error.localizedDescription)
             }
         }
+    }
+    
+    func setupFetchedResultController() -> NSFetchedResultsController<DBChannel> {
+        coreDataService.setupChannelsFetchedResultController()
     }
     
     func onViewDidLoad() {

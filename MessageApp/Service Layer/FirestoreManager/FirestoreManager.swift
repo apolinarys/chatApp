@@ -37,6 +37,7 @@ struct FirestoreManager: IFirestoreManager {
                 let data = $0.data()
                 let identifier = data[Constants.Channels.identifier] as? String
                 if identifier == chatId {
+                    print(reference.document($0.documentID))
                     reference.document($0.documentID).delete()
                 }
             }

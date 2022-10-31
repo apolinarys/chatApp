@@ -13,7 +13,10 @@ protocol ICoreDataService {
     func saveMessage(message: [Message], channelId: String)
     func saveChannel(channel: [Channel])
     func updateChannel(channel: [Channel])
-    func getChannels() -> [Channel] 
+    func getChannels() -> [Channel]
+    func setupChannelsFetchedResultController() -> NSFetchedResultsController<DBChannel>
+    func deleteChannel(channel: [Channel])
+    func setupMessagesFEtchedResultController() -> NSFetchedResultsController<DBMessage>
 }
 
 struct CoreDataService: ICoreDataService {
@@ -59,6 +62,7 @@ struct CoreDataService: ICoreDataService {
             guard oldChannel == nil else {return}
             
             coreDataStack.performSave { context in
+                print("CoreData saved")
                 let dbChannel = DBChannel(context: context)
                 dbChannel.identifier = channel.identifier
                 dbChannel.lastActivity = channel.lastActivity
@@ -78,6 +82,15 @@ struct CoreDataService: ICoreDataService {
         }
     }
     
+    func deleteChannel(channel: [Channel]) {
+        coreDataStack.performSave { context in
+            channel.forEach { channel in
+                guard let dbChannel = findChannel(channelId: channel.identifier) else {return}
+                context.delete(dbChannel)
+            }
+        }
+    }
+    
     func getChannels() -> [Channel] {
         let fetchRequest: NSFetchRequest<DBChannel> = DBChannel.fetchRequest()
         let channels = coreDataStack.fetch(fetchRequest: fetchRequest)
@@ -91,6 +104,42 @@ struct CoreDataService: ICoreDataService {
             }
         }
         return output
+    }
+    
+    func setupChannelsFetchedResultController() -> NSFetchedResultsController<DBChannel> {
+        let context = coreDataStack.getContext()
+        let fetchRequest = DBChannel.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(DBChannel.lastActivity), ascending: false)]
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                    managedObjectContext: context,
+                                                    sectionNameKeyPath: nil,
+                                                    cacheName: nil)
+        
+        do {
+            try controller.performFetch()
+        } catch {
+            Logger.shared.message(error.localizedDescription)
+        }
+        
+        return controller
+    }
+    
+    func setupMessagesFEtchedResultController() -> NSFetchedResultsController<DBMessage> {
+        let context = coreDataStack.getContext()
+        let fetchRequest = DBMessage.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(DBMessage.created), ascending: true)]
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                    managedObjectContext: context,
+                                                    sectionNameKeyPath: nil,
+                                                    cacheName: nil)
+        
+        do {
+            try controller.performFetch()
+        } catch {
+            Logger.shared.message(error.localizedDescription)
+        }
+        
+        return controller
     }
     
     private func findChannel(channelId: String) -> DBChannel? {

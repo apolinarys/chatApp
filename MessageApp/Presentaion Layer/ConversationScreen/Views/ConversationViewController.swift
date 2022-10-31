@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 protocol IMessageView: UIViewController {
     var presenter: IMessagesPresenter? {get set}
@@ -19,6 +20,7 @@ final class ConversationViewController: UIViewController, UITextViewDelegate, IM
     var messages: [Message] = []
     
     var presenter: IMessagesPresenter?
+    private var fetchedResultController: NSFetchedResultsController<DBMessage>?
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -58,6 +60,7 @@ final class ConversationViewController: UIViewController, UITextViewDelegate, IM
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchedResultController = presenter?.setupFetchedResultController()
         addSubviews()
         setupConstraints()
         createDismissGesture()
@@ -107,14 +110,60 @@ final class ConversationViewController: UIViewController, UITextViewDelegate, IM
 
 extension ConversationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
+        guard let sections = fetchedResultController?.sections else {return 0}
+        
+        return sections[section].numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ConversationTableViewCell.self)) as? ConversationTableViewCell
         guard let cell = cell else {return UITableViewCell()}
-        cell.set(data: messages[indexPath.row])
+        guard let message = fetchedResultController?.object(at: indexPath),
+                let senderId = message.senderId,
+                let senderName = message.senderName,
+                let content = message.content,
+                let created = message.created
+        else {return cell}
+        
+        cell.set(data: Message(content: content, created: created, senderId: senderId, senderName: senderName))
         return cell
+    }
+}
+
+//MARK: - NSFetchedResultsControllerDelegate
+
+extension ConversationViewController: NSFetchedResultsControllerDelegate {
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let newIndexPath = newIndexPath else {return}
+            tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.bottom)
+        case .delete:
+            guard let indexPath = indexPath else {return}
+            tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
+        case .move:
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
+            tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+            tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.automatic)
+        case .update:
+            guard let indexPath = indexPath else {return}
+            tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+        @unknown default:
+            return
+        }
     }
 }
 
