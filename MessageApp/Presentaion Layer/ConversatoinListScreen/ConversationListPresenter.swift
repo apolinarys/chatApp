@@ -47,7 +47,6 @@ final class ConversationListPresenter: IConversationListPresenter {
             case .success(let channelResult):
                 switch channelResult.resultState {
                 case .added:
-                    print("saved")
                     self?.coreDataService.saveChannel(channel: channelResult.channels)
                 case .modified:
                     self?.coreDataService.updateChannel(channel: channelResult.channels)

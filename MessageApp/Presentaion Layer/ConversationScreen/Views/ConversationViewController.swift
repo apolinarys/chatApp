@@ -186,7 +186,6 @@ extension ConversationViewController {
 extension ConversationViewController {
     
     @objc private func keyboardWillShow(notification: NSNotification) {
-        print(view.frame.origin.y)
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             additionalSafeAreaInsets.bottom = keyboardSize.height
         }

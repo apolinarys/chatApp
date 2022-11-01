@@ -181,7 +181,6 @@ extension ConversationListViewController: NSFetchedResultsControllerDelegate {
                     newIndexPath: IndexPath?) {
         switch type {
         case .insert:
-            print("insert")
             guard let newIndexPath = newIndexPath else {return}
             tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.bottom)
         case .delete:

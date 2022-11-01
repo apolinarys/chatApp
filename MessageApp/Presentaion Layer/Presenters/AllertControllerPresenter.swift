@@ -17,21 +17,18 @@ struct AllertControllerPresenter {
             alert.addAction(UIAlertAction(title: "Choose from gallery",
                                           style: UIAlertAction.Style.default ,
                                           handler: { (UIAlertAction)in
-                print("User click choose from gallery button")
                 didChoseGallery(vc: vc)
             }))
             
             alert.addAction(UIAlertAction(title: "Take photo",
                                           style: UIAlertAction.Style.default ,
                                           handler:{ (UIAlertAction)in
-                print("User click take photo button")
                 didChoseTakePhoto(vc: vc)
             }))
             
             alert.addAction(UIAlertAction(title: "Dismiss",
                                           style: UIAlertAction.Style.cancel,
                                           handler:{ (UIAlertAction)in
-                print("User click Dismiss button")
             }))
 
         vc.present(alert, animated: true)

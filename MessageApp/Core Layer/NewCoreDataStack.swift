@@ -38,7 +38,7 @@ final class NewCoreDataStack: ICoreDataStack {
     }
     
     func performSave(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        let context = container.newBackgroundContext()
+        let context = container.viewContext
         context.perform { [weak self] in
             block(context)
             if context.hasChanges {

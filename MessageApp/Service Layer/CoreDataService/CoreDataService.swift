@@ -62,7 +62,6 @@ struct CoreDataService: ICoreDataService {
             guard oldChannel == nil else {return}
             
             coreDataStack.performSave { context in
-                print("CoreData saved")
                 let dbChannel = DBChannel(context: context)
                 dbChannel.identifier = channel.identifier
                 dbChannel.lastActivity = channel.lastActivity

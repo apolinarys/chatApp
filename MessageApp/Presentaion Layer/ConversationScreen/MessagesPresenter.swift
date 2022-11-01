@@ -98,7 +98,7 @@ final class MessagesPresenter: IMessagesPresenter {
         storageManager.loadData { result in
             switch result {
             case .started:
-                print("started")
+                Logger.shared.message("started")
             case .finished(let profileData):
                 completion(profileData)
             }

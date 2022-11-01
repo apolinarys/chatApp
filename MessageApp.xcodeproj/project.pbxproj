@@ -313,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				FAA1A86728EEFE7000ED9954 /* AlertPresenter.swift */,
+				FAD69E1128E5CB39006208BA /* AllertControllerPresenter.swift */,
 				FA44E9AC28F813BC00F319E3 /* AlertPresenterCondition.swift */,
 			);
 			path = Presenters;
@@ -434,7 +435,6 @@
 		FAD2C7A428E0AB2C00B3CE3F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				FAD69E1128E5CB39006208BA /* AllertControllerPresenter.swift */,
 				FAD2C7A228E0AB2000B3CE3F /* Logger.swift */,
 				FAD2C79328DCA89200B3CE3F /* Assets.xcassets */,
 				FAD2C79528DCA89200B3CE3F /* LaunchScreen.storyboard */,
