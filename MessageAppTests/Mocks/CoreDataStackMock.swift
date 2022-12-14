@@ -10,6 +10,16 @@ import CoreData
 @testable import MessageApp
 
 final class CoreDataStackMock: ICoreDataStack {
+    
+    var invokedGetContext = false
+    var invokedGetContextCount = 0
+    var stubbedGetContextResult: NSManagedObjectContext!
+    
+    func getContext() -> NSManagedObjectContext {
+        invokedGetContext = true
+        invokedGetContextCount += 1
+        return stubbedGetContextResult
+    }
 
     var invokedFetch = false
     var invokedFetchCount = 0
