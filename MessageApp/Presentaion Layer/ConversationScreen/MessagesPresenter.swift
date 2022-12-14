@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import CoreData
 
 protocol IMessagesPresenter {
     func sendMessage(message: String)
     func onViewDidLoad()
+    func setupFetchedResultController() -> NSFetchedResultsController<DBMessage>
 }
 
 final class MessagesPresenter: IMessagesPresenter {
@@ -49,6 +51,10 @@ final class MessagesPresenter: IMessagesPresenter {
         addSnapshotListener()
         view?.updateUI(messages: loadMessages())
         view?.navigationItem.title = chatName
+    }
+    
+    func setupFetchedResultController() -> NSFetchedResultsController<DBMessage> {
+        coreDataService.setupMessagesFEtchedResultController()
     }
     
     func sendMessage(message: String) {
@@ -92,7 +98,7 @@ final class MessagesPresenter: IMessagesPresenter {
         storageManager.loadData { result in
             switch result {
             case .started:
-                print("started")
+                Logger.shared.message("started")
             case .finished(let profileData):
                 completion(profileData)
             }

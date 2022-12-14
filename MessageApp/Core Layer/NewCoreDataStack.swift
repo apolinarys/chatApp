@@ -10,6 +10,7 @@ import CoreData
 protocol ICoreDataStack {
     func fetch<T>(fetchRequest: NSFetchRequest<T>) -> [T]?
     func performSave(_ block: @escaping (NSManagedObjectContext) -> Void)
+    func getContext() -> NSManagedObjectContext
 }
 
 private extension String {
@@ -28,12 +29,16 @@ final class NewCoreDataStack: ICoreDataStack {
         return container
     }()
     
+    func getContext() -> NSManagedObjectContext {
+        container.viewContext
+    }
+    
     func fetch<T>(fetchRequest: NSFetchRequest<T>) -> [T]? {
         try? container.viewContext.fetch(fetchRequest)
     }
     
     func performSave(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        let context = container.newBackgroundContext()
+        let context = container.viewContext
         context.perform { [weak self] in
             block(context)
             if context.hasChanges {

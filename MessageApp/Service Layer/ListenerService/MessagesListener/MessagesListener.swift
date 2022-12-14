@@ -39,7 +39,7 @@ struct MessagesListener: IMessagesListener {
     private func loadDocumentID(completion: @escaping (String) -> Void) {
         reference.getDocuments { snapshot, error in
             if let error = error {
-                print("There was an issue reading data from Firestore, \(error)")
+                Logger.shared.message(error.localizedDescription)
             }
             guard let documents = snapshot?.documents else {
                 return
